@@ -1,0 +1,13 @@
+// Publicação no Cloudflare Workers (site estático).
+// Build: `npm run build` (gera dist/) · Deploy: `npx wrangler deploy`.
+// Sem variáveis VITE_SUPABASE_* no build, o site publicado roda em modo demonstração.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "playkid",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    // rotas do app (/mundo, /meu-lugar, /perfil…) abrem o index.html; o React Router cuida do resto
+    "not_found_handling": "single-page-application"
+  }
+}

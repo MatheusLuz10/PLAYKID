@@ -1,0 +1,27 @@
+# Dependências e build
+node_modules
+dist
+build
+
+# Variáveis de ambiente e segredos (o modelo .env.example DEVE ir para o repositório)
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+secrets/
+
+# Supabase CLI (arquivos locais)
+supabase/.temp
+supabase/.branches
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+*.log
+.vercel
+tests/e2e/.saida
+
+# Cache do TypeScript
+*.tsbuildinfo

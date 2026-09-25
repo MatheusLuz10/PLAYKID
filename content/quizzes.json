@@ -1,0 +1,1204 @@
+{
+  "$comment": "Fonte única dos quizzes. Gere o SQL com `npm run content:sql` (supabase/migrations/17_quiz_content.sql). Cada pergunta: 4 alternativas, exatamente 1 correta, explicação e feedback por alternativa. IDs só são necessários para preservar registros já existentes (quiz das árvores).",
+  "quizzes": [
+    {
+      "lesson": "por-que-as-arvores-sao-importantes",
+      "id": "30000000-0000-4000-8000-000000000001",
+      "title": "Quiz: Por que as árvores são importantes?",
+      "description": "5 perguntas sobre biodiversidade, ecossistemas, água, solo e planejamento do plantio.",
+      "passing_score": 70,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "id": "31000000-0000-4000-8000-000000000001",
+          "topic": "🐦 Biodiversidade e habitat",
+          "question": "Por que uma árvore pode ser importante para a biodiversidade?",
+          "explanation": "Uma única árvore pode ser casa e alimento para muitos seres vivos: abelhas visitam as flores, aves comem os frutos e fazem ninhos, lagartas se alimentam das folhas.",
+          "options": [
+            {
+              "id": "32000000-0000-4000-8000-000000000011",
+              "text": "Porque afasta os insetos e deixa o ambiente mais limpo",
+              "correct": false,
+              "feedback": "Na verdade, árvores atraem e abrigam insetos, como abelhas e lagartas, que fazem parte do ecossistema."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000012",
+              "text": "Porque oferece abrigo e recursos, como flores, frutos e lugar para ninhos, a diferentes espécies",
+              "correct": true,
+              "feedback": "Isso mesmo: flores, frutos, galhos e ocos do tronco sustentam muitos seres vivos diferentes."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000013",
+              "text": "Porque é usada apenas por aves, que dependem só dela",
+              "correct": false,
+              "feedback": "Aves usam árvores, mas insetos, mamíferos, fungos e muitos outros seres também dependem delas."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000014",
+              "text": "Porque cresce sozinha, sem depender de nenhum outro ser vivo",
+              "correct": false,
+              "feedback": "A árvore também depende de outros seres: animais espalham suas sementes e decompositores reciclam nutrientes."
+            }
+          ]
+        },
+        {
+          "id": "31000000-0000-4000-8000-000000000002",
+          "topic": "🌎 Ecossistemas e solo",
+          "question": "O que acontece com as folhas que caem de uma árvore em um ambiente natural?",
+          "explanation": "Fungos, bactérias e pequenos animais decompõem folhas e galhos caídos. Os nutrientes voltam para o solo e ajudam novas plantas a crescer.",
+          "options": [
+            {
+              "id": "32000000-0000-4000-8000-000000000021",
+              "text": "Viram lixo que precisa ser retirado do ambiente",
+              "correct": false,
+              "feedback": "Em ambientes naturais, folhas caídas não são lixo: elas fazem parte do ciclo de nutrientes."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000022",
+              "text": "Deixam o solo mais pobre em nutrientes",
+              "correct": false,
+              "feedback": "É o contrário: a decomposição das folhas devolve nutrientes ao solo."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000023",
+              "text": "São decompostas e seus nutrientes voltam para o solo",
+              "correct": true,
+              "feedback": "Exato: decompositores transformam as folhas em matéria orgânica que nutre o solo."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000024",
+              "text": "Ficam no chão para sempre, sem se transformar",
+              "correct": false,
+              "feedback": "Com o tempo, fungos, bactérias e pequenos animais transformam as folhas em matéria orgânica."
+            }
+          ]
+        },
+        {
+          "id": "31000000-0000-4000-8000-000000000003",
+          "topic": "💧 Água e solo",
+          "question": "Como as árvores ajudam na relação entre a chuva e o solo?",
+          "explanation": "As raízes seguram a terra e diminuem a erosão. A copa amortece as gotas e as folhas caídas cobrem o chão, então mais água consegue penetrar no solo.",
+          "options": [
+            {
+              "id": "32000000-0000-4000-8000-000000000031",
+              "text": "As raízes seguram o solo e mais água consegue infiltrar na terra",
+              "correct": true,
+              "feedback": "Isso: raízes, copa e folhas caídas diminuem a erosão e ajudam a água a penetrar no solo."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000032",
+              "text": "A copa impede que a água da chuva chegue ao chão",
+              "correct": false,
+              "feedback": "A copa amortece a força das gotas, mas a água continua chegando ao solo."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000033",
+              "text": "As raízes soltam a terra para a chuva levá-la embora",
+              "correct": false,
+              "feedback": "É o contrário: as raízes seguram a terra e ajudam a diminuir a erosão."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000034",
+              "text": "Elas fazem a água escorrer mais rápido pela superfície",
+              "correct": false,
+              "feedback": "Com vegetação, a água escorre menos pela superfície e infiltra mais no solo."
+            }
+          ]
+        },
+        {
+          "id": "31000000-0000-4000-8000-000000000004",
+          "topic": "🌱 Escolha da espécie",
+          "question": "Por que é recomendado escolher uma espécie nativa da sua região?",
+          "explanation": "Cada espécie tem necessidades próprias. As nativas da região já são adaptadas ao clima e ao solo do lugar e alimentam a fauna que vive ali.",
+          "options": [
+            {
+              "id": "32000000-0000-4000-8000-000000000041",
+              "text": "Porque é sempre a árvore que cresce mais rápido",
+              "correct": false,
+              "feedback": "Crescer rápido não é o critério principal — e muitas espécies nativas crescem devagar."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000042",
+              "text": "Porque não precisa de nenhum cuidado depois do plantio",
+              "correct": false,
+              "feedback": "Mesmo espécies nativas precisam de rega e proteção nos primeiros meses."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000043",
+              "text": "Porque qualquer espécie nativa do Brasil serve para qualquer lugar",
+              "correct": false,
+              "feedback": "O importante é ser nativa da sua região: o Brasil tem biomas muito diferentes, cada um com suas espécies."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000044",
+              "text": "Porque já é adaptada ao clima e ao solo do lugar e alimenta a fauna local",
+              "correct": true,
+              "feedback": "Exatamente: adaptada ao ambiente, a espécie nativa tem mais chance de crescer bem e ajuda os animais da região."
+            }
+          ]
+        },
+        {
+          "id": "31000000-0000-4000-8000-000000000005",
+          "topic": "📍 Planejamento do plantio",
+          "question": "Qual aspecto deve ser considerado antes de plantar uma árvore?",
+          "explanation": "Antes de plantar, pense na árvore adulta: ela vai precisar de espaço para raízes e copa, longe de fios, canos e muros, em solo e clima adequados.",
+          "options": [
+            {
+              "id": "32000000-0000-4000-8000-000000000051",
+              "text": "Somente a aparência da muda",
+              "correct": false,
+              "feedback": "Além da aparência, é importante considerar a espécie, o espaço disponível, o solo e as condições do local."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000052",
+              "text": "O tamanho que a árvore terá quando adulta e o espaço para raízes e copa",
+              "correct": true,
+              "feedback": "Isso: planejar pensando na árvore adulta evita problemas com fios, canos e construções."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000053",
+              "text": "Plantar o mais perto possível do muro, para a árvore ficar protegida",
+              "correct": false,
+              "feedback": "Colada ao muro, as raízes podem danificar a construção e a copa cresce sem espaço."
+            },
+            {
+              "id": "32000000-0000-4000-8000-000000000054",
+              "text": "Escolher um lugar embaixo da fiação, onde há mais sombra",
+              "correct": false,
+              "feedback": "Embaixo da fiação, a copa vai alcançar os fios e precisará de podas frequentes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "como-uma-planta-cresce",
+      "title": "Quiz: Como uma planta cresce?",
+      "description": "3 perguntas sobre germinação, fotossíntese e cuidados.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🌰 Germinação",
+          "question": "Quando uma semente germina, o que costuma aparecer primeiro?",
+          "explanation": "Na germinação, a raiz surge primeiro: ela fixa a plantinha e começa a absorver água. Depois aparecem o caule e as primeiras folhas.",
+          "options": [
+            {
+              "text": "As folhas",
+              "correct": false,
+              "feedback": "As folhas aparecem depois. Primeiro a planta precisa se fixar e buscar água."
+            },
+            {
+              "text": "A raiz",
+              "correct": true,
+              "feedback": "Isso: a raiz é a primeira a sair da semente."
+            },
+            {
+              "text": "As flores",
+              "correct": false,
+              "feedback": "Flores surgem muito depois, quando a planta já está desenvolvida."
+            },
+            {
+              "text": "Os frutos",
+              "correct": false,
+              "feedback": "Frutos vêm depois das flores, na planta adulta."
+            }
+          ]
+        },
+        {
+          "topic": "☀️ Fotossíntese",
+          "question": "O que a planta usa na fotossíntese para produzir o próprio alimento?",
+          "explanation": "Na fotossíntese, as folhas usam luz do sol, água vinda das raízes e gás carbônico do ar para produzir açúcares — e liberam oxigênio.",
+          "options": [
+            {
+              "text": "Apenas a água da chuva",
+              "correct": false,
+              "feedback": "A água é importante, mas sozinha não basta: a planta também precisa de luz e gás carbônico."
+            },
+            {
+              "text": "Apenas os nutrientes da terra",
+              "correct": false,
+              "feedback": "Nutrientes ajudam, mas o alimento (açúcares) é produzido com luz, água e gás carbônico."
+            },
+            {
+              "text": "Luz, água e gás carbônico do ar",
+              "correct": true,
+              "feedback": "Exato: esses três ingredientes formam os açúcares que fazem a planta crescer."
+            },
+            {
+              "text": "Oxigênio e escuridão",
+              "correct": false,
+              "feedback": "A fotossíntese precisa de luz, e o oxigênio é liberado por ela, não usado."
+            }
+          ]
+        },
+        {
+          "topic": "🌿 Cuidados",
+          "question": "Por que regar demais também pode fazer mal a uma planta?",
+          "explanation": "As raízes precisam de ar. Em um solo encharcado o tempo todo, elas ficam sem oxigênio e podem apodrecer.",
+          "options": [
+            {
+              "text": "Porque as raízes também precisam de ar, e o solo encharcado atrapalha",
+              "correct": true,
+              "feedback": "Isso: água na medida certa mantém as raízes saudáveis."
+            },
+            {
+              "text": "Porque plantas só precisam de água uma vez na vida",
+              "correct": false,
+              "feedback": "Plantas precisam de água regularmente — só não em excesso."
+            },
+            {
+              "text": "Porque a água em excesso faz a planta crescer rápido demais",
+              "correct": false,
+              "feedback": "O problema do excesso é a falta de ar para as raízes, não o crescimento rápido."
+            },
+            {
+              "text": "Porque a água impede a luz de chegar às folhas",
+              "correct": false,
+              "feedback": "A água do solo não bloqueia a luz. O problema é o encharcamento das raízes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "o-que-e-uma-horta",
+      "title": "Quiz: O que é uma horta?",
+      "description": "3 perguntas sobre onde e como começar uma horta.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "☀️ Luz",
+          "question": "Do que a maioria das hortaliças precisa para crescer bem?",
+          "explanation": "A maioria das hortaliças precisa de algumas horas de sol direto por dia, além de água e solo com matéria orgânica.",
+          "options": [
+            {
+              "text": "Ficar na sombra o dia inteiro",
+              "correct": false,
+              "feedback": "Sem sol, a maioria das hortaliças cresce fraca."
+            },
+            {
+              "text": "Algumas horas de sol direto por dia",
+              "correct": true,
+              "feedback": "Isso: a luz do sol é essencial para a fotossíntese."
+            },
+            {
+              "text": "Solo bem compactado e duro",
+              "correct": false,
+              "feedback": "Solo duro dificulta as raízes. O ideal é terra fofa e com matéria orgânica."
+            },
+            {
+              "text": "Água apenas uma vez por mês",
+              "correct": false,
+              "feedback": "Hortaliças precisam de rega frequente, principalmente em dias secos."
+            }
+          ]
+        },
+        {
+          "topic": "📍 Onde começar",
+          "question": "Qual destes lugares é uma boa opção para começar uma horta?",
+          "explanation": "Um lugar com sol e água por perto facilita os cuidados diários e ajuda as plantas a crescer.",
+          "options": [
+            {
+              "text": "Um canto que fica sem sol o dia todo",
+              "correct": false,
+              "feedback": "Falta de luz é um dos principais problemas das hortas."
+            },
+            {
+              "text": "Um terreno cheio de entulho, sem preparar a terra",
+              "correct": false,
+              "feedback": "Seria preciso preparar o solo antes: entulho atrapalha as raízes."
+            },
+            {
+              "text": "Um lugar com sol pela manhã e uma torneira perto",
+              "correct": true,
+              "feedback": "Ótimo: sol e água por perto são os melhores aliados de uma horta."
+            },
+            {
+              "text": "Qualquer lugar, desde que fique escondido",
+              "correct": false,
+              "feedback": "Ficar escondido não ajuda: o que importa é luz, água e bom solo."
+            }
+          ]
+        },
+        {
+          "topic": "🐞 Horta viva",
+          "question": "Como restos de frutas e verduras podem ajudar uma horta?",
+          "explanation": "Pela compostagem, restos orgânicos se transformam em adubo, que devolve nutrientes ao solo.",
+          "options": [
+            {
+              "text": "Virando adubo por meio da compostagem",
+              "correct": true,
+              "feedback": "Isso: a compostagem transforma restos em adubo rico em nutrientes."
+            },
+            {
+              "text": "Sendo jogados inteiros sobre as folhas das plantas",
+              "correct": false,
+              "feedback": "Restos sobre as folhas podem atrair pragas. O caminho é a compostagem."
+            },
+            {
+              "text": "Sendo queimados perto da horta",
+              "correct": false,
+              "feedback": "Queimar polui o ar e desperdiça os nutrientes que poderiam virar adubo."
+            },
+            {
+              "text": "Eles não ajudam em nada",
+              "correct": false,
+              "feedback": "Ajudam, sim: bem compostados, viram adubo para a horta."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "por-que-precisamos-economizar-agua",
+      "title": "Quiz: Por que precisamos economizar água?",
+      "description": "3 perguntas sobre água doce, energia e atitudes do dia a dia.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🌍 Água doce",
+          "question": "Por que é importante economizar água doce?",
+          "explanation": "A maior parte da água do planeta é salgada. A água doce é uma pequena parte, e muito dela está congelada ou no subsolo.",
+          "options": [
+            {
+              "text": "Porque a água salgada acabou",
+              "correct": false,
+              "feedback": "A água salgada é a maior parte da água do planeta — o que é pouco é a água doce."
+            },
+            {
+              "text": "Porque a água doce é uma pequena parte da água do planeta",
+              "correct": true,
+              "feedback": "Isso: e só uma parte dela está facilmente disponível em rios e lagos."
+            },
+            {
+              "text": "Porque a água doce só existe em garrafas",
+              "correct": false,
+              "feedback": "A água doce está em rios, lagos, geleiras e no subsolo."
+            },
+            {
+              "text": "Porque a água doce não faz parte do ciclo da água",
+              "correct": false,
+              "feedback": "Ela faz parte do ciclo da água — mas a quantidade disponível é pequena."
+            }
+          ]
+        },
+        {
+          "topic": "🚰 Água e energia",
+          "question": "Por que economizar água também ajuda a economizar energia?",
+          "explanation": "Captar, tratar e bombear a água até as casas — e depois tratar o esgoto — usa energia e recursos.",
+          "options": [
+            {
+              "text": "Porque as torneiras funcionam com pilhas",
+              "correct": false,
+              "feedback": "Torneiras não usam pilhas. A energia é gasta no tratamento e no bombeamento da água."
+            },
+            {
+              "text": "Porque não existe nenhuma relação entre água e energia",
+              "correct": false,
+              "feedback": "Existe, sim: levar água tratada até sua casa consome energia."
+            },
+            {
+              "text": "Porque captar, tratar e bombear a água usa energia",
+              "correct": true,
+              "feedback": "Exato: menos água desperdiçada significa menos energia gasta."
+            },
+            {
+              "text": "Porque a água da torneira gera eletricidade em casa",
+              "correct": false,
+              "feedback": "A água da torneira não gera eletricidade. É o contrário: fazê-la chegar usa energia."
+            }
+          ]
+        },
+        {
+          "topic": "💧 Atitudes",
+          "question": "Qual destas atitudes ajuda a economizar água?",
+          "explanation": "Fechar a torneira ao escovar os dentes, tomar banhos curtos e consertar vazamentos são atitudes simples que evitam desperdício.",
+          "options": [
+            {
+              "text": "Lavar a calçada com a mangueira",
+              "correct": false,
+              "feedback": "A mangueira gasta muita água. Uma vassoura resolve na maioria das vezes."
+            },
+            {
+              "text": "Deixar pequenos vazamentos para consertar depois",
+              "correct": false,
+              "feedback": "Um pingo contínuo desperdiça muita água ao longo do dia."
+            },
+            {
+              "text": "Tomar banhos longos",
+              "correct": false,
+              "feedback": "Banhos mais curtos economizam água e energia."
+            },
+            {
+              "text": "Fechar a torneira enquanto escova os dentes",
+              "correct": true,
+              "feedback": "Isso: uma atitude simples que evita desperdício todos os dias."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "o-que-acontece-com-a-agua-da-chuva",
+      "title": "Quiz: O que acontece com a água da chuva?",
+      "description": "3 perguntas sobre o caminho da chuva e seu aproveitamento.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🌧️ Ciclo da água",
+          "question": "Que caminhos a água da chuva pode seguir ao cair?",
+          "explanation": "A chuva pode infiltrar no solo, escorrer pela superfície até rios e lagos ou evaporar — caminhos que fazem parte do ciclo da água.",
+          "options": [
+            {
+              "text": "Ela sempre evapora imediatamente",
+              "correct": false,
+              "feedback": "Parte evapora, mas outra parte infiltra no solo ou escorre até rios."
+            },
+            {
+              "text": "Infiltrar no solo, escorrer até rios ou evaporar",
+              "correct": true,
+              "feedback": "Isso: esses caminhos fazem parte do ciclo da água."
+            },
+            {
+              "text": "Ela desaparece depois de tocar o chão",
+              "correct": false,
+              "feedback": "A água não desaparece: ela muda de lugar ou de estado."
+            },
+            {
+              "text": "Ela sempre vai direto para o mar",
+              "correct": false,
+              "feedback": "Parte chega aos rios e ao mar, mas outra infiltra ou evapora."
+            }
+          ]
+        },
+        {
+          "topic": "🏙️ Chuva na cidade",
+          "question": "Por que as cidades costumam ter mais risco de alagamentos?",
+          "explanation": "Asfalto, concreto e telhados não deixam a água infiltrar. Mais água escorre pelas ruas — e lixo nos bueiros piora o problema.",
+          "options": [
+            {
+              "text": "Porque chove sempre mais nas cidades",
+              "correct": false,
+              "feedback": "O principal problema é a água não conseguir infiltrar no solo."
+            },
+            {
+              "text": "Porque as árvores das cidades causam enchentes",
+              "correct": false,
+              "feedback": "Árvores e áreas verdes ajudam a absorver água, diminuindo alagamentos."
+            },
+            {
+              "text": "Porque os bueiros absorvem toda a água",
+              "correct": false,
+              "feedback": "Bueiros escoam parte da água, e entupidos por lixo pioram o problema."
+            },
+            {
+              "text": "Porque asfalto e concreto impedem a água de infiltrar no solo",
+              "correct": true,
+              "feedback": "Exato: superfícies impermeáveis aumentam o escoamento."
+            }
+          ]
+        },
+        {
+          "topic": "🪣 Aproveitamento",
+          "question": "Qual cuidado é essencial ao guardar água da chuva?",
+          "explanation": "Recipientes com água parada precisam ficar tampados, senão podem virar criadouro do mosquito Aedes aegypti. E a água da chuva não deve ser bebida sem tratamento.",
+          "options": [
+            {
+              "text": "Manter o recipiente bem tampado",
+              "correct": true,
+              "feedback": "Isso: tampar evita a criação do mosquito Aedes aegypti."
+            },
+            {
+              "text": "Deixar o recipiente aberto para juntar mais água",
+              "correct": false,
+              "feedback": "Água parada aberta pode virar criadouro de mosquitos."
+            },
+            {
+              "text": "Usar para beber sem nenhum tratamento",
+              "correct": false,
+              "feedback": "A água da chuva guardada serve para regar e limpar, não para beber sem tratamento."
+            },
+            {
+              "text": "Não há nenhum cuidado necessário",
+              "correct": false,
+              "feedback": "Há, sim: o principal é manter o recipiente tampado."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "o-que-e-reciclagem",
+      "title": "Quiz: O que é reciclagem?",
+      "description": "3 perguntas sobre reciclagem e coleta seletiva.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "♻️ Reciclagem",
+          "question": "O que significa reciclar?",
+          "explanation": "Reciclar é transformar materiais já usados em matéria-prima para fabricar novos produtos.",
+          "options": [
+            {
+              "text": "Usar o mesmo pote de novo para guardar alimentos",
+              "correct": false,
+              "feedback": "Isso é reutilizar. Reciclar envolve transformar o material."
+            },
+            {
+              "text": "Transformar materiais usados em matéria-prima para novos produtos",
+              "correct": true,
+              "feedback": "Isso mesmo."
+            },
+            {
+              "text": "Jogar todo o lixo no mesmo saco",
+              "correct": false,
+              "feedback": "Misturar tudo dificulta a reciclagem. É preciso separar."
+            },
+            {
+              "text": "Queimar o lixo em casa",
+              "correct": false,
+              "feedback": "Queimar polui o ar e não recicla nada."
+            }
+          ]
+        },
+        {
+          "topic": "🗑️ Coleta seletiva",
+          "question": "No padrão brasileiro de coleta seletiva, qual é a cor da lixeira para plástico?",
+          "explanation": "Pela Resolução CONAMA nº 275/2001: azul para papel, vermelho para plástico, verde para vidro, amarelo para metal e marrom para orgânicos.",
+          "options": [
+            {
+              "text": "Azul",
+              "correct": false,
+              "feedback": "Azul é para papel."
+            },
+            {
+              "text": "Verde",
+              "correct": false,
+              "feedback": "Verde é para vidro."
+            },
+            {
+              "text": "Vermelha",
+              "correct": true,
+              "feedback": "Isso: vermelho é a cor do plástico."
+            },
+            {
+              "text": "Amarela",
+              "correct": false,
+              "feedback": "Amarelo é para metal."
+            }
+          ]
+        },
+        {
+          "topic": "🧼 Separação",
+          "question": "Qual atitude facilita o trabalho da reciclagem?",
+          "explanation": "Embalagens limpas e secas, separadas dos restos de comida, são mais fáceis de triar e reciclar.",
+          "options": [
+            {
+              "text": "Misturar restos de comida com os recicláveis",
+              "correct": false,
+              "feedback": "Restos de comida sujam os recicláveis e dificultam o reaproveitamento."
+            },
+            {
+              "text": "Separar embalagens limpas e secas",
+              "correct": true,
+              "feedback": "Isso ajuda muito as cooperativas de reciclagem."
+            },
+            {
+              "text": "Colocar tudo no lixo comum",
+              "correct": false,
+              "feedback": "No lixo comum, o material reciclável se perde."
+            },
+            {
+              "text": "Descartar vidro quebrado solto na lixeira",
+              "correct": false,
+              "feedback": "Vidro quebrado deve ser embrulhado para proteger quem faz a coleta."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "o-que-significa-reutilizar",
+      "title": "Quiz: O que significa reutilizar?",
+      "description": "3 perguntas sobre reutilização.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🔄 Reutilizar x reciclar",
+          "question": "Qual é a diferença entre reutilizar e reciclar?",
+          "explanation": "Reutilizar é usar o objeto de novo, sem transformação industrial. Reciclar é transformar o material em matéria-prima.",
+          "options": [
+            {
+              "text": "São exatamente a mesma coisa",
+              "correct": false,
+              "feedback": "São diferentes: um usa o objeto de novo, o outro transforma o material."
+            },
+            {
+              "text": "Reciclar é jogar fora e reutilizar é comprar de novo",
+              "correct": false,
+              "feedback": "Nenhum dos dois significa jogar fora ou comprar de novo."
+            },
+            {
+              "text": "Reutilizar exige uma fábrica; reciclar não",
+              "correct": false,
+              "feedback": "É o contrário: quem normalmente precisa de indústria é a reciclagem."
+            },
+            {
+              "text": "Reutilizar é usar o objeto de novo; reciclar transforma o material",
+              "correct": true,
+              "feedback": "Exato."
+            }
+          ]
+        },
+        {
+          "topic": "💡 Exemplos",
+          "question": "Qual destas atitudes é um exemplo de reutilização?",
+          "explanation": "Doar, consertar e dar nova função a objetos são formas de reutilizar.",
+          "options": [
+            {
+              "text": "Doar roupas que não servem mais",
+              "correct": true,
+              "feedback": "Isso: a roupa continua sendo usada por outra pessoa."
+            },
+            {
+              "text": "Comprar roupas novas toda semana",
+              "correct": false,
+              "feedback": "Comprar mais aumenta o consumo; reutilizar é aproveitar o que já existe."
+            },
+            {
+              "text": "Jogar potes no lixo comum",
+              "correct": false,
+              "feedback": "Assim o pote não é reutilizado nem reciclado."
+            },
+            {
+              "text": "Queimar caixas de papelão",
+              "correct": false,
+              "feedback": "Queimar polui e desperdiça um material que poderia ter nova função."
+            }
+          ]
+        },
+        {
+          "topic": "🌎 Benefícios",
+          "question": "Por que reutilizar ajuda o ambiente?",
+          "explanation": "Cada objeto reutilizado evita a fabricação de um novo, economizando matéria-prima, água e energia, e reduz o lixo.",
+          "options": [
+            {
+              "text": "Porque aumenta a quantidade de lixo",
+              "correct": false,
+              "feedback": "Reutilizar diminui o lixo."
+            },
+            {
+              "text": "Porque economiza matéria-prima, água e energia",
+              "correct": true,
+              "feedback": "Isso: menos fabricação, menos recursos usados."
+            },
+            {
+              "text": "Porque gasta mais energia do que fabricar algo novo",
+              "correct": false,
+              "feedback": "Em geral é o contrário: reutilizar evita a energia gasta na fabricação."
+            },
+            {
+              "text": "Não faz diferença para o ambiente",
+              "correct": false,
+              "feedback": "Faz diferença, sim: menos consumo e menos lixo."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "por-que-economizar-energia",
+      "title": "Quiz: Por que economizar energia?",
+      "description": "3 perguntas sobre impacto e consumo de energia.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "⚡ Impactos",
+          "question": "Por que gerar eletricidade causa impactos ambientais?",
+          "explanation": "Toda forma de geração tem algum impacto: hidrelétricas alagam áreas, termelétricas queimam combustíveis, e até eólicas e solares usam recursos.",
+          "options": [
+            {
+              "text": "Porque toda forma de geração tem algum impacto",
+              "correct": true,
+              "feedback": "Isso: por isso a energia mais limpa é a que não é desperdiçada."
+            },
+            {
+              "text": "Porque só as usinas solares causam impacto",
+              "correct": false,
+              "feedback": "Todas as formas de geração têm algum impacto, não só a solar."
+            },
+            {
+              "text": "Porque a eletricidade não causa impacto nenhum",
+              "correct": false,
+              "feedback": "Toda geração de energia causa algum impacto."
+            },
+            {
+              "text": "Porque a eletricidade só causa impacto à noite",
+              "correct": false,
+              "feedback": "O impacto está na geração, a qualquer hora."
+            }
+          ]
+        },
+        {
+          "topic": "💡 Iluminação",
+          "question": "Qual tipo de lâmpada gasta menos energia para iluminar o mesmo ambiente?",
+          "explanation": "Lâmpadas de LED gastam bem menos energia do que as incandescentes para produzir a mesma iluminação.",
+          "options": [
+            {
+              "text": "Incandescente",
+              "correct": false,
+              "feedback": "A incandescente transforma boa parte da energia em calor, não em luz."
+            },
+            {
+              "text": "Todas gastam a mesma energia",
+              "correct": false,
+              "feedback": "Há grande diferença de consumo entre os tipos de lâmpada."
+            },
+            {
+              "text": "LED",
+              "correct": true,
+              "feedback": "Isso: o LED ilumina gastando bem menos energia."
+            },
+            {
+              "text": "Qualquer lâmpada acesa durante o dia",
+              "correct": false,
+              "feedback": "Durante o dia, o melhor é aproveitar a luz natural."
+            }
+          ]
+        },
+        {
+          "topic": "👣 Atitudes",
+          "question": "Qual destas atitudes economiza energia em casa?",
+          "explanation": "Apagar luzes, tirar carregadores da tomada e não deixar a geladeira aberta são atitudes simples de economia.",
+          "options": [
+            {
+              "text": "Deixar carregadores sempre na tomada",
+              "correct": false,
+              "feedback": "Aparelhos na tomada podem continuar consumindo um pouco de energia."
+            },
+            {
+              "text": "Abrir a geladeira várias vezes sem necessidade",
+              "correct": false,
+              "feedback": "Cada abertura faz a geladeira gastar mais para esfriar de novo."
+            },
+            {
+              "text": "Tomar banhos bem longos no chuveiro elétrico",
+              "correct": false,
+              "feedback": "O chuveiro elétrico é um dos aparelhos que mais consomem energia."
+            },
+            {
+              "text": "Apagar a luz ao sair do cômodo",
+              "correct": true,
+              "feedback": "Isso: um hábito simples que economiza todos os dias."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "o-que-sao-fontes-renovaveis",
+      "title": "Quiz: O que são fontes renováveis?",
+      "description": "3 perguntas sobre fontes de energia.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🔋 Fontes renováveis",
+          "question": "O que caracteriza uma fonte de energia renovável?",
+          "explanation": "Fontes renováveis se renovam naturalmente, como a luz do sol, o vento, o movimento da água e a biomassa.",
+          "options": [
+            {
+              "text": "Ela se renova naturalmente, como o sol e o vento",
+              "correct": true,
+              "feedback": "Isso mesmo."
+            },
+            {
+              "text": "Ela existe em quantidade limitada e pode acabar",
+              "correct": false,
+              "feedback": "Essa é a característica das fontes não renováveis."
+            },
+            {
+              "text": "Ela só funciona durante a noite",
+              "correct": false,
+              "feedback": "Ser renovável não tem a ver com horário de funcionamento."
+            },
+            {
+              "text": "Ela sempre vem do petróleo",
+              "correct": false,
+              "feedback": "O petróleo é um combustível fóssil, não renovável."
+            }
+          ]
+        },
+        {
+          "topic": "🛢️ Não renováveis",
+          "question": "Qual destas fontes é NÃO renovável?",
+          "explanation": "Gás natural, petróleo e carvão são combustíveis fósseis: existem em quantidade limitada e liberam gases de efeito estufa quando queimados.",
+          "options": [
+            {
+              "text": "Solar",
+              "correct": false,
+              "feedback": "A luz do sol se renova todos os dias."
+            },
+            {
+              "text": "Eólica",
+              "correct": false,
+              "feedback": "O vento é uma fonte renovável."
+            },
+            {
+              "text": "Biomassa",
+              "correct": false,
+              "feedback": "Biomassa, como o bagaço de cana, é considerada renovável."
+            },
+            {
+              "text": "Gás natural",
+              "correct": true,
+              "feedback": "Isso: é um combustível fóssil, portanto não renovável."
+            }
+          ]
+        },
+        {
+          "topic": "⚖️ Impactos",
+          "question": "Por que ainda é importante economizar energia vinda de fontes renováveis?",
+          "explanation": "Nenhuma fonte é livre de impactos: hidrelétricas alagam áreas, parques eólicos mudam a paisagem, painéis precisam de materiais.",
+          "options": [
+            {
+              "text": "Porque renováveis poluem mais do que o carvão",
+              "correct": false,
+              "feedback": "Em geral, renováveis emitem bem menos do que o carvão."
+            },
+            {
+              "text": "Porque nenhuma fonte de energia é livre de impactos",
+              "correct": true,
+              "feedback": "Exato: a energia mais limpa é a que não é desperdiçada."
+            },
+            {
+              "text": "Porque as fontes renováveis vão acabar em breve",
+              "correct": false,
+              "feedback": "Elas se renovam — o motivo é o impacto que toda geração causa."
+            },
+            {
+              "text": "Não é importante economizar",
+              "correct": false,
+              "feedback": "É importante: toda geração tem algum impacto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "o-que-e-biodiversidade",
+      "title": "Quiz: O que é biodiversidade?",
+      "description": "3 perguntas sobre a variedade da vida.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🦋 Biodiversidade",
+          "question": "O que é biodiversidade?",
+          "explanation": "Biodiversidade é a variedade de vida: diversidade de espécies, diversidade genética e diversidade de ecossistemas.",
+          "options": [
+            {
+              "text": "Apenas o número de árvores de uma cidade",
+              "correct": false,
+              "feedback": "Biodiversidade inclui todos os seres vivos, não só árvores."
+            },
+            {
+              "text": "Somente os animais ameaçados de extinção",
+              "correct": false,
+              "feedback": "Ela inclui todas as formas de vida, ameaçadas ou não."
+            },
+            {
+              "text": "A variedade de vida: espécies, genes e ecossistemas",
+              "correct": true,
+              "feedback": "Isso mesmo."
+            },
+            {
+              "text": "Os tipos de rochas de uma região",
+              "correct": false,
+              "feedback": "Rochas não são seres vivos. Biodiversidade é a variedade da vida."
+            }
+          ]
+        },
+        {
+          "topic": "🕸️ Conexões",
+          "question": "O que pode acontecer quando uma espécie desaparece de um ecossistema?",
+          "explanation": "Os seres vivos dependem uns dos outros. Quando uma espécie desaparece, outras que dependiam dela podem ser afetadas.",
+          "options": [
+            {
+              "text": "Outras espécies podem ser afetadas",
+              "correct": true,
+              "feedback": "Isso: na natureza tudo está conectado."
+            },
+            {
+              "text": "Nada muda no ecossistema",
+              "correct": false,
+              "feedback": "As relações entre espécies fazem com que a perda de uma afete outras."
+            },
+            {
+              "text": "O ecossistema sempre fica mais forte",
+              "correct": false,
+              "feedback": "Perder espécies costuma deixar o ecossistema mais frágil."
+            },
+            {
+              "text": "As outras espécies passam a viver para sempre",
+              "correct": false,
+              "feedback": "Não há relação desse tipo. O mais comum é outras espécies serem prejudicadas."
+            }
+          ]
+        },
+        {
+          "topic": "🛡️ Ameaças",
+          "question": "Qual destas é uma ameaça à biodiversidade?",
+          "explanation": "Destruição de habitats, poluição e espécies invasoras estão entre as principais ameaças.",
+          "options": [
+            {
+              "text": "Proteger a vegetação nativa",
+              "correct": false,
+              "feedback": "Proteger a vegetação nativa é uma forma de conservar a biodiversidade."
+            },
+            {
+              "text": "Criar áreas protegidas",
+              "correct": false,
+              "feedback": "Áreas protegidas ajudam a conservar espécies."
+            },
+            {
+              "text": "Destruir habitats naturais",
+              "correct": true,
+              "feedback": "Isso: sem habitat, muitas espécies não sobrevivem."
+            },
+            {
+              "text": "Plantar espécies nativas",
+              "correct": false,
+              "feedback": "Plantar nativas ajuda a biodiversidade local."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "por-que-os-polinizadores-sao-importantes",
+      "title": "Quiz: Por que os polinizadores são importantes?",
+      "description": "3 perguntas sobre polinização e polinizadores.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🌸 Polinização",
+          "question": "O que é polinização?",
+          "explanation": "Polinização é o transporte de pólen de uma flor para outra, o que permite a formação de frutos e sementes.",
+          "options": [
+            {
+              "text": "A queda das folhas no outono",
+              "correct": false,
+              "feedback": "Queda de folhas é outro processo. Polinização envolve o pólen das flores."
+            },
+            {
+              "text": "O transporte de pólen entre flores, que permite frutos e sementes",
+              "correct": true,
+              "feedback": "Isso mesmo."
+            },
+            {
+              "text": "A produção de mel pelas abelhas",
+              "correct": false,
+              "feedback": "O mel é produzido pelas abelhas, mas polinização é o transporte de pólen."
+            },
+            {
+              "text": "A rega das plantas pela chuva",
+              "correct": false,
+              "feedback": "A chuva rega as plantas; polinização é o transporte de pólen."
+            }
+          ]
+        },
+        {
+          "topic": "🐝 Polinizadores",
+          "question": "Qual destes animais pode atuar como polinizador?",
+          "explanation": "Abelhas, borboletas, besouros, beija-flores e morcegos estão entre os polinizadores.",
+          "options": [
+            {
+              "text": "Minhoca",
+              "correct": false,
+              "feedback": "Minhocas ajudam o solo, mas não visitam flores para transportar pólen."
+            },
+            {
+              "text": "Peixe",
+              "correct": false,
+              "feedback": "Peixes não costumam visitar flores."
+            },
+            {
+              "text": "Tartaruga",
+              "correct": false,
+              "feedback": "Tartarugas não são conhecidas como polinizadoras."
+            },
+            {
+              "text": "Beija-flor",
+              "correct": true,
+              "feedback": "Isso: ao buscar néctar, o beija-flor leva pólen de flor em flor."
+            }
+          ]
+        },
+        {
+          "topic": "🌼 Como ajudar",
+          "question": "Como podemos ajudar os polinizadores?",
+          "explanation": "Plantar flores variadas e evitar agrotóxicos no jardim oferece alimento e reduz ameaças aos polinizadores.",
+          "options": [
+            {
+              "text": "Plantando flores variadas e evitando agrotóxicos",
+              "correct": true,
+              "feedback": "Isso: alimento disponível e menos veneno ajudam muito."
+            },
+            {
+              "text": "Usando mais agrotóxicos no jardim",
+              "correct": false,
+              "feedback": "Agrotóxicos estão entre as ameaças aos polinizadores."
+            },
+            {
+              "text": "Retirando as flores do jardim",
+              "correct": false,
+              "feedback": "Sem flores, os polinizadores ficam sem alimento."
+            },
+            {
+              "text": "Removendo ninhos de abelhas nativas",
+              "correct": false,
+              "feedback": "Abelhas nativas sem ferrão são importantes polinizadoras e devem ser protegidas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "title": "Quiz: O que é uma ação ambiental comunitária?",
+      "description": "3 perguntas sobre ações coletivas.",
+      "passing_score": 60,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🤝 Ação comunitária",
+          "question": "O que é uma ação ambiental comunitária?",
+          "explanation": "É quando um grupo de pessoas se organiza para cuidar do ambiente onde vive, como em mutirões, hortas comunitárias ou plantios.",
+          "options": [
+            {
+              "text": "Uma ação feita por uma pessoa sozinha, sem avisar ninguém",
+              "correct": false,
+              "feedback": "Ação comunitária envolve pessoas se organizando juntas."
+            },
+            {
+              "text": "Um grupo de pessoas organizado para cuidar do ambiente onde vive",
+              "correct": true,
+              "feedback": "Isso mesmo."
+            },
+            {
+              "text": "A compra de produtos ecológicos",
+              "correct": false,
+              "feedback": "Comprar produtos é uma escolha individual, não uma ação comunitária."
+            },
+            {
+              "text": "Algo que só o governo pode fazer",
+              "correct": false,
+              "feedback": "A comunidade também pode se organizar e agir."
+            }
+          ]
+        },
+        {
+          "topic": "🗺️ Planejamento",
+          "question": "Qual costuma ser o primeiro passo de uma ação comunitária?",
+          "explanation": "Tudo começa identificando um problema e conversando com as pessoas envolvidas. Depois vêm o planejamento e os materiais.",
+          "options": [
+            {
+              "text": "Comprar os materiais",
+              "correct": false,
+              "feedback": "Materiais vêm depois de saber o que será feito e com quem."
+            },
+            {
+              "text": "Começar sem nenhum planejamento",
+              "correct": false,
+              "feedback": "Sem planejar, a ação pode não ser segura nem se manter."
+            },
+            {
+              "text": "Esperar que outras pessoas façam",
+              "correct": false,
+              "feedback": "Esperar não inicia a mudança."
+            },
+            {
+              "text": "Identificar o problema e conversar com as pessoas",
+              "correct": true,
+              "feedback": "Isso: a ação nasce do diálogo sobre um problema comum."
+            }
+          ]
+        },
+        {
+          "topic": "🧤 Segurança",
+          "question": "Qual cuidado de segurança é importante em um mutirão de limpeza?",
+          "explanation": "Use luvas, não recolha objetos cortantes ou perigosos com as mãos e mantenha crianças sempre acompanhadas de adultos.",
+          "options": [
+            {
+              "text": "Recolher vidro quebrado com as mãos",
+              "correct": false,
+              "feedback": "Objetos cortantes nunca devem ser recolhidos com as mãos."
+            },
+            {
+              "text": "Usar luvas e não pegar objetos cortantes com as mãos",
+              "correct": true,
+              "feedback": "Isso: segurança em primeiro lugar."
+            },
+            {
+              "text": "Deixar crianças trabalhando sozinhas",
+              "correct": false,
+              "feedback": "Crianças devem estar sempre acompanhadas de adultos."
+            },
+            {
+              "text": "Dispensar as luvas para trabalhar mais rápido",
+              "correct": false,
+              "feedback": "Luvas protegem contra cortes e contaminação."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "a-vaca-e-os-derivados-do-leite",
+      "title": "Quiz: A vaca e os derivados do leite",
+      "description": "4 perguntas sobre vacas, leite, derivados e cuidado com os animais.",
+      "passing_score": 70,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        { "topic": "🐄 Animais", "question": "O que é importante para uma vaca viver bem?", "explanation": "Vacas precisam de água, alimento, espaço, abrigo e cuidados responsáveis.", "options": [{ "text": "Água, alimento, espaço e cuidado", "correct": true, "feedback": "Correto! Todo animal precisa de cuidados e condições adequadas." }, { "text": "Ficar sempre sozinha e sem água", "correct": false, "feedback": "Animais precisam de água, alimento e condições adequadas." }, { "text": "Comer apenas doces", "correct": false, "feedback": "Doces não substituem a alimentação adequada do animal." }, { "text": "Viver sem descanso", "correct": false, "feedback": "Descanso também faz parte do cuidado com os animais." }] },
+        { "topic": "🥛 Leite", "question": "Qual alimento pode ser feito a partir do leite?", "explanation": "Queijo é um derivado do leite.", "options": [{ "text": "Queijo", "correct": true, "feedback": "Isso! Queijo é um derivado do leite." }, { "text": "Cenoura", "correct": false, "feedback": "Cenoura é uma raiz, não um derivado do leite." }, { "text": "Arroz", "correct": false, "feedback": "Arroz é um grão, não um derivado do leite." }, { "text": "Maçã", "correct": false, "feedback": "Maçã é uma fruta, não um derivado do leite." }] },
+        { "topic": "🧀 Derivados", "question": "Qual opção apresenta apenas derivados do leite?", "explanation": "Queijo, iogurte e manteiga podem ser produzidos a partir do leite.", "options": [{ "text": "Queijo, iogurte e manteiga", "correct": true, "feedback": "Correto! Os três são derivados do leite." }, { "text": "Banana, maçã e pera", "correct": false, "feedback": "Esses alimentos são frutas." }, { "text": "Arroz, feijão e milho", "correct": false, "feedback": "Esses alimentos são grãos ou sementes." }, { "text": "Cenoura, batata e mandioca", "correct": false, "feedback": "Esses alimentos são raízes ou tubérculos." }] },
+        { "topic": "💚 Cuidado", "question": "Como uma criança deve agir perto de uma vaca desconhecida?", "explanation": "A criança deve observar à distância e pedir orientação a um adulto.", "options": [{ "text": "Observar e pedir ajuda a um adulto", "correct": true, "feedback": "Isso! Segurança e respeito vêm primeiro." }, { "text": "Correr atrás dela", "correct": false, "feedback": "Correr atrás pode assustar o animal e causar acidentes." }, { "text": "Oferecer qualquer comida", "correct": false, "feedback": "Nunca alimente um animal sem autorização de um adulto responsável." }, { "text": "Entrar sozinho no cercado", "correct": false, "feedback": "Crianças não devem entrar sozinhas em cercados." }] }
+      ]
+    }
+  ]
+}

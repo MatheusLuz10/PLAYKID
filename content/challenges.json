@@ -1,0 +1,1074 @@
+{
+  "$comment": "Fonte única dos desafios ecológicos. Gere o SQL com `npm run content:sql` (supabase/migrations/20_challenge_content.sql). evidence_kind: none (só marcar), photo (foto obrigatória), text (observação obrigatória). Etapas follow_up são agendadas quando as etapas principais terminam; day_offset conta desse dia (relógio do servidor). IDs explícitos só para preservar registros já existentes.",
+  "challenges": [
+    {
+      "id": "40000000-0000-4000-8000-000000000001",
+      "slug": "plante-uma-arvore",
+      "lesson": "por-que-as-arvores-sao-importantes",
+      "category": "natureza",
+      "icon": "🌳",
+      "title": "Plante uma árvore",
+      "description": "Plante uma árvore adequada ao ambiente disponível e acompanhe o desenvolvimento dela por seis meses.",
+      "why_it_matters": "Árvores oferecem sombra, abrigo e alimento para muitas espécies, protegem o solo e ajudam a água da chuva a infiltrar. Uma muda bem escolhida e bem cuidada pode viver por muitos anos.",
+      "materials": [
+        "Uma muda de espécie nativa da sua região",
+        "Um local com espaço para raízes e copa",
+        "Pá ou ferramenta para cavar",
+        "Água para regar",
+        "Uma estaca (tutor) e barbante",
+        "Luvas"
+      ],
+      "evidence_instructions": "Envie uma foto da muda plantada e informe a data, a espécie e o local. Nos acompanhamentos, envie uma nova foto mostrando como a árvore está.",
+      "safety_notes": [
+        "Crianças devem plantar com a ajuda de um adulto.",
+        "Não plante em áreas de preservação ou em terrenos alheios sem permissão.",
+        "Em calçadas e praças, consulte a prefeitura antes."
+      ],
+      "difficulty": "medio",
+      "deadline_days": 15,
+      "duration_label": "1 dia + acompanhamentos (30, 90 e 180 dias)",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": true,
+      "steps": [
+        {
+          "id": "41000000-0000-4000-8000-000000000001",
+          "title": "Escolher o local",
+          "description": "Um lugar com sol, espaço para a árvore adulta e longe de fios, canos e muros.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000008",
+          "title": "Escolher a espécie",
+          "description": "Prefira uma espécie nativa da sua região. Peça orientação em um viveiro.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000009",
+          "title": "Preparar o solo",
+          "description": "Cave uma cova um pouco maior que o torrão da muda e solte a terra.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000002",
+          "title": "Plantar a muda",
+          "description": "Posicione a muda sem enterrar o caule, cubra com terra, firme, regue e prenda ao tutor.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000003",
+          "title": "Registrar fotografia",
+          "description": "Tire uma foto da muda plantada.",
+          "type": "evidence",
+          "evidence_kind": "photo",
+          "xp_reward": 5
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000010",
+          "title": "Registrar informações",
+          "description": "Informe a data do plantio, a espécie e o local.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000005",
+          "title": "Primeiro acompanhamento",
+          "description": "A muda sobreviveu? Envie uma foto de como ela está depois de um mês.",
+          "type": "follow_up",
+          "evidence_kind": "photo",
+          "day_offset": 30,
+          "xp_reward": 20
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000006",
+          "title": "Segundo acompanhamento",
+          "description": "Três meses de cuidado! Registre o crescimento.",
+          "type": "follow_up",
+          "evidence_kind": "photo",
+          "day_offset": 90,
+          "xp_reward": 20
+        },
+        {
+          "id": "41000000-0000-4000-8000-000000000007",
+          "title": "Acompanhamento final",
+          "description": "Seis meses! Registre como a árvore se desenvolveu.",
+          "type": "follow_up",
+          "evidence_kind": "photo",
+          "day_offset": 180,
+          "xp_reward": 20
+        }
+      ]
+    },
+    {
+      "slug": "cultive-uma-flor",
+      "lesson": "como-uma-planta-cresce",
+      "category": "natureza",
+      "icon": "🌸",
+      "title": "Cultive uma flor",
+      "description": "Cultive uma flor, cuide dela e observe o desenvolvimento durante um mês.",
+      "why_it_matters": "Flores alimentam abelhas, borboletas e outros polinizadores. Cuidar de uma planta desde o início ensina na prática o que ela precisa para crescer.",
+      "materials": [
+        "Sementes ou muda de uma flor",
+        "Vaso com furos ou um canteiro",
+        "Terra com matéria orgânica",
+        "Água"
+      ],
+      "evidence_instructions": "Envie uma foto da flor plantada e, depois de um mês, uma nova foto mostrando o desenvolvimento.",
+      "safety_notes": [
+        "Prefira espécies adequadas ao seu clima.",
+        "Evite regar demais: o solo encharcado prejudica as raízes."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 10,
+      "duration_label": "1 dia + acompanhamento de 30 dias",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": true,
+      "steps": [
+        {
+          "title": "Escolher a espécie",
+          "description": "Escolha uma flor adequada ao clima e à luz que você tem disponível.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Preparar o recipiente ou o solo",
+          "description": "Use um vaso com furos ou um canteiro com terra fofa.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Plantar",
+          "description": "Plante as sementes ou a muda na profundidade indicada e regue.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Fotografar",
+          "description": "Tire uma foto do que você plantou.",
+          "type": "evidence",
+          "evidence_kind": "photo",
+          "xp_reward": 5
+        },
+        {
+          "title": "Registrar observações",
+          "description": "Conte qual flor você escolheu e onde ela ficou.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "title": "Acompanhamento de 30 dias",
+          "description": "Como a flor se desenvolveu? Envie uma nova foto.",
+          "type": "follow_up",
+          "evidence_kind": "photo",
+          "day_offset": 30,
+          "xp_reward": 20
+        }
+      ]
+    },
+    {
+      "slug": "crie-uma-pequena-horta",
+      "lesson": "o-que-e-uma-horta",
+      "category": "natureza",
+      "icon": "🥬",
+      "title": "Crie uma pequena horta",
+      "description": "Crie uma pequena área para cultivar alimentos, como temperos ou hortaliças, e registre a evolução.",
+      "why_it_matters": "Uma horta aproxima você da origem dos alimentos, reaproveita restos orgânicos como adubo e pode atrair polinizadores.",
+      "materials": [
+        "Vasos, caixotes ou um canteiro",
+        "Terra com matéria orgânica",
+        "Mudas ou sementes (cebolinha, alface, manjericão…)",
+        "Água"
+      ],
+      "evidence_instructions": "Envie uma foto da horta pronta e, três semanas depois, uma foto mostrando a evolução.",
+      "safety_notes": [
+        "Escolha um lugar com algumas horas de sol direto.",
+        "Crianças devem usar ferramentas com a ajuda de um adulto."
+      ],
+      "difficulty": "medio",
+      "deadline_days": 14,
+      "duration_label": "2 dias + acompanhamento de 21 dias",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": true,
+      "steps": [
+        {
+          "title": "Escolher o espaço",
+          "description": "Um lugar com sol e água por perto.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Preparar recipiente ou solo",
+          "description": "Use terra fofa e com matéria orgânica.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Escolher as plantas",
+          "description": "Comece com plantas fáceis, como cebolinha, alface e manjericão.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Plantar",
+          "description": "Plante e regue.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a horta",
+          "description": "Envie uma foto da horta pronta.",
+          "type": "evidence",
+          "evidence_kind": "photo",
+          "xp_reward": 5
+        },
+        {
+          "title": "Registrar evolução",
+          "description": "Três semanas depois: como estão as plantas?",
+          "type": "follow_up",
+          "evidence_kind": "photo",
+          "day_offset": 21,
+          "xp_reward": 20
+        }
+      ]
+    },
+    {
+      "slug": "reduza-o-desperdicio-de-agua",
+      "lesson": "por-que-precisamos-economizar-agua",
+      "category": "agua",
+      "icon": "💧",
+      "title": "Reduza o desperdício de água",
+      "description": "Identifique desperdícios de água em casa, aplique medidas de economia e avalie o resultado depois de alguns dias.",
+      "why_it_matters": "A água doce disponível é uma pequena parte da água do planeta, e tratá-la e bombeá-la até as casas usa energia. Pequenas mudanças de hábito evitam desperdício todos os dias.",
+      "materials": [
+        "Papel e caneta (ou o celular) para anotar",
+        "Atenção aos hábitos da casa"
+      ],
+      "evidence_instructions": "Descreva os desperdícios encontrados e as medidas aplicadas. Envie uma foto de uma das medidas (opcional na avaliação).",
+      "safety_notes": [
+        "Vazamentos devem ser consertados por um adulto ou profissional."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 7,
+      "duration_label": "1 dia + avaliação após 5 dias",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": true,
+      "steps": [
+        {
+          "title": "Identificar desperdícios",
+          "description": "Observe torneiras, chuveiro, descarga, mangueira e vazamentos. Anote o que encontrou.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "title": "Escolher medidas",
+          "description": "Escolha pelo menos duas medidas de economia para aplicar.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Aplicar as medidas",
+          "description": "Coloque as medidas em prática e fotografe uma delas.",
+          "type": "evidence",
+          "evidence_kind": "photo",
+          "xp_reward": 5
+        },
+        {
+          "title": "Registrar ações",
+          "description": "Conte quais medidas você aplicou e quem participou.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "title": "Avaliação após alguns dias",
+          "description": "As medidas continuaram? O que funcionou melhor?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 5,
+          "early_window_days": 0,
+          "xp_reward": 20
+        }
+      ]
+    },
+    {
+      "slug": "separe-seus-residuos-por-7-dias",
+      "lesson": "o-que-e-reciclagem",
+      "category": "residuos",
+      "icon": "♻️",
+      "title": "Separe seus resíduos por 7 dias",
+      "description": "Durante 7 dias, separe recicláveis, orgânicos e rejeitos e registre diariamente o que observou.",
+      "why_it_matters": "Separar os resíduos permite que os recicláveis voltem à indústria como matéria-prima e mostra, na prática, quanto lixo produzimos — o primeiro passo para reduzir.",
+      "materials": [
+        "Dois ou três recipientes para separar os resíduos",
+        "Etiquetas ou identificação das cores da coleta seletiva"
+      ],
+      "evidence_instructions": "Envie uma foto dos recipientes de separação e, a cada dia, uma observação sobre recicláveis, orgânicos, rejeitos e ações de redução ou reutilização.",
+      "safety_notes": [
+        "Não manipule vidro quebrado ou objetos cortantes com as mãos.",
+        "Lave e seque as embalagens antes de separá-las."
+      ],
+      "difficulty": "medio",
+      "deadline_days": 3,
+      "duration_label": "7 dias com registro diário",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": true,
+      "steps": [
+        {
+          "title": "Organizar a separação",
+          "description": "Prepare recipientes para recicláveis, orgânicos e rejeitos.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Fotografar a separação",
+          "description": "Tire uma foto dos recipientes prontos.",
+          "type": "evidence",
+          "evidence_kind": "photo",
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 1",
+          "description": "O que você separou hoje? Houve alguma ação de redução ou reutilização?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 1,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 2",
+          "description": "O que você separou hoje?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 2,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 3",
+          "description": "O que você separou hoje?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 3,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 4",
+          "description": "O que você separou hoje?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 4,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 5",
+          "description": "O que você separou hoje?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 5,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 6",
+          "description": "O que você separou hoje?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 6,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 7",
+          "description": "Último dia! O que mudou na sua forma de descartar?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 7,
+          "early_window_days": 0,
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "semana-do-consumo-consciente",
+      "lesson": "por-que-economizar-energia",
+      "category": "energia",
+      "icon": "⚡",
+      "title": "Semana do consumo consciente",
+      "description": "Durante 7 dias, observe seus hábitos de consumo de energia e reduza desperdícios.",
+      "why_it_matters": "Toda forma de gerar eletricidade causa algum impacto. Perceber onde a energia é desperdiçada é o caminho mais simples para consumir menos.",
+      "materials": [
+        "Atenção aos aparelhos e hábitos da casa",
+        "Papel e caneta (ou o celular) para anotar"
+      ],
+      "evidence_instructions": "Registre os hábitos observados, as metas escolhidas e, a cada dia, uma observação sobre o que você fez.",
+      "safety_notes": [
+        "Não mexa em instalações elétricas: peça ajuda a um adulto."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "7 dias com registro diário",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": true,
+      "steps": [
+        {
+          "title": "Identificar hábitos",
+          "description": "Observe luzes acesas, aparelhos em standby, banhos longos e a geladeira. Anote o que encontrou.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "title": "Escolher metas",
+          "description": "Escolha pelo menos duas metas para a semana (ex.: apagar luzes, tirar carregadores da tomada).",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 1",
+          "description": "Como foi o dia? Você cumpriu suas metas?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 1,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 2",
+          "description": "Como foi o dia?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 2,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 3",
+          "description": "Como foi o dia?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 3,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 4",
+          "description": "Como foi o dia?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 4,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 5",
+          "description": "Como foi o dia?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 5,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 6",
+          "description": "Como foi o dia?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 6,
+          "early_window_days": 0,
+          "xp_reward": 5
+        },
+        {
+          "title": "Registro do dia 7",
+          "description": "Último dia! Quais hábitos você pretende manter?",
+          "type": "follow_up",
+          "evidence_kind": "text",
+          "day_offset": 7,
+          "early_window_days": 0,
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "crie-um-espaco-para-polinizadores",
+      "lesson": "por-que-os-polinizadores-sao-importantes",
+      "category": "biodiversidade",
+      "icon": "🐝",
+      "title": "Crie um espaço para polinizadores",
+      "description": "Crie um pequeno espaço com plantas floríferas que possam favorecer abelhas, borboletas e outros polinizadores.",
+      "why_it_matters": "Polinizadores dependem de flores para se alimentar, e muitas plantas — inclusive alimentos — dependem deles. Mesmo um vaso com flores variadas ajuda.",
+      "materials": [
+        "Vasos ou um canteiro",
+        "Mudas ou sementes de flores variadas (de preferência nativas)",
+        "Terra e água",
+        "Um pratinho raso com pedrinhas e água (opcional)"
+      ],
+      "evidence_instructions": "Registre o local, as plantas escolhidas e uma foto do espaço. Depois de um mês, conte o que observou e envie uma nova foto.",
+      "safety_notes": [
+        "Não use agrotóxicos no espaço.",
+        "Observe os insetos de longe e sem tocar neles.",
+        "Troque a água do pratinho com frequência para não acumular mosquitos."
+      ],
+      "difficulty": "medio",
+      "deadline_days": 14,
+      "duration_label": "2 dias + acompanhamento de 30 dias",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": true,
+      "steps": [
+        {
+          "title": "Escolher o local",
+          "description": "Um lugar com sol, protegido de vento forte.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "title": "Escolher as plantas",
+          "description": "Prefira flores variadas, de preferência nativas, que floresçam em épocas diferentes.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        },
+        {
+          "title": "Plantar",
+          "description": "Plante e regue.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Fotografar o espaço",
+          "description": "Tire uma foto do espaço pronto.",
+          "type": "evidence",
+          "evidence_kind": "photo",
+          "xp_reward": 5
+        },
+        {
+          "title": "Registrar evolução",
+          "description": "Depois de um mês: as plantas floresceram? Algum polinizador apareceu?",
+          "type": "follow_up",
+          "evidence_kind": "photo",
+          "day_offset": 30,
+          "xp_reward": 20
+        }
+      ]
+    },
+    {
+      "slug": "participe-de-uma-acao-ambiental",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "🤝",
+      "title": "Participe de uma ação ambiental",
+      "description": "Participe de uma ação ambiental real na sua comunidade: limpeza, plantio coletivo, horta comunitária, ação educativa ou recuperação de área.",
+      "why_it_matters": "Ações coletivas transformam lugares que ninguém cuidaria sozinho — e fortalecem a comunidade.",
+      "materials": [
+        "Luvas",
+        "Roupas adequadas e protetor solar",
+        "Água para beber"
+      ],
+      "evidence_instructions": "Envie uma foto da ação e descreva o que foi feito, onde e com quem.",
+      "safety_notes": [
+        "Crianças sempre acompanhadas de adultos.",
+        "Use luvas e nunca recolha objetos cortantes com as mãos."
+      ],
+      "difficulty": "medio",
+      "deadline_days": 30,
+      "duration_label": "1 dia",
+      "xp_reward": 100,
+      "start_xp_reward": 5,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Encontrar uma ação",
+          "description": "Procure uma ação na escola, no bairro, em associações ou em projetos ambientais.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Participar",
+          "description": "Participe da ação e tire uma foto.",
+          "type": "evidence",
+          "evidence_kind": "photo",
+          "xp_reward": 5
+        },
+        {
+          "title": "Descrever a ação",
+          "description": "Conte o que foi feito, onde e com quem.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "dobre-suas-roupas",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "👕",
+      "title": "Dobre suas roupas",
+      "description": "Dobre e guarde suas roupas limpas para ajudar a manter a casa organizada.",
+      "why_it_matters": "Cuidar das próprias coisas ajuda a dividir as tarefas de casa e evita que as roupas fiquem amassadas ou se percam.",
+      "materials": [
+        "Roupas limpas",
+        "Uma gaveta, prateleira ou armário"
+      ],
+      "evidence_instructions": "Conte quais roupas você dobrou e onde guardou.",
+      "safety_notes": [
+        "Peça ajuda a um adulto para alcançar lugares altos."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "1 dia",
+      "xp_reward": 35,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Separar as roupas",
+          "description": "Junte as roupas limpas que precisam ser dobradas.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Dobrar as roupas",
+          "description": "Dobre cada peça com cuidado.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a tarefa",
+          "description": "Conte quais roupas você dobrou e onde guardou.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "arrume-sua-cama",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "🛏️",
+      "title": "Arrume sua cama",
+      "description": "Ao acordar, deixe sua cama organizada para começar o dia cuidando do seu espaço.",
+      "why_it_matters": "Pequenas responsabilidades diárias deixam o ambiente mais agradável e mostram como cada pessoa pode colaborar em casa.",
+      "materials": [
+        "Lençol",
+        "Cobertor",
+        "Travesseiro"
+      ],
+      "evidence_instructions": "Conte como você arrumou sua cama.",
+      "safety_notes": [
+        "Peça ajuda a um adulto se precisar subir ou alcançar uma cama alta."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 2,
+      "duration_label": "1 dia",
+      "xp_reward": 30,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Organizar o lençol",
+          "description": "Estique o lençol sobre o colchão.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Arrumar cobertor e travesseiro",
+          "description": "Dobre ou estique o cobertor e coloque o travesseiro no lugar.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a tarefa",
+          "description": "Conte como ficou sua cama depois de arrumada.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "varra-um-comodo-da-casa",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "🧹",
+      "title": "Varra um cômodo da casa",
+      "description": "Ajude a limpar um cômodo varrendo o chão com atenção e cuidado.",
+      "why_it_matters": "Manter os espaços limpos é uma forma concreta de cuidar do lugar onde todos vivem.",
+      "materials": [
+        "Vassoura",
+        "Pá de lixo",
+        "Saco de lixo"
+      ],
+      "evidence_instructions": "Conte qual cômodo você varreu e o que encontrou no chão.",
+      "safety_notes": [
+        "Peça ajuda a um adulto e não use produtos de limpeza sem autorização.",
+        "Não recolha objetos cortantes ou desconhecidos com as mãos."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "1 dia",
+      "xp_reward": 40,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Escolher o cômodo",
+          "description": "Combine com um adulto qual cômodo você pode varrer.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Varrer o chão",
+          "description": "Passe a vassoura devagar, juntando a sujeira em um canto.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Guardar a sujeira",
+          "description": "Use a pá e descarte a sujeira no lugar combinado.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a tarefa",
+          "description": "Conte qual cômodo você varreu e o que encontrou.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "organize-seus-brinquedos",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "🧸",
+      "title": "Organize seus brinquedos",
+      "description": "Separe, guarde e deixe seus brinquedos prontos para a próxima brincadeira.",
+      "why_it_matters": "Organizar e cuidar dos brinquedos ajuda a conservá-los e facilita encontrar o que você precisa sem comprar outro.",
+      "materials": [
+        "Brinquedos",
+        "Caixas, cestos ou prateleiras"
+      ],
+      "evidence_instructions": "Conte como você separou e guardou seus brinquedos.",
+      "safety_notes": [
+        "Peça ajuda a um adulto para guardar objetos pesados ou em lugares altos."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "1 dia",
+      "xp_reward": 35,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Separar os brinquedos",
+          "description": "Junte os brinquedos espalhados e separe os que são parecidos.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Guardar cada grupo",
+          "description": "Coloque cada grupo na caixa, no cesto ou na prateleira combinada.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a tarefa",
+          "description": "Conte como você organizou seus brinquedos.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "ajude-a-lavar-a-louca",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "🍽️",
+      "title": "Ajude a lavar a louça",
+      "description": "Ajude a deixar a louça limpa e a cozinha organizada depois de uma refeição.",
+      "why_it_matters": "Colaborar com as tarefas da casa economiza água quando fazemos tudo com atenção e divide o cuidado entre todos.",
+      "materials": [
+        "Esponja",
+        "Detergente",
+        "Escorredor de louça"
+      ],
+      "evidence_instructions": "Conte como você ajudou e como evitou gastar água sem necessidade.",
+      "safety_notes": [
+        "Faça a tarefa com um adulto.",
+        "Não mexa com facas, copos quebrados, água quente ou produtos sem autorização."
+      ],
+      "difficulty": "medio",
+      "deadline_days": 3,
+      "duration_label": "1 dia",
+      "xp_reward": 45,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Separar a louça segura",
+          "description": "Com um adulto, separe apenas os itens que você pode lavar.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Lavar e enxaguar",
+          "description": "Use pouca água e detergente, sempre seguindo a orientação do adulto.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Guardar a louça",
+          "description": "Coloque os itens no escorredor ou no local combinado.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a tarefa",
+          "description": "Conte como você ajudou e como evitou gastar água sem necessidade.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "leia-por-15-minutos",
+      "lesson": "por-que-as-arvores-sao-importantes",
+      "category": "natureza",
+      "icon": "📖",
+      "title": "Leia por 15 minutos",
+      "description": "Escolha um livro, leia por quinze minutos e registre uma ideia que descobriu.",
+      "why_it_matters": "A leitura aumenta a imaginação, amplia o vocabulário e ajuda você a conhecer novos pontos de vista.",
+      "materials": [
+        "Um livro adequado para sua idade",
+        "Um lugar confortável"
+      ],
+      "evidence_instructions": "Conte o título do livro e uma ideia ou personagem de que você gostou.",
+      "safety_notes": [],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "15 minutos",
+      "xp_reward": 35,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Escolher a leitura",
+          "description": "Escolha um livro ou texto que desperte sua curiosidade.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Ler com atenção",
+          "description": "Leia por pelo menos quinze minutos, em um lugar confortável.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar o que aprendeu",
+          "description": "Conte o título e uma ideia ou personagem de que você gostou.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "analise-uma-paisagem",
+      "lesson": "por-que-as-arvores-sao-importantes",
+      "category": "natureza",
+      "icon": "🔍",
+      "title": "Analise uma paisagem",
+      "description": "Observe uma paisagem por alguns minutos e descubra os elementos naturais e construídos que fazem parte dela.",
+      "why_it_matters": "Observar com atenção ajuda a perceber relações entre plantas, animais, água, pessoas e construções.",
+      "materials": [
+        "Uma janela, praça ou lugar seguro para observar",
+        "Papel e lápis, se quiser desenhar"
+      ],
+      "evidence_instructions": "Descreva três coisas que viu, o que era natural e o que poderia melhorar naquele lugar.",
+      "safety_notes": [
+        "Observe sempre acompanhado por um adulto e sem entrar em locais perigosos.",
+        "Não se aproxime de ruas, animais desconhecidos ou terrenos particulares."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "10 minutos",
+      "xp_reward": 40,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Escolher um lugar seguro",
+          "description": "Escolha uma janela, praça ou outro lugar onde possa observar com segurança.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Observar a paisagem",
+          "description": "Passe alguns minutos percebendo plantas, animais, água, pessoas e construções.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar suas descobertas",
+          "description": "Descreva três coisas que viu, o que era natural e o que poderia melhorar.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "escreva-no-diario",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "✍️",
+      "title": "Escreva no seu diário",
+      "description": "Escreva sobre algo que você sentiu, aprendeu ou gostaria de melhorar hoje.",
+      "why_it_matters": "Colocar pensamentos no papel ajuda a reconhecer sentimentos, organizar ideias e perceber seu próprio crescimento.",
+      "materials": [
+        "Caderno ou diário",
+        "Lápis ou caneta"
+      ],
+      "evidence_instructions": "Compartilhe apenas o que se sentir confortável: escreva uma frase sobre o tema escolhido.",
+      "safety_notes": [
+        "Não compartilhe endereço, telefone, senhas ou informações pessoais."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "10 minutos",
+      "xp_reward": 35,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Escolher um tema",
+          "description": "Pense em algo que sentiu, aprendeu ou gostaria de melhorar.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Escrever no diário",
+          "description": "Escreva livremente por alguns minutos, sem se preocupar em escrever perfeito.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a reflexão",
+          "description": "Compartilhe uma frase sobre o tema, sem incluir informações pessoais.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "pratique-atencao-por-cinco-minutos",
+      "lesson": "o-que-e-uma-acao-ambiental-comunitaria",
+      "category": "comunidade",
+      "icon": "🧘",
+      "title": "Pratique atenção por cinco minutos",
+      "description": "Pare por alguns minutos, respire com calma e perceba os sons e sensações ao seu redor.",
+      "why_it_matters": "A atenção ajuda a desacelerar, perceber como você está e agir com mais cuidado consigo e com as outras pessoas.",
+      "materials": [
+        "Um lugar tranquilo",
+        "Cinco minutos"
+      ],
+      "evidence_instructions": "Conte o que percebeu durante a prática: um som, uma sensação ou um pensamento.",
+      "safety_notes": [
+        "Faça sentado ou em uma posição confortável e pare se sentir desconforto.",
+        "Esta atividade não substitui a ajuda de um adulto ou profissional quando você precisar."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 3,
+      "duration_label": "5 minutos",
+      "xp_reward": 35,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Encontrar um lugar tranquilo",
+          "description": "Sente-se em um lugar confortável e seguro.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Respirar e observar",
+          "description": "Respire com calma e perceba os sons, as sensações e os pensamentos sem julgá-los.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar o momento",
+          "description": "Conte um som, uma sensação ou um pensamento que percebeu.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
+    },
+    {
+      "slug": "conheca-a-vaca-e-os-derivados-do-leite",
+      "lesson": "a-vaca-e-os-derivados-do-leite",
+      "category": "natureza",
+      "icon": "🐄",
+      "title": "Conheça a vaca e os derivados do leite",
+      "description": "Observe uma imagem, vídeo educativo ou visita autorizada e descubra como o leite vira outros alimentos.",
+      "why_it_matters": "Entender a origem dos alimentos ajuda a respeitar os animais, valorizar o trabalho das pessoas e evitar desperdícios.",
+      "materials": ["Um livro, imagem ou vídeo educativo", "Papel e lápis para desenhar"],
+      "evidence_instructions": "Conte uma coisa que aprendeu sobre a vaca e cite dois derivados do leite.",
+      "safety_notes": ["Crianças devem observar animais somente com um adulto responsável.", "Não toque, alimente ou entre em cercados sem autorização."],
+      "difficulty": "facil",
+      "deadline_days": 7,
+      "duration_label": "20 minutos",
+      "xp_reward": 45,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        { "title": "Escolher uma fonte segura", "description": "Use um livro, imagem ou vídeo educativo; uma visita só pode acontecer com autorização e acompanhamento de um adulto.", "type": "action", "evidence_kind": "none" },
+        { "title": "Observar e aprender", "description": "Descubra o que a vaca precisa para viver bem e como o leite pode virar outros alimentos.", "type": "action", "evidence_kind": "none" },
+        { "title": "Desenhar ou registrar", "description": "Desenhe uma vaca ou escreva uma coisa que aprendeu.", "type": "action", "evidence_kind": "none" },
+        { "title": "Registrar a descoberta", "description": "Conte uma coisa que aprendeu sobre a vaca e cite dois derivados do leite.", "type": "evidence", "evidence_kind": "text", "xp_reward": 5 }
+      ]
+    }
+  ]
+}

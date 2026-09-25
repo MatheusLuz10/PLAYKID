@@ -1,0 +1,345 @@
+/* =====================================================================
+   Etapa 4 · Quiz e validação de conhecimento
+   ===================================================================== */
+
+/* ---------- Apresentação ---------- */
+
+.quiz-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  background: linear-gradient(160deg, var(--water-soft), var(--surface) 65%);
+}
+
+.quiz-intro__lesson {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-strong);
+}
+
+.quiz-facts {
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .quiz-facts {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.quiz-facts div {
+  background: var(--surface);
+}
+
+.quiz-resume {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--sun-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------- Perguntas ---------- */
+
+.quiz-progress:focus {
+  outline: none;
+}
+
+.quiz-progress:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 4px;
+}
+
+.quiz-progress__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--text);
+}
+
+.quiz-play .option {
+  min-height: 60px;
+  padding: 14px 16px;
+}
+
+.option__status {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.feedback__why {
+  margin-top: 6px;
+}
+
+/* ---------- Resultado ---------- */
+
+.quiz-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 28px 20px;
+}
+
+.quiz-result.is-passed {
+  background: linear-gradient(180deg, var(--primary-soft), var(--surface) 60%);
+}
+
+.quiz-result.is-failed {
+  background: linear-gradient(180deg, var(--sun-soft), var(--surface) 60%);
+}
+
+.quiz-result__badge {
+  font-size: 3.2rem;
+  line-height: 1;
+  animation: world-grow 0.7s ease-out both;
+}
+
+.quiz-result__title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-strong);
+}
+
+.quiz-result__title:focus {
+  outline: none;
+}
+
+.quiz-result__score {
+  font-size: 3.4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.quiz-result.is-failed .quiz-result__score {
+  color: #9a6512;
+}
+
+.quiz-result__facts {
+  width: 100%;
+  text-align: left;
+}
+
+.quiz-result__facts div {
+  background: var(--surface);
+}
+
+.quiz-result__xp {
+  margin-top: 4px;
+  color: var(--primary);
+}
+
+.text-success {
+  color: var(--primary);
+}
+
+.text-warning {
+  color: #8a5a0e;
+}
+
+.challenge-unlocked__name {
+  font-size: 1.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.review-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+  border-left: 4px solid var(--sun);
+}
+
+.review-list__label {
+  font-weight: 800;
+}
+
+.review-list__explanation {
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+
+/* ---------- Histórico ---------- */
+
+.attempt-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attempt-list__item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.attempt-list__number {
+  font-weight: 800;
+}
+
+.attempt-list__score {
+  font-weight: 900;
+  color: var(--primary);
+  text-align: right;
+}
+
+.attempt-list__status {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.attempt-list__date {
+  text-align: right;
+}
+
+.attempt-list__item.is-failed .attempt-list__score {
+  color: #9a6512;
+}
+
+.attempt-list__item.is-abandoned {
+  opacity: 0.75;
+}
+
+/* ---------- Desempenho e conhecimentos ---------- */
+
+.stats--3 {
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .stats--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.perf-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.perf-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+}
+
+.perf-list__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.perf-list__facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0;
+}
+
+.perf-list__facts dt {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.perf-list__facts dd {
+  margin: 0;
+  font-weight: 900;
+}
+
+.knowledge-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.knowledge-list__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--surface-soft);
+  font-weight: 700;
+}
+
+.knowledge-list__name {
+  flex: 1;
+  min-width: 0;
+}
+
+.knowledge-list__status {
+  font-size: 0.8rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.knowledge-list__item.is-mastered {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.knowledge-list__item.is-studying .knowledge-list__status {
+  color: #8a5a0e;
+}
+
+.knowledge-list__item.is-not_evaluated .knowledge-list__status {
+  color: var(--text-muted);
+}
+
+/* ---------- Estados do desafio e calendário ---------- */
+
+.tag--status-waiting_evidence {
+  background: var(--water-soft);
+  color: var(--water);
+}
+
+.tag--status-waiting_follow_up {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.followup-lock {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}

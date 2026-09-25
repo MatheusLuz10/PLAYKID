@@ -1,0 +1,64 @@
+/* Identidade visual ECO QUEST — cores naturais: floresta, folha, água, sol e solo. */
+:root {
+  /* Base */
+  --bg: #f6f3ea;
+  --surface: #ffffff;
+  --surface-soft: #f0f4ea;
+  --border: #e2e6d9;
+  --text: #1e2b22;
+  --text-muted: #5a6a5e;
+
+  /* Marca */
+  --primary: #2f6b3f;
+  --primary-strong: #234f2f;
+  --primary-soft: #e2eedd;
+  --leaf: #6aa84f;
+  --water: #2f7fae;
+  --water-soft: #e1eff7;
+  --sun: #e3a233;
+  --sun-soft: #fcf0d9;
+  --soil: #8a6a4a;
+  --danger: #b24a3b;
+  --danger-soft: #f8e5e1;
+
+  /* Categorias */
+  --cat-natureza: #3f7f4c;
+  --cat-agua: #2f7fae;
+  --cat-residuos: #5f8a3a;
+  --cat-energia: #d0921f;
+  --cat-biodiversidade: #b7791f;
+  --cat-comunidade: #3b6fa0;
+
+  /* Mundo */
+  --world-sky-top: #cfe7f1;
+  --world-sky-bottom: #f4f6e8;
+  --world-sun: #f2bf4e;
+  --world-hill: #b8d69c;
+  --world-ground: #8ebf72;
+  --world-soil: #9c7a55;
+  --world-soil-dark: #6d5237;
+  --world-grass-dark: #4b8639;
+  --world-leaf: #56994a;
+  --world-leaf-dark: #3f7d3b;
+  --world-leaf-light: #79b660;
+  --world-trunk: #7a5436;
+  --world-fruit: #e7a33a;
+  --world-plot: rgba(122, 84, 54, 0.18);
+  --world-shadow: rgba(40, 60, 30, 0.18);
+  --world-water: #8fcbe8;
+  --world-water-dark: #5aa7d0;
+  --world-stone: #e9e1cf;
+  --world-meadow: #b5d99a;
+
+  /* Forma */
+  --radius-lg: 22px;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 2px rgba(30, 43, 34, 0.05), 0 6px 18px rgba(30, 43, 34, 0.06);
+  --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --nav-height: 68px;
+  --nav-width: 232px;
+  --content-width: 760px;
+}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <rect width="640" height="360" fill="#e1eff7"/>
+  <rect y="300" width="640" height="60" fill="#8ebf72"/>
+  <!-- tronco e galhos -->
+  <path d="M300 300 L306 150 H334 L340 300Z" fill="#7a5436"/>
+  <path d="M320 200 L200 150 M322 180 L450 132" stroke="#7a5436" stroke-width="12" stroke-linecap="round"/>
+  <!-- copa -->
+  <circle cx="190" cy="120" r="62" fill="#3f7d3b"/>
+  <circle cx="460" cy="106" r="62" fill="#3f7d3b"/>
+  <circle cx="320" cy="86" r="84" fill="#56994a"/>
+  <!-- ninho com pássaro -->
+  <g transform="translate(206 150)">
+    <path d="M-34 0 Q0 30 34 0Z" fill="#9c7a55" stroke="#6d5237" stroke-width="3"/>
+    <ellipse cx="-4" cy="-14" rx="22" ry="16" fill="#2f7fae"/>
+    <circle cx="12" cy="-24" r="10" fill="#2f7fae"/>
+    <circle cx="15" cy="-26" r="2.5" fill="#fff"/>
+    <path d="M21 -24 L32 -21 L21 -18Z" fill="#e3a233"/>
+  </g>
+  <!-- flor com abelha -->
+  <g transform="translate(470 150)">
+    <g fill="#f6efe2"><circle cx="0" cy="-12" r="9"/><circle cx="12" cy="0" r="9"/><circle cx="0" cy="12" r="9"/><circle cx="-12" cy="0" r="9"/></g>
+    <circle r="7" fill="#e3a233"/>
+    <g transform="translate(26 -28)">
+      <ellipse rx="14" ry="10" fill="#f2bf4e"/>
+      <path d="M-4 -10 V10 M4 -10 V10" stroke="#1e2b22" stroke-width="4"/>
+      <ellipse cx="-4" cy="-14" rx="8" ry="6" fill="#fff" opacity=".85"/><ellipse cx="6" cy="-14" rx="8" ry="6" fill="#fff" opacity=".85"/>
+    </g>
+  </g>
+  <!-- folha com lagarta -->
+  <g transform="translate(360 214)">
+    <path d="M0 0 Q60 -34 110 0 Q60 34 0 0Z" fill="#79b660" stroke="#3f7d3b" stroke-width="3"/>
+    <g fill="#e7a33a"><circle cx="34" cy="-4" r="8"/><circle cx="48" cy="-6" r="8"/><circle cx="62" cy="-6" r="8"/><circle cx="76" cy="-4" r="9"/></g>
+    <circle cx="80" cy="-7" r="2" fill="#1e2b22"/>
+  </g>
+</svg>

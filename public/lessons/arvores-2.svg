@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Nunito, system-ui, sans-serif" font-weight="800" font-size="17">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10Z" fill="#2f6b3f"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="#f4f6e8"/>
+  <rect y="262" width="640" height="98" fill="#9c7a55"/>
+  <rect y="252" width="640" height="14" fill="#8ebf72"/>
+  <!-- sol -->
+  <circle cx="90" cy="70" r="30" fill="#f2bf4e"/>
+  <path d="M130 86 Q200 110 250 120" fill="none" stroke="#e3a233" stroke-width="4" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
+  <text x="138" y="70" fill="#8a5a0e">Luz</text>
+  <!-- árvore -->
+  <path d="M312 262 L316 170 H330 L334 262Z" fill="#7a5436"/>
+  <circle cx="290" cy="150" r="40" fill="#3f7d3b"/><circle cx="356" cy="150" r="40" fill="#3f7d3b"/>
+  <circle cx="323" cy="118" r="52" fill="#56994a"/>
+  <!-- raízes -->
+  <path d="M323 262 Q300 290 272 300 M323 262 Q340 296 372 306 M323 262 L322 314" stroke="#6d5237" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- folhas caindo -->
+  <g fill="#e7a33a"><ellipse cx="420" cy="160" rx="10" ry="5" transform="rotate(30 420 160)"/><ellipse cx="444" cy="208" rx="10" ry="5" transform="rotate(-20 444 208)"/></g>
+  <path d="M390 150 Q470 170 480 240" fill="none" stroke="#2f6b3f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="450" y="136" fill="#2f6b3f">Folhas caem</text>
+  <!-- decomposição -->
+  <g transform="translate(500 250)">
+    <rect x="-6" y="-2" width="10" height="14" fill="#f6efe2"/><path d="M-20 0 Q-1 -24 18 0Z" fill="#c9694f"/>
+  </g>
+  <text x="470" y="300" fill="#fff">Decomposição</text>
+  <path d="M470 318 Q420 340 360 316" fill="none" stroke="#fff" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="170" y="332" fill="#fff">Nutrientes voltam ao solo</text>
+</svg>

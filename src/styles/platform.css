@@ -1,0 +1,321 @@
+/* =====================================================================
+   Etapa 8 · Páginas públicas, primeira missão, conta e administração
+   ===================================================================== */
+
+/* ---------- Páginas públicas (Sobre, Termos, Privacidade, senha) ---------- */
+
+.public-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(120% 50% at 50% 0%, #e6f1dc 0%, var(--bg) 55%);
+}
+
+.public-page__header {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 20px 16px 8px;
+}
+
+.public-page__main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 8px 16px 24px;
+}
+
+.logo--sm {
+  text-decoration: none;
+}
+
+.logo--sm .logo__mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  font-size: 1.4rem;
+}
+
+.logo--sm .logo__text {
+  font-size: 1.5rem;
+}
+
+.public-form {
+  max-width: 440px;
+  margin: 24px auto 0;
+}
+
+.public-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 16px 28px;
+  text-align: center;
+}
+
+.public-footer nav,
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 18px;
+}
+
+.public-footer a,
+.profile-links a {
+  color: var(--primary);
+  font-weight: 700;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.prose {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.prose h2 {
+  font-size: 1.15rem;
+  font-weight: 900;
+  margin-top: 8px;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prose a {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.prose .lead {
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.about-journey {
+  list-style: none;
+  padding-left: 0 !important;
+}
+
+.about-journey li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.about-journey__icon {
+  font-size: 1.5rem;
+}
+
+/* ---------- Primeira missão / boas-vindas ---------- */
+
+.first-mission {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mission-path {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mission-path__step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.mission-path__step.is-done {
+  opacity: 0.75;
+}
+
+.mission-path__step.is-current {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  outline: 2px solid var(--primary);
+}
+
+.mission-path__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 900;
+}
+
+.mission-path__step--world .mission-path__icon {
+  background: var(--sun-soft);
+}
+
+.onboarding {
+  text-align: center;
+  align-items: center;
+}
+
+.onboarding__icon {
+  font-size: 3rem;
+}
+
+.onboarding__motto {
+  font-size: 1.15rem;
+  color: var(--primary);
+}
+
+/* ---------- Conta ---------- */
+
+.danger-zone {
+  border-color: var(--danger-soft);
+}
+
+.btn--danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: #8f3a2e;
+}
+
+.delete-account {
+  width: 100%;
+  text-align: left;
+}
+
+.delete-account__list {
+  padding-left: 1.2em;
+}
+
+/* ---------- Administração ---------- */
+
+.nav__item--desktop {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .nav__item--desktop {
+    display: block;
+  }
+}
+
+.admin-tabs {
+  overflow-x: auto;
+}
+
+.admin-stats {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .admin-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.admin-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.admin-search .field {
+  flex: 1 1 220px;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.admin-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.admin-table tr.is-inactive td {
+  color: var(--text-muted);
+}
+
+/* No celular, cada linha vira um cartão com rótulos. */
+@media (max-width: 759px) {
+  .admin-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-table tr {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .admin-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    padding: 4px 0;
+    border: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-table td::before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+}

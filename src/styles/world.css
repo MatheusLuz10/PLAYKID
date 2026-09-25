@@ -1,0 +1,394 @@
+/* =====================================================================
+   Etapa 7 · Mundo virtual ecológico
+   ===================================================================== */
+
+/* ---------- Cabeçalho do mundo ---------- */
+
+.world-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.world-hero__head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.world-hero__icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 1.9rem;
+  background: var(--primary-soft);
+}
+
+.world-hero__name {
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.world-hero__stage strong {
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+
+.world-status--empty {
+  background: var(--surface-soft);
+  color: var(--text-muted);
+}
+
+.world-status--evolving {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.world-status--developed,
+.world-status--rich {
+  background: var(--water-soft);
+  color: #1f4d69;
+}
+
+.world-status--ecosystem {
+  background: var(--sun-soft);
+  color: #6b4610;
+}
+
+.world-growth__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.world-tip {
+  margin-bottom: -6px;
+}
+
+/* ---------- Mapa: áreas ---------- */
+
+.world-map {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 760px) {
+  .world-map {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .world-area--natural {
+    grid-column: 1 / -1;
+  }
+}
+
+.world-area {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.world-area__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+}
+
+.world-area__title {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.world-area__count {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.world-area__scene {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+}
+
+@media (min-width: 760px) {
+  .world-area--natural .world-area__scene {
+    aspect-ratio: 3 / 1;
+  }
+}
+
+.world-area__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.world-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* ---------- Itens e espaços bloqueados ---------- */
+
+.world-item,
+.world-slot {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: end center;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+}
+
+.world-item:focus-visible,
+.world-slot:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.world-item__icon {
+  display: inline-block;
+  font-size: clamp(1.75rem, 7vw, 2.35rem);
+  line-height: 1;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 2px 1px rgba(30, 43, 34, 0.25));
+  transition: transform 0.15s ease;
+}
+
+.world-item:hover .world-item__icon,
+.world-item:active .world-item__icon {
+  transform: scale(1.08);
+}
+
+/* Marco especial: brilho suave */
+.world-item.is-milestone .world-item__icon {
+  filter: drop-shadow(0 0 6px rgba(242, 191, 78, 0.95)) drop-shadow(0 2px 1px rgba(30, 43, 34, 0.25));
+}
+
+/* Item que acabou de surgir: cresce do chão */
+.world-item.is-new .world-item__icon {
+  animation: world-sprout 0.8s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+
+/* Animais: pequeno movimento contínuo (desligado com redução de movimento) */
+.world-item--animal .world-item__icon {
+  animation: world-float 3.2s ease-in-out infinite;
+}
+
+.world-item--animal.is-new .world-item__icon {
+  animation:
+    world-sprout 0.8s cubic-bezier(0.2, 0.8, 0.3, 1.2) both,
+    world-float 3.2s ease-in-out 0.8s infinite;
+}
+
+.world-shimmer {
+  animation: world-shimmer 3s ease-in-out infinite;
+}
+
+.world-slot > span {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--world-trunk);
+  background: rgba(255, 253, 246, 0.75);
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+@keyframes world-sprout {
+  from {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes world-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(3px, -5px);
+  }
+}
+
+@keyframes world-shimmer {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-item__icon,
+  .world-item--animal .world-item__icon,
+  .world-item.is-new .world-item__icon,
+  .world-shimmer {
+    animation: none !important;
+    transition: none;
+  }
+}
+
+/* ---------- Por que evoluiu / história ---------- */
+
+.world-reasons {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.world-reasons li {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-soft);
+  font-weight: 700;
+}
+
+.world-history {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.world-history__item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.world-history__item:last-child {
+  border-bottom: none;
+}
+
+.world-history__icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  background: var(--primary-soft);
+}
+
+.world-formula {
+  margin-top: 10px;
+}
+
+.world-list summary {
+  cursor: pointer;
+  font-weight: 800;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* ---------- Janela do item ---------- */
+
+.modal__title {
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.world-dialog {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.world-dialog__icon {
+  display: block;
+  font-size: 3rem;
+  line-height: 1.1;
+}
+
+.world-dialog__icon.is-locked {
+  filter: grayscale(0.9);
+  opacity: 0.6;
+}
+
+.world-dialog__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.world-dialog__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.world-dialog__facts > div {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.world-dialog__facts dt {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.world-dialog__facts dd {
+  margin: 2px 0 0;
+  font-weight: 700;
+}
+
+/* ---------- Resumo no Início ---------- */
+
+.world-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.world-summary__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: linear-gradient(var(--world-sky-top), var(--world-sky-bottom) 55%, var(--world-meadow) 56%);
+  font-size: 1.6rem;
+  line-height: 1;
+  text-decoration: none;
+  min-height: 52px;
+}

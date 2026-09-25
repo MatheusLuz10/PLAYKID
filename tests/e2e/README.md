@@ -1,0 +1,50 @@
+# Testes de ponta a ponta (Playwright)
+
+Roteiros que usam o app como um jogador, no **celular (375 px) e no desktop (1280 px)**, no modo demonstração.
+O banco é testado à parte por `npm run test:db`.
+
+| Arquivo | O que cobre |
+|---|---|
+| `03-aprendizagem.cjs` | biblioteca, busca, favoritos, aula em partes com retomada, resumo, relacionados, pré-requisitos |
+| `04-quiz.cjs` | quiz bloqueado pela URL, reprovação, nova tentativa, aprovação, XP sem duplicar, histórico, desempenho |
+| `05-desafios.cjs` | desafio bloqueado/liberado, checklist em ordem, foto (inválida, remover, trocar), acompanhamentos, conclusão, prazo vencido |
+| `06-gamificacao.cjs` | XP por ação, conquistas, subida de nível (inclusive vários níveis), evolução, galeria, perfil |
+| `07-mundo.cjs` | mundo inicial (3D), desbloqueios, árvore nova crescendo na cena, detalhes, história, teclado, redução de movimento |
+| `08-integracao-final.cjs` | páginas públicas, boas-vindas, primeira missão, admin, exclusão de conta, offline, 9 larguras (320–1920), acessibilidade (axe) e CSP de produção |
+| `11-mundo-3d.cjs` | mundo em 3D: visão geral das 5 áreas, voo até cada área, marcadores de todos os itens, detalhes, câmera, teclado e o mapa 2D sem WebGL |
+| `10-jogadores.cjs` | login de cada usuário (demonstração): criar conta, senha errada, sair/entrar, evolução separada, pausa após 5 tentativas, conta de demonstração, excluir só uma conta |
+| `09-meu-lugar.cjs` | casa 3D: cena desenhada, controles, cômodos, objetos liberados por aula/foto/desafio, origem e registro, evolução, sem duplicar, versão sem WebGL |
+
+## Como rodar
+
+```bash
+# 1. ferramentas (uma vez, fora das dependências do app)
+npm i -D playwright axe-core && npx playwright install chromium
+
+# 2. build + servidor de pré-visualização na porta 4318
+npm run build && npx vite preview --port 4318 --strictPort
+
+# 3. em outro terminal
+node tests/e2e/05-desafios.cjs
+```
+
+Variáveis opcionais: `BASE_URL` (padrão `http://localhost:4318`), `PLAYWRIGHT_MODULE` e `AXE_MODULE` (caminho dos
+pacotes, se instalados em outra pasta). Capturas de tela ficam em `tests/e2e/.saida/` (ignorada pelo Git).
+
+Os roteiros usam o **modo demonstração** (sem Supabase). Em alguns pontos eles simulam a passagem do tempo
+editando os dados locais da demonstração — isso existe só para teste; no Supabase as datas são do servidor.
+
+A demonstração normal abre com tudo concluído (para explorar a casa completa). Os roteiros começam como
+**usuário novo**: gravam a marca `eco-quest:teste:sem-conclusao-automatica = 1` no `localStorage` (inclusive
+logo depois de limpá-lo), o que desliga essa conclusão automática só no navegador do teste. A conclusão
+automática vale só para o jogador de demonstração original; jogadores cadastrados depois começam do zero.
+
+As quantidades esperadas (aulas, desafios, conquistas, itens do mundo, objetos da casa) vêm de `conteudo.cjs`,
+que lê `content/*.json`: acrescentar conteúdo não quebra os roteiros.
+
+Os roteiros que abrem o mundo em 3D (07, 08 e 11) usam a placa de vídeo no Windows (`navegador.cjs`); sem ela
+o Chromium desenha por software, bem mais devagar. `E2E_SEM_GPU=1` força o modo por software.
+
+Na demonstração é preciso entrar numa conta: os roteiros criam uma com `conta.cjs` (`criarConta`) ou entram na
+conta de demonstração (`entrarNaDemonstracao`). Os dados de cada conta ficam em `eco-quest:demo:v2:<id>`
+(`CHAVE_DA_CONTA`); a conta de demonstração continua em `eco-quest:demo:v2`.

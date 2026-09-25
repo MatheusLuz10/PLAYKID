@@ -1,0 +1,426 @@
+/* =====================================================================
+   Etapa 6 · Gamificação: nível, XP, conquistas e evolução
+   ===================================================================== */
+
+/* ---------- Nível e barra de XP ---------- */
+
+.level-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.level-progress__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.level-progress__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  background: var(--primary-soft);
+  flex-shrink: 0;
+}
+
+.level-progress__title {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.level-progress__xp {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.level-progress__xp strong {
+  display: inline-block;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.level-progress__next {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.level-progress__next strong {
+  color: var(--text);
+}
+
+/* Pequeno destaque quando o XP muda. */
+.xp-bump {
+  animation: xp-bump 0.6s ease-out;
+}
+
+@keyframes xp-bump {
+  0% {
+    transform: scale(1);
+    color: var(--sun);
+  }
+  40% {
+    transform: scale(1.12);
+    color: var(--sun);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- XP por origem ---------- */
+
+.xp-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+  margin: 14px 0 0;
+}
+
+.xp-breakdown > div {
+  background: var(--surface-soft);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.xp-breakdown dt {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.xp-breakdown dd {
+  margin: 0;
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+
+.xp-breakdown .xp-breakdown__total {
+  grid-column: 1 / -1;
+  background: var(--primary-soft);
+}
+
+.xp-breakdown__total dd {
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+/* ---------- Início / Perfil ---------- */
+
+.evolution-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.last-achievement {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--sun-soft);
+  color: #6b4610;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-card__who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-card__name {
+  font-size: 1.35rem;
+}
+
+.stats--6 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .stats--6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- Minhas ações / categorias ---------- */
+
+.my-actions {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+@media (min-width: 640px) {
+  .my-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.my-actions__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'icon value'
+    'name name';
+  align-items: center;
+  gap: 2px 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-soft);
+  border-left: 4px solid var(--cat, var(--primary));
+  min-width: 0;
+}
+
+.my-actions__icon {
+  grid-area: icon;
+  font-size: 1.2rem;
+}
+
+.my-actions__name {
+  grid-area: name;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.my-actions__value {
+  grid-area: value;
+  justify-self: end;
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+.category-progress {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.category-progress__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 6px;
+}
+
+.category-progress__tag {
+  margin-left: 6px;
+}
+
+/* ---------- Histórico de XP ---------- */
+
+.xp-history {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.xp-history__row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.xp-history__row:last-child {
+  border-bottom: none;
+}
+
+.xp-history .xp-history__amount {
+  flex-shrink: 0;
+  min-width: 76px;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.xp-history__text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Conquistas ---------- */
+
+.achievement {
+  align-items: flex-start;
+}
+
+.achievement__icon {
+  position: relative;
+}
+
+.achievement__lock {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  font-size: 0.95rem;
+  filter: none;
+}
+
+.achievement.is-locked .achievement__icon {
+  font-size: 1.7rem;
+  filter: grayscale(0.85);
+  opacity: 0.8;
+}
+
+.achievement__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.achievement__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.achievement__title {
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.achievement__status {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.achievement__progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.achievement.is-unlocked {
+  border-color: #f1ddb4;
+  box-shadow: var(--shadow);
+}
+
+.tag--xp {
+  background: var(--sun-soft);
+  color: #7a4d0c;
+}
+
+/* ---------- Celebração (nível / conquista) ---------- */
+
+.celebration-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(30, 43, 34, 0.45);
+  animation: fade-in 0.2s ease-out;
+}
+
+.celebration {
+  width: min(420px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  animation: pop-in 0.3s ease-out;
+}
+
+.celebration__burst {
+  font-size: 2.6rem;
+}
+
+.celebration__title {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.celebration__level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.celebration__level-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  font-size: 2.4rem;
+  background: var(--primary-soft);
+  margin-bottom: 4px;
+}
+
+.celebration__level-name {
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+.celebration__achievements {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.celebration__achievement {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--sun-soft);
+}
+
+.celebration__achievement > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.celebration__achievement-icon {
+  font-size: 1.8rem;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

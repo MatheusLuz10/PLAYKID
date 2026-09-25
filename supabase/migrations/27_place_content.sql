@@ -1,0 +1,113 @@
+-- =====================================================================
+-- 27 · Meu Lugar (casa 3D): estágios e objetos
+-- =====================================================================
+-- ARQUIVO GERADO por "npm run content:sql" a partir de content/place.json.
+-- Não edite à mão. Idempotente. Objetos que saírem do JSON ficam inativos
+-- (quem já tem, continua tendo).
+
+insert into public.place_stages (id, stage_number, name, icon, description, min_items, min_categories) values
+  ('82000000-0000-4000-8000-000000000001', 1, 'Pequena casa', '🏚️', 'Poucos objetos e o jardim ainda vazio.', 0, 0),
+  ('82000000-0000-4000-8000-000000000002', 2, 'Casa em evolução', '🏠', 'Primeiras decorações e primeiras plantas.', 2, 1),
+  ('82000000-0000-4000-8000-000000000003', 3, 'Casa ecológica', '🏡', 'Horta, árvores, flores, água e objetos sustentáveis.', 6, 3),
+  ('82000000-0000-4000-8000-000000000004', 4, 'Casa-ecossistema', '🌳', 'Um lugar vivo: plantas, animais, água, estudo e comunidade.', 12, 5)
+on conflict (id) do update set
+  stage_number = excluded.stage_number, name = excluded.name, icon = excluded.icon,
+  description = excluded.description, min_items = excluded.min_items, min_categories = excluded.min_categories;
+delete from public.place_stages where id not in ('82000000-0000-4000-8000-000000000001', '82000000-0000-4000-8000-000000000002', '82000000-0000-4000-8000-000000000003', '82000000-0000-4000-8000-000000000004');
+
+insert into public.place_items (id, code, name, icon, description, meaning, category, location, model,
+  position_x, position_y, position_z, rotation, scale, unlock_type, unlock_reference, sort_order, active) values
+  ('80000000-0000-4000-8000-000000000001', 'desk', 'Mesa de estudos', '🪑', 'Uma mesa simples para começar.', 'O ponto de partida: é aqui que a sua jornada começa.', 'casa', 'estudos', 'table',
+   2.5, 0, -5.9, 0, 1, 'initial', null, 1, true),
+  ('80000000-0000-4000-8000-000000000002', 'chair', 'Cadeira', '🪑', 'Uma cadeira para estudar com calma.', 'Todo aprendizado começa com um momento para sentar e prestar atenção.', 'casa', 'estudos', 'chair',
+   2.5, 0, -5.1, 180, 1, 'initial', null, 2, true),
+  ('80000000-0000-4000-8000-000000000003', 'book', 'Livro', '📖', 'O primeiro livro da sua estante.', 'Sua primeira lição concluída no ECO QUEST.', 'educacao', 'estudos', 'book',
+   2.3, 0.79, -5.9, 20, 1.3, 'achievement', 'primeiro-aprendizado', 3, true),
+  ('80000000-0000-4000-8000-000000000004', 'bookshelf', 'Estante', '📚', 'Uma estante cheia de conhecimento.', 'Cinco lições concluídas: sua curiosidade encheu uma estante.', 'educacao', 'estudos', 'bookshelf',
+   2.5, 0, -7.65, 0, 1, 'achievement', 'curioso', 4, true),
+  ('80000000-0000-4000-8000-000000000005', 'picture', 'Quadro da primeira ação', '🖼️', 'Uma paisagem emoldurada na parede da sala.', 'A primeira foto que você enviou para comprovar uma ação real.', 'casa', 'sala', 'picture',
+   -4.86, 1.6, -2, 90, 1, 'evidence', 'photo', 5, true),
+  ('80000000-0000-4000-8000-000000000006', 'potted_plant', 'Planta', '🪴', 'Uma planta em vaso na sala.', 'O que você aprendeu sobre como uma planta cresce.', 'natureza', 'sala', 'plant',
+   -4.3, 0, -0.6, 0, 1.2, 'lesson', 'como-uma-planta-cresce', 6, true),
+  ('80000000-0000-4000-8000-000000000007', 'reuse_vase', 'Decoração sustentável', '♻️', 'Um vaso feito com uma garrafa reutilizada.', 'O que você aprendeu sobre reutilizar em vez de descartar.', 'reciclagem', 'cozinha', 'reuse_vase',
+   0.5, 0, -0.5, 0, 1.4, 'lesson', 'o-que-significa-reutilizar', 7, true),
+  ('80000000-0000-4000-8000-000000000008', 'recycling_bins', 'Lixeiras de coleta seletiva', '🗑️', 'Uma lixeira para cada tipo de resíduo.', 'A semana em que você separou os seus resíduos.', 'reciclagem', 'cozinha', 'recycling_bins',
+   1.2, 0, -3.5, 0, 1, 'challenge', 'separe-seus-residuos-por-7-dias', 8, true),
+  ('80000000-0000-4000-8000-000000000009', 'solar_lamp', 'Luminária solar', '💡', 'Luz que vem do sol.', 'Sua semana de consumo consciente de energia.', 'energia', 'quarto', 'solar_lamp',
+   -4.55, 0, -4.5, 0, 1, 'challenge', 'semana-do-consumo-consciente', 9, true),
+  ('80000000-0000-4000-8000-000000000010', 'flower', 'Flor', '🌷', 'Flores coloridas no canteiro.', 'A flor que você cultivou e acompanhou no mundo real.', 'natureza', 'jardim-flores', 'flower',
+   -2.6, 0.12, 5.2, 0, 1.6, 'challenge', 'cultive-uma-flor', 10, true),
+  ('80000000-0000-4000-8000-000000000011', 'my_tree', 'Minha Árvore', '🌳', 'A árvore do seu primeiro plantio.', 'O plantio que você fez e acompanhou por seis meses.', 'natureza', 'jardim-arvores', 'tree_small',
+   -7, 0, 2.5, 0, 1.3, 'challenge', 'plante-uma-arvore', 11, true),
+  ('80000000-0000-4000-8000-000000000012', 'big_tree', 'Árvore grande', '🌳', 'Uma árvore frondosa que dá sombra ao jardim.', 'Cinco ações pela natureza: você virou Guardião das Plantas.', 'natureza', 'jardim-arvores', 'tree_large',
+   -9, 0, 5.5, 30, 1, 'achievement', 'guardiao-das-plantas', 12, true),
+  ('80000000-0000-4000-8000-000000000013', 'vegetable_garden', 'Horta', '🥕', 'Um canteiro com hortaliças.', 'A horta que você montou e cuidou no mundo real.', 'natureza', 'horta', 'vegetable_garden',
+   2.6, 0.12, 5.2, 0, 1, 'challenge', 'crie-uma-pequena-horta', 13, true),
+  ('80000000-0000-4000-8000-000000000014', 'bee', 'Abelha', '🐝', 'Uma abelha visitando o jardim.', 'O espaço para polinizadores que você criou.', 'biodiversidade', 'jardim-flores', 'bee',
+   -2.2, 1.2, 5.4, 0, 1.3, 'challenge', 'crie-um-espaco-para-polinizadores', 14, true),
+  ('80000000-0000-4000-8000-000000000015', 'butterfly', 'Borboleta', '🦋', 'Uma borboleta de passagem.', 'Um jardim acolhedor para a vida.', 'biodiversidade', 'jardim-biodiversidade', 'butterfly',
+   -1.5, 1.3, 9.5, 0, 1.6, 'challenge', 'crie-um-espaco-para-polinizadores', 15, true),
+  ('80000000-0000-4000-8000-000000000016', 'bird', 'Pássaro', '🐦', 'Um pássaro que encontrou abrigo nas árvores.', 'Você explorou quatro temas ambientais.', 'biodiversidade', 'jardim-arvores', 'bird',
+   -7.5, 3.4, 3.5, 0, 1.4, 'achievement', 'explorador-eco', 16, true),
+  ('80000000-0000-4000-8000-000000000017', 'pond', 'Lago', '🪷', 'Um pequeno lago de água limpa.', 'O desperdício de água que você reduziu em casa.', 'agua', 'jardim-agua', 'pond',
+   7.4, 0, 3.2, 0, 0.9, 'challenge', 'reduza-o-desperdicio-de-agua', 17, true),
+  ('80000000-0000-4000-8000-000000000018', 'fountain', 'Fonte', '⛲', 'Uma fonte que reaproveita a água da chuva.', 'O que você aprendeu sobre o caminho da água da chuva.', 'agua', 'jardim-agua', 'fountain',
+   9.3, 0, 5.8, 0, 0.8, 'lesson', 'o-que-acontece-com-a-agua-da-chuva', 18, true),
+  ('80000000-0000-4000-8000-000000000019', 'community_bench', 'Banco comunitário', '🤝', 'Um banco para receber vizinhos e amigos.', 'A ação ambiental coletiva de que você participou.', 'comunidade', 'jardim-biodiversidade', 'bench',
+   3, 0, 9.8, 0, 1, 'challenge', 'participe-de-uma-acao-ambiental', 19, true),
+  ('80000000-0000-4000-8000-000000000020', 'wardrobe', 'Armário organizado', '👕', 'Um armário com roupas dobradas.', 'Você cuidou das suas roupas e ajudou a organizar a casa.', 'casa', 'quarto', 'wardrobe',
+   -1, 0, -7.35, 0, 0.9, 'challenge', 'dobre-suas-roupas', 20, true),
+  ('80000000-0000-4000-8000-000000000021', 'bed', 'Cama arrumada', '🛏️', 'Uma cama pronta para começar o dia.', 'Você começou o dia cuidando do seu espaço.', 'casa', 'quarto', 'bed',
+   -3.7, 0, -6.5, 0, 0.85, 'challenge', 'arrume-sua-cama', 21, true),
+  ('80000000-0000-4000-8000-000000000022', 'broom', 'Vassoura', '🧹', 'Uma vassoura guardada depois da limpeza.', 'Você ajudou a deixar um cômodo limpo.', 'casa', 'sala', 'broom',
+   -0.35, 0, -3.55, 12, 0.8, 'challenge', 'varra-um-comodo-da-casa', 22, true),
+  ('80000000-0000-4000-8000-000000000023', 'toy_box', 'Caixa de brinquedos', '🧸', 'Uma caixa para guardar os brinquedos.', 'Você cuidou das suas coisas e deixou o espaço pronto para brincar.', 'casa', 'sala', 'toy_box',
+   -0.75, 0, -0.75, 0, 0.9, 'challenge', 'organize-seus-brinquedos', 23, true),
+  ('80000000-0000-4000-8000-000000000024', 'sink', 'Pia organizada', '🍽️', 'Uma pia pronta para a próxima refeição.', 'Você ajudou a cuidar da cozinha e economizou água.', 'casa', 'cozinha', 'sink',
+   4.55, 0, -1.3, 270, 0.9, 'challenge', 'ajude-a-lavar-a-louca', 24, true),
+  ('80000000-0000-4000-8000-000000000025', 'reading_nook', 'Cantinho da leitura', '📖', 'Um cantinho para ler com calma.', 'Você reservou um tempo para aprender e imaginar.', 'educacao', 'estudos', 'reading_nook',
+   0.2, 0, -6.7, 0, 0.9, 'challenge', 'leia-por-15-minutos', 25, true),
+  ('80000000-0000-4000-8000-000000000026', 'magnifier', 'Lupa da observação', '🔍', 'Uma lupa para olhar o mundo com atenção.', 'Você observou uma paisagem e percebeu detalhes ao seu redor.', 'natureza', 'estudos', 'magnifier',
+   1.2, 0.8, -5.9, 20, 0.8, 'challenge', 'analise-uma-paisagem', 26, true),
+  ('80000000-0000-4000-8000-000000000027', 'journal', 'Diário de ideias', '✍️', 'Um caderno para registrar pensamentos e aprendizados.', 'Você parou para refletir e registrar uma ideia sua.', 'educacao', 'estudos', 'journal',
+   3.1, 0.8, -5.9, 340, 1, 'challenge', 'escreva-no-diario', 27, true),
+  ('80000000-0000-4000-8000-000000000028', 'meditation_cushion', 'Almofada da atenção', '🧘', 'Um lugar confortável para fazer uma pausa.', 'Você praticou atenção e percebeu melhor o momento presente.', 'casa', 'sala', 'meditation_cushion',
+   -1.8, 0, -1.7, 0, 0.9, 'challenge', 'pratique-atencao-por-cinco-minutos', 28, true),
+  ('80000000-0000-4000-8000-000000000029', 'cow', 'Vaca', '🐄', 'Uma vaca tranquila no espaço verde.', 'Você aprendeu de onde vem o leite e como respeitar os animais.', 'natureza', 'jardim-arvores', 'cow',
+   5.5, 0, 5.5, 180, 0.9, 'challenge', 'conheca-a-vaca-e-os-derivados-do-leite', 29, true),
+  ('80000000-0000-4000-8000-000000000030', 'sofa', 'Sofá da família', '🛋️', 'Um sofá para a família conversar e descansar junto.', 'Você fez uma ação pela comunidade: cuidar dos outros começa em casa.', 'casa', 'sala', 'sofa',
+   -4, 0, -3.45, 0, 0.9, 'achievement', 'acao-em-comunidade', 30, true),
+  ('80000000-0000-4000-8000-000000000031', 'coffee_table', 'Mesa de centro reaproveitada', '🪵', 'Uma mesinha feita com ripas de madeira reaproveitada.', 'Você aprendeu que um material pode ganhar uma nova vida.', 'reciclagem', 'sala', 'coffee_table',
+   -4, 0, -2.35, 0, 0.9, 'lesson', 'o-que-significa-reutilizar', 31, true),
+  ('80000000-0000-4000-8000-000000000032', 'living_rug', 'Tapete de retalhos', '🧶', 'Um tapete colorido feito de retalhos de tecido.', 'Você aprendeu sobre reciclagem: sobras também viram coisas úteis.', 'reciclagem', 'sala', 'rug',
+   -4, 0, -2.4, 0, 0.9, 'lesson', 'o-que-e-reciclagem', 32, true),
+  ('80000000-0000-4000-8000-000000000033', 'armchair', 'Poltrona de leitura', '💺', 'Uma poltrona confortável para pensar e estudar.', 'Cinco quizzes concluídos: você se dedicou a aprender.', 'casa', 'sala', 'armchair',
+   -1.5, 0, -3.35, 0, 0.9, 'achievement', 'aprendiz-dedicado', 33, true),
+  ('80000000-0000-4000-8000-000000000034', 'stove', 'Fogão', '🍳', 'Um fogão para preparar comida fresca da horta.', 'Você aprendeu de onde vêm os alimentos que cultivamos.', 'casa', 'cozinha', 'stove',
+   4.55, 0, -2.55, 270, 1, 'lesson', 'o-que-e-uma-horta', 34, true),
+  ('80000000-0000-4000-8000-000000000035', 'fridge', 'Geladeira econômica', '🧊', 'Uma geladeira com selo de eficiência, que gasta menos energia.', 'Você aprendeu por que economizar energia faz diferença.', 'energia', 'cozinha', 'fridge',
+   4.5, 0, -3.55, 270, 1, 'lesson', 'por-que-economizar-energia', 35, true),
+  ('80000000-0000-4000-8000-000000000036', 'dining_table', 'Mesa de jantar', '🍽️', 'Uma mesa com cadeiras e uma fruteira para as refeições em família.', 'Sua primeira ação ambiental: um passo que a família toda pode dar junto.', 'casa', 'cozinha', 'dining_table',
+   2.2, 0, -1.8, 0, 0.85, 'achievement', 'primeiro-passo', 36, true),
+  ('80000000-0000-4000-8000-000000000037', 'water_filter', 'Filtro de barro', '🏺', 'Um filtro de barro que deixa a água limpa e fresquinha.', 'Você aprendeu por que a água limpa é preciosa.', 'agua', 'cozinha', 'water_filter',
+   3.4, 0, -3.7, 0, 1, 'lesson', 'por-que-precisamos-economizar-agua', 37, true),
+  ('80000000-0000-4000-8000-000000000038', 'nightstand', 'Criado-mudo', '🕯️', 'Um criado-mudo com abajur e um livro para antes de dormir.', 'Você chegou ao nível 3 e seu quarto ficou mais aconchegante.', 'casa', 'quarto', 'nightstand',
+   -2.3, 0, -7.5, 0, 1, 'level', '3', 38, true),
+  ('80000000-0000-4000-8000-000000000039', 'bedroom_rug', 'Tapete do quarto', '🧶', 'Um tapete macio ao lado da cama.', 'Você chegou ao nível 6: sua jornada continua crescendo.', 'casa', 'quarto', 'rug',
+   -2.2, 0, -5.4, 0, 0.7, 'level', '6', 39, true),
+  ('80000000-0000-4000-8000-000000000040', 'laundry_basket', 'Cesto de roupas', '🧺', 'Um cesto para separar as roupas que vão para a lavagem.', 'Você dobrou suas roupas e ajudou a manter a casa em ordem.', 'casa', 'quarto', 'laundry_basket',
+   -0.5, 0, -4.6, 0, 1, 'challenge', 'dobre-suas-roupas', 40, true),
+  ('80000000-0000-4000-8000-000000000041', 'desk_lamp', 'Luminária de LED', '💡', 'Uma luminária de LED que ilumina bem e gasta pouca energia.', 'Você aprendeu sobre fontes de energia renováveis.', 'energia', 'estudos', 'desk_lamp',
+   3.5, 0.79, -6.15, 0, 1.2, 'lesson', 'o-que-sao-fontes-renovaveis', 41, true),
+  ('80000000-0000-4000-8000-000000000042', 'corkboard', 'Mural de recados', '📌', 'Um mural com recados e descobertas sobre a natureza.', 'Dez lições concluídas: você é um estudante da natureza.', 'educacao', 'estudos', 'corkboard',
+   4.86, 1.5, -6, 270, 1, 'achievement', 'estudante-da-natureza', 42, true)
+on conflict (id) do update set
+  code = excluded.code, name = excluded.name, icon = excluded.icon, description = excluded.description,
+  meaning = excluded.meaning, category = excluded.category, location = excluded.location, model = excluded.model,
+  position_x = excluded.position_x, position_y = excluded.position_y, position_z = excluded.position_z,
+  rotation = excluded.rotation, scale = excluded.scale, unlock_type = excluded.unlock_type,
+  unlock_reference = excluded.unlock_reference, sort_order = excluded.sort_order, active = true;
+update public.place_items set active = false where id not in ('80000000-0000-4000-8000-000000000001', '80000000-0000-4000-8000-000000000002', '80000000-0000-4000-8000-000000000003', '80000000-0000-4000-8000-000000000004', '80000000-0000-4000-8000-000000000005', '80000000-0000-4000-8000-000000000006', '80000000-0000-4000-8000-000000000007', '80000000-0000-4000-8000-000000000008', '80000000-0000-4000-8000-000000000009', '80000000-0000-4000-8000-000000000010', '80000000-0000-4000-8000-000000000011', '80000000-0000-4000-8000-000000000012', '80000000-0000-4000-8000-000000000013', '80000000-0000-4000-8000-000000000014', '80000000-0000-4000-8000-000000000015', '80000000-0000-4000-8000-000000000016', '80000000-0000-4000-8000-000000000017', '80000000-0000-4000-8000-000000000018', '80000000-0000-4000-8000-000000000019', '80000000-0000-4000-8000-000000000020', '80000000-0000-4000-8000-000000000021', '80000000-0000-4000-8000-000000000022', '80000000-0000-4000-8000-000000000023', '80000000-0000-4000-8000-000000000024', '80000000-0000-4000-8000-000000000025', '80000000-0000-4000-8000-000000000026', '80000000-0000-4000-8000-000000000027', '80000000-0000-4000-8000-000000000028', '80000000-0000-4000-8000-000000000029', '80000000-0000-4000-8000-000000000030', '80000000-0000-4000-8000-000000000031', '80000000-0000-4000-8000-000000000032', '80000000-0000-4000-8000-000000000033', '80000000-0000-4000-8000-000000000034', '80000000-0000-4000-8000-000000000035', '80000000-0000-4000-8000-000000000036', '80000000-0000-4000-8000-000000000037', '80000000-0000-4000-8000-000000000038', '80000000-0000-4000-8000-000000000039', '80000000-0000-4000-8000-000000000040', '80000000-0000-4000-8000-000000000041', '80000000-0000-4000-8000-000000000042');
+
+-- Aplica as regras a todos os jogadores (casa inicial + objetos já merecidos).
+select public.sync_place(user_id) from public.profiles;

@@ -1,0 +1,226 @@
+/* ---------- Estrutura: mobile first (menu inferior), desktop com menu lateral ---------- */
+
+.app-shell {
+  min-height: 100dvh;
+}
+
+.app-main {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 20px 16px calc(var(--nav-height) + 28px + env(safe-area-inset-bottom));
+}
+
+.nav {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 20;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav__brand {
+  display: none;
+}
+
+.nav__list {
+  list-style: none;
+  display: flex;
+  height: var(--nav-height);
+}
+
+.nav__list li {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav__link {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.nav__icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  width: 40px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  filter: grayscale(0.5);
+}
+
+.nav__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.nav__link.is-active {
+  color: var(--primary);
+}
+
+.nav__link.is-active .nav__icon {
+  background: var(--primary-soft);
+  filter: none;
+}
+
+@media (min-width: 900px) {
+  .app-shell {
+    display: grid;
+    grid-template-columns: var(--nav-width) 1fr;
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    inset: auto;
+    height: 100dvh;
+    border-top: 0;
+    border-right: 1px solid var(--border);
+    padding: 24px 14px;
+  }
+
+  .nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 900;
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    color: var(--primary);
+    padding: 0 12px 24px;
+  }
+
+  .nav__list {
+    flex-direction: column;
+    height: auto;
+    gap: 4px;
+  }
+
+  .nav__link {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+
+  .nav__link:hover {
+    background: var(--surface-soft);
+  }
+
+  .nav__link.is-active {
+    background: var(--primary-soft);
+  }
+
+  .nav__link.is-active .nav__icon {
+    background: transparent;
+  }
+
+  .nav__icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .app-main {
+    padding: 40px 32px 56px;
+  }
+}
+
+/* ---------- Pilhas e grades ---------- */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stack--sm {
+  gap: 12px;
+}
+
+.grid-2 {
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.actions--end {
+  justify-content: flex-end;
+}
+
+/* ---------- Cabeçalho de página ---------- */
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.back-link {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 900px) {
+  .page-title {
+    font-size: 2rem;
+  }
+}

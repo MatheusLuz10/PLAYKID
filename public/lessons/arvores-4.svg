@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Nunito, system-ui, sans-serif" font-weight="800" font-size="17">
+  <defs>
+    <marker id="down" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10Z" fill="#2f7fae"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="#e1eff7"/>
+  <!-- chuva -->
+  <g fill="#2f7fae">
+    <path d="M90 30 q6 12 0 16 q-6 -4 0 -16Z"/><path d="M160 60 q6 12 0 16 q-6 -4 0 -16Z"/><path d="M470 40 q6 12 0 16 q-6 -4 0 -16Z"/>
+    <path d="M540 76 q6 12 0 16 q-6 -4 0 -16Z"/><path d="M230 24 q6 12 0 16 q-6 -4 0 -16Z"/><path d="M410 70 q6 12 0 16 q-6 -4 0 -16Z"/>
+  </g>
+  <!-- copa -->
+  <circle cx="280" cy="90" r="46" fill="#3f7d3b"/><circle cx="360" cy="90" r="46" fill="#3f7d3b"/><circle cx="320" cy="64" r="58" fill="#56994a"/>
+  <path d="M312 170 L316 110 H324 L328 170Z" fill="#7a5436"/>
+  <!-- solo em corte -->
+  <rect y="170" width="640" height="190" fill="#9c7a55"/>
+  <rect y="162" width="640" height="12" fill="#8ebf72"/>
+  <g fill="#e7a33a" opacity=".8"><ellipse cx="250" cy="170" rx="10" ry="4"/><ellipse cx="400" cy="171" rx="10" ry="4"/></g>
+  <!-- raízes -->
+  <g stroke="#e8d6b8" stroke-width="6" fill="none" stroke-linecap="round">
+    <path d="M320 172 Q300 220 240 250 Q210 266 190 300"/>
+    <path d="M320 172 Q342 226 404 256 Q430 270 452 306"/>
+    <path d="M320 172 L318 300"/>
+    <path d="M300 214 Q270 214 250 196 M346 226 Q380 222 400 206"/>
+  </g>
+  <!-- infiltração -->
+  <g stroke="#2f7fae" stroke-width="4" stroke-dasharray="7 6" marker-end="url(#down)">
+    <path d="M110 180 V300"/><path d="M530 180 V300"/><path d="M200 182 V260"/><path d="M450 182 V260"/>
+  </g>
+  <rect x="24" y="312" width="150" height="34" rx="10" fill="#fff" opacity=".9"/>
+  <text x="38" y="335" fill="#1f4d69">Água infiltra</text>
+  <rect x="418" y="312" width="204" height="34" rx="10" fill="#fff" opacity=".9"/>
+  <text x="432" y="335" fill="#6d5237">Raízes seguram o solo</text>
+</svg>

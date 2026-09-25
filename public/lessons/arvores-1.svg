@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe7f1"/>
+      <stop offset="1" stop-color="#f4f6e8"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <circle cx="540" cy="70" r="34" fill="#f2bf4e"/>
+  <circle cx="540" cy="70" r="52" fill="#f2bf4e" opacity=".18"/>
+  <g fill="#fff" opacity=".9">
+    <ellipse cx="130" cy="72" rx="42" ry="15"/><ellipse cx="160" cy="60" rx="28" ry="17"/><ellipse cx="104" cy="64" rx="22" ry="12"/>
+  </g>
+  <path d="M0 250 Q160 200 320 236 T640 222 V360 H0Z" fill="#b8d69c"/>
+  <path d="M0 276 Q320 238 640 270 V360 H0Z" fill="#8ebf72"/>
+  <path d="M0 330 Q320 318 640 330 V360 H0Z" fill="#9c7a55"/>
+  <!-- casa -->
+  <g transform="translate(430 206)">
+    <rect x="0" y="30" width="110" height="70" fill="#f6efe2" stroke="#7a5436" stroke-width="3"/>
+    <path d="M-10 34 L55 -12 L120 34Z" fill="#c9694f" stroke="#7a5436" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="42" y="58" width="26" height="42" fill="#7a5436"/>
+    <rect x="12" y="48" width="20" height="18" fill="#cfe7f1" stroke="#7a5436" stroke-width="2"/>
+    <rect x="80" y="48" width="20" height="18" fill="#cfe7f1" stroke="#7a5436" stroke-width="2"/>
+  </g>
+  <!-- sombra + árvore -->
+  <ellipse cx="220" cy="300" rx="120" ry="16" fill="#3f7d3b" opacity=".35"/>
+  <path d="M208 300 L212 190 H228 L232 300Z" fill="#7a5436"/>
+  <path d="M220 230 L186 200 M222 216 L252 190" stroke="#7a5436" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="170" cy="170" r="52" fill="#3f7d3b"/>
+  <circle cx="270" cy="170" r="52" fill="#3f7d3b"/>
+  <circle cx="220" cy="130" r="68" fill="#56994a"/>
+  <circle cx="196" cy="100" r="34" fill="#79b660"/>
+  <circle cx="250" cy="150" r="7" fill="#e7a33a"/><circle cx="182" cy="168" r="7" fill="#e7a33a"/>
+</svg>

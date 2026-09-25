@@ -1,0 +1,877 @@
+{
+  "$comment": "Fonte única do módulo Meu Lugar (casa 3D). Gere o SQL com `npm run content:sql` (supabase/migrations/27_place_content.sql). O modo demonstração lê este mesmo arquivo. unlock_type: initial | lesson (slug) | challenge (slug) | achievement (código) | level (número) | evidence ('photo' = primeira foto enviada como evidência). A casa só REPRESENTA o que já aconteceu no ECO QUEST: nenhum objeto dá XP. position = [x, y, z] em metros; rotation em graus (eixo vertical).",
+  "stages": [
+    {
+      "stage": 1,
+      "name": "Pequena casa",
+      "icon": "🏚️",
+      "min_items": 0,
+      "min_categories": 0,
+      "description": "Poucos objetos e o jardim ainda vazio."
+    },
+    {
+      "stage": 2,
+      "name": "Casa em evolução",
+      "icon": "🏠",
+      "min_items": 2,
+      "min_categories": 1,
+      "description": "Primeiras decorações e primeiras plantas."
+    },
+    {
+      "stage": 3,
+      "name": "Casa ecológica",
+      "icon": "🏡",
+      "min_items": 6,
+      "min_categories": 3,
+      "description": "Horta, árvores, flores, água e objetos sustentáveis."
+    },
+    {
+      "stage": 4,
+      "name": "Casa-ecossistema",
+      "icon": "🌳",
+      "min_items": 12,
+      "min_categories": 5,
+      "description": "Um lugar vivo: plantas, animais, água, estudo e comunidade."
+    }
+  ],
+  "items": [
+    {
+      "id": "80000000-0000-4000-8000-000000000001",
+      "code": "desk",
+      "name": "Mesa de estudos",
+      "icon": "🪑",
+      "model": "table",
+      "category": "casa",
+      "location": "estudos",
+      "position": [
+        2.5,
+        0,
+        -5.9
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "initial",
+      "description": "Uma mesa simples para começar.",
+      "meaning": "O ponto de partida: é aqui que a sua jornada começa."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000002",
+      "code": "chair",
+      "name": "Cadeira",
+      "icon": "🪑",
+      "model": "chair",
+      "category": "casa",
+      "location": "estudos",
+      "position": [
+        2.5,
+        0,
+        -5.1
+      ],
+      "rotation": 180,
+      "scale": 1,
+      "unlock_type": "initial",
+      "description": "Uma cadeira para estudar com calma.",
+      "meaning": "Todo aprendizado começa com um momento para sentar e prestar atenção."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000003",
+      "code": "book",
+      "name": "Livro",
+      "icon": "📖",
+      "model": "book",
+      "category": "educacao",
+      "location": "estudos",
+      "position": [
+        2.3,
+        0.79,
+        -5.9
+      ],
+      "rotation": 20,
+      "scale": 1.3,
+      "unlock_type": "achievement",
+      "unlock_reference": "primeiro-aprendizado",
+      "description": "O primeiro livro da sua estante.",
+      "meaning": "Sua primeira lição concluída no ECO QUEST."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000004",
+      "code": "bookshelf",
+      "name": "Estante",
+      "icon": "📚",
+      "model": "bookshelf",
+      "category": "educacao",
+      "location": "estudos",
+      "position": [
+        2.5,
+        0,
+        -7.65
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "achievement",
+      "unlock_reference": "curioso",
+      "description": "Uma estante cheia de conhecimento.",
+      "meaning": "Cinco lições concluídas: sua curiosidade encheu uma estante."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000005",
+      "code": "picture",
+      "name": "Quadro da primeira ação",
+      "icon": "🖼️",
+      "model": "picture",
+      "category": "casa",
+      "location": "sala",
+      "position": [
+        -4.86,
+        1.6,
+        -2
+      ],
+      "rotation": 90,
+      "scale": 1,
+      "unlock_type": "evidence",
+      "unlock_reference": "photo",
+      "description": "Uma paisagem emoldurada na parede da sala.",
+      "meaning": "A primeira foto que você enviou para comprovar uma ação real."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000006",
+      "code": "potted_plant",
+      "name": "Planta",
+      "icon": "🪴",
+      "model": "plant",
+      "category": "natureza",
+      "location": "sala",
+      "position": [
+        -4.3,
+        0,
+        -0.6
+      ],
+      "rotation": 0,
+      "scale": 1.2,
+      "unlock_type": "lesson",
+      "unlock_reference": "como-uma-planta-cresce",
+      "description": "Uma planta em vaso na sala.",
+      "meaning": "O que você aprendeu sobre como uma planta cresce."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000007",
+      "code": "reuse_vase",
+      "name": "Decoração sustentável",
+      "icon": "♻️",
+      "model": "reuse_vase",
+      "category": "reciclagem",
+      "location": "cozinha",
+      "position": [
+        0.5,
+        0,
+        -0.5
+      ],
+      "rotation": 0,
+      "scale": 1.4,
+      "unlock_type": "lesson",
+      "unlock_reference": "o-que-significa-reutilizar",
+      "description": "Um vaso feito com uma garrafa reutilizada.",
+      "meaning": "O que você aprendeu sobre reutilizar em vez de descartar."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000008",
+      "code": "recycling_bins",
+      "name": "Lixeiras de coleta seletiva",
+      "icon": "🗑️",
+      "model": "recycling_bins",
+      "category": "reciclagem",
+      "location": "cozinha",
+      "position": [
+        1.2,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "challenge",
+      "unlock_reference": "separe-seus-residuos-por-7-dias",
+      "description": "Uma lixeira para cada tipo de resíduo.",
+      "meaning": "A semana em que você separou os seus resíduos."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000009",
+      "code": "solar_lamp",
+      "name": "Luminária solar",
+      "icon": "💡",
+      "model": "solar_lamp",
+      "category": "energia",
+      "location": "quarto",
+      "position": [
+        -4.55,
+        0,
+        -4.5
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "challenge",
+      "unlock_reference": "semana-do-consumo-consciente",
+      "description": "Luz que vem do sol.",
+      "meaning": "Sua semana de consumo consciente de energia."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000010",
+      "code": "flower",
+      "name": "Flor",
+      "icon": "🌷",
+      "model": "flower",
+      "category": "natureza",
+      "location": "jardim-flores",
+      "position": [
+        -2.6,
+        0.12,
+        5.2
+      ],
+      "rotation": 0,
+      "scale": 1.6,
+      "unlock_type": "challenge",
+      "unlock_reference": "cultive-uma-flor",
+      "description": "Flores coloridas no canteiro.",
+      "meaning": "A flor que você cultivou e acompanhou no mundo real."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000011",
+      "code": "my_tree",
+      "name": "Minha Árvore",
+      "icon": "🌳",
+      "model": "tree_small",
+      "category": "natureza",
+      "location": "jardim-arvores",
+      "position": [
+        -7,
+        0,
+        2.5
+      ],
+      "rotation": 0,
+      "scale": 1.3,
+      "unlock_type": "challenge",
+      "unlock_reference": "plante-uma-arvore",
+      "description": "A árvore do seu primeiro plantio.",
+      "meaning": "O plantio que você fez e acompanhou por seis meses."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000012",
+      "code": "big_tree",
+      "name": "Árvore grande",
+      "icon": "🌳",
+      "model": "tree_large",
+      "category": "natureza",
+      "location": "jardim-arvores",
+      "position": [
+        -9,
+        0,
+        5.5
+      ],
+      "rotation": 30,
+      "scale": 1,
+      "unlock_type": "achievement",
+      "unlock_reference": "guardiao-das-plantas",
+      "description": "Uma árvore frondosa que dá sombra ao jardim.",
+      "meaning": "Cinco ações pela natureza: você virou Guardião das Plantas."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000013",
+      "code": "vegetable_garden",
+      "name": "Horta",
+      "icon": "🥕",
+      "model": "vegetable_garden",
+      "category": "natureza",
+      "location": "horta",
+      "position": [
+        2.6,
+        0.12,
+        5.2
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "challenge",
+      "unlock_reference": "crie-uma-pequena-horta",
+      "description": "Um canteiro com hortaliças.",
+      "meaning": "A horta que você montou e cuidou no mundo real."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000014",
+      "code": "bee",
+      "name": "Abelha",
+      "icon": "🐝",
+      "model": "bee",
+      "category": "biodiversidade",
+      "location": "jardim-flores",
+      "position": [
+        -2.2,
+        1.2,
+        5.4
+      ],
+      "rotation": 0,
+      "scale": 1.3,
+      "unlock_type": "challenge",
+      "unlock_reference": "crie-um-espaco-para-polinizadores",
+      "description": "Uma abelha visitando o jardim.",
+      "meaning": "O espaço para polinizadores que você criou."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000015",
+      "code": "butterfly",
+      "name": "Borboleta",
+      "icon": "🦋",
+      "model": "butterfly",
+      "category": "biodiversidade",
+      "location": "jardim-biodiversidade",
+      "position": [
+        -1.5,
+        1.3,
+        9.5
+      ],
+      "rotation": 0,
+      "scale": 1.6,
+      "unlock_type": "challenge",
+      "unlock_reference": "crie-um-espaco-para-polinizadores",
+      "description": "Uma borboleta de passagem.",
+      "meaning": "Um jardim acolhedor para a vida."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000016",
+      "code": "bird",
+      "name": "Pássaro",
+      "icon": "🐦",
+      "model": "bird",
+      "category": "biodiversidade",
+      "location": "jardim-arvores",
+      "position": [
+        -7.5,
+        3.4,
+        3.5
+      ],
+      "rotation": 0,
+      "scale": 1.4,
+      "unlock_type": "achievement",
+      "unlock_reference": "explorador-eco",
+      "description": "Um pássaro que encontrou abrigo nas árvores.",
+      "meaning": "Você explorou quatro temas ambientais."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000017",
+      "code": "pond",
+      "name": "Lago",
+      "icon": "🪷",
+      "model": "pond",
+      "category": "agua",
+      "location": "jardim-agua",
+      "position": [
+        7.4,
+        0,
+        3.2
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "challenge",
+      "unlock_reference": "reduza-o-desperdicio-de-agua",
+      "description": "Um pequeno lago de água limpa.",
+      "meaning": "O desperdício de água que você reduziu em casa."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000018",
+      "code": "fountain",
+      "name": "Fonte",
+      "icon": "⛲",
+      "model": "fountain",
+      "category": "agua",
+      "location": "jardim-agua",
+      "position": [
+        9.3,
+        0,
+        5.8
+      ],
+      "rotation": 0,
+      "scale": 0.8,
+      "unlock_type": "lesson",
+      "unlock_reference": "o-que-acontece-com-a-agua-da-chuva",
+      "description": "Uma fonte que reaproveita a água da chuva.",
+      "meaning": "O que você aprendeu sobre o caminho da água da chuva."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000019",
+      "code": "community_bench",
+      "name": "Banco comunitário",
+      "icon": "🤝",
+      "model": "bench",
+      "category": "comunidade",
+      "location": "jardim-biodiversidade",
+      "position": [
+        3,
+        0,
+        9.8
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "challenge",
+      "unlock_reference": "participe-de-uma-acao-ambiental",
+      "description": "Um banco para receber vizinhos e amigos.",
+      "meaning": "A ação ambiental coletiva de que você participou."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000020",
+      "code": "wardrobe",
+      "name": "Armário organizado",
+      "icon": "👕",
+      "model": "wardrobe",
+      "category": "casa",
+      "location": "quarto",
+      "position": [
+        -1.0,
+        0,
+        -7.35
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "challenge",
+      "unlock_reference": "dobre-suas-roupas",
+      "description": "Um armário com roupas dobradas.",
+      "meaning": "Você cuidou das suas roupas e ajudou a organizar a casa."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000021",
+      "code": "bed",
+      "name": "Cama arrumada",
+      "icon": "🛏️",
+      "model": "bed",
+      "category": "casa",
+      "location": "quarto",
+      "position": [
+        -3.7,
+        0,
+        -6.5
+      ],
+      "rotation": 0,
+      "scale": 0.85,
+      "unlock_type": "challenge",
+      "unlock_reference": "arrume-sua-cama",
+      "description": "Uma cama pronta para começar o dia.",
+      "meaning": "Você começou o dia cuidando do seu espaço."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000022",
+      "code": "broom",
+      "name": "Vassoura",
+      "icon": "🧹",
+      "model": "broom",
+      "category": "casa",
+      "location": "sala",
+      "position": [
+        -0.35,
+        0,
+        -3.55
+      ],
+      "rotation": 12,
+      "scale": 0.8,
+      "unlock_type": "challenge",
+      "unlock_reference": "varra-um-comodo-da-casa",
+      "description": "Uma vassoura guardada depois da limpeza.",
+      "meaning": "Você ajudou a deixar um cômodo limpo."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000023",
+      "code": "toy_box",
+      "name": "Caixa de brinquedos",
+      "icon": "🧸",
+      "model": "toy_box",
+      "category": "casa",
+      "location": "sala",
+      "position": [
+        -0.75,
+        0,
+        -0.75
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "challenge",
+      "unlock_reference": "organize-seus-brinquedos",
+      "description": "Uma caixa para guardar os brinquedos.",
+      "meaning": "Você cuidou das suas coisas e deixou o espaço pronto para brincar."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000024",
+      "code": "sink",
+      "name": "Pia organizada",
+      "icon": "🍽️",
+      "model": "sink",
+      "category": "casa",
+      "location": "cozinha",
+      "position": [
+        4.55,
+        0,
+        -1.3
+      ],
+      "rotation": 270,
+      "scale": 0.9,
+      "unlock_type": "challenge",
+      "unlock_reference": "ajude-a-lavar-a-louca",
+      "description": "Uma pia pronta para a próxima refeição.",
+      "meaning": "Você ajudou a cuidar da cozinha e economizou água."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000025",
+      "code": "reading_nook",
+      "name": "Cantinho da leitura",
+      "icon": "📖",
+      "model": "reading_nook",
+      "category": "educacao",
+      "location": "estudos",
+      "position": [
+        0.2,
+        0,
+        -6.7
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "challenge",
+      "unlock_reference": "leia-por-15-minutos",
+      "description": "Um cantinho para ler com calma.",
+      "meaning": "Você reservou um tempo para aprender e imaginar."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000026",
+      "code": "magnifier",
+      "name": "Lupa da observação",
+      "icon": "🔍",
+      "model": "magnifier",
+      "category": "natureza",
+      "location": "estudos",
+      "position": [
+        1.2,
+        0.8,
+        -5.9
+      ],
+      "rotation": 20,
+      "scale": 0.8,
+      "unlock_type": "challenge",
+      "unlock_reference": "analise-uma-paisagem",
+      "description": "Uma lupa para olhar o mundo com atenção.",
+      "meaning": "Você observou uma paisagem e percebeu detalhes ao seu redor."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000027",
+      "code": "journal",
+      "name": "Diário de ideias",
+      "icon": "✍️",
+      "model": "journal",
+      "category": "educacao",
+      "location": "estudos",
+      "position": [
+        3.1,
+        0.8,
+        -5.9
+      ],
+      "rotation": 340,
+      "scale": 1,
+      "unlock_type": "challenge",
+      "unlock_reference": "escreva-no-diario",
+      "description": "Um caderno para registrar pensamentos e aprendizados.",
+      "meaning": "Você parou para refletir e registrar uma ideia sua."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000028",
+      "code": "meditation_cushion",
+      "name": "Almofada da atenção",
+      "icon": "🧘",
+      "model": "meditation_cushion",
+      "category": "casa",
+      "location": "sala",
+      "position": [
+        -1.8,
+        0,
+        -1.7
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "challenge",
+      "unlock_reference": "pratique-atencao-por-cinco-minutos",
+      "description": "Um lugar confortável para fazer uma pausa.",
+      "meaning": "Você praticou atenção e percebeu melhor o momento presente."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000029",
+      "code": "cow",
+      "name": "Vaca",
+      "icon": "🐄",
+      "model": "cow",
+      "category": "natureza",
+      "location": "jardim-arvores",
+      "position": [
+        5.5,
+        0,
+        5.5
+      ],
+      "rotation": 180,
+      "scale": 0.9,
+      "unlock_type": "challenge",
+      "unlock_reference": "conheca-a-vaca-e-os-derivados-do-leite",
+      "description": "Uma vaca tranquila no espaço verde.",
+      "meaning": "Você aprendeu de onde vem o leite e como respeitar os animais."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000030",
+      "code": "sofa",
+      "name": "Sofá da família",
+      "icon": "🛋️",
+      "model": "sofa",
+      "category": "casa",
+      "location": "sala",
+      "position": [
+        -4.0,
+        0,
+        -3.45
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "achievement",
+      "unlock_reference": "acao-em-comunidade",
+      "description": "Um sofá para a família conversar e descansar junto.",
+      "meaning": "Você fez uma ação pela comunidade: cuidar dos outros começa em casa."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000031",
+      "code": "coffee_table",
+      "name": "Mesa de centro reaproveitada",
+      "icon": "🪵",
+      "model": "coffee_table",
+      "category": "reciclagem",
+      "location": "sala",
+      "position": [
+        -4.0,
+        0,
+        -2.35
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "lesson",
+      "unlock_reference": "o-que-significa-reutilizar",
+      "description": "Uma mesinha feita com ripas de madeira reaproveitada.",
+      "meaning": "Você aprendeu que um material pode ganhar uma nova vida."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000032",
+      "code": "living_rug",
+      "name": "Tapete de retalhos",
+      "icon": "🧶",
+      "model": "rug",
+      "category": "reciclagem",
+      "location": "sala",
+      "position": [
+        -4.0,
+        0,
+        -2.4
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "lesson",
+      "unlock_reference": "o-que-e-reciclagem",
+      "description": "Um tapete colorido feito de retalhos de tecido.",
+      "meaning": "Você aprendeu sobre reciclagem: sobras também viram coisas úteis."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000033",
+      "code": "armchair",
+      "name": "Poltrona de leitura",
+      "icon": "💺",
+      "model": "armchair",
+      "category": "casa",
+      "location": "sala",
+      "position": [
+        -1.5,
+        0,
+        -3.35
+      ],
+      "rotation": 0,
+      "scale": 0.9,
+      "unlock_type": "achievement",
+      "unlock_reference": "aprendiz-dedicado",
+      "description": "Uma poltrona confortável para pensar e estudar.",
+      "meaning": "Cinco quizzes concluídos: você se dedicou a aprender."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000034",
+      "code": "stove",
+      "name": "Fogão",
+      "icon": "🍳",
+      "model": "stove",
+      "category": "casa",
+      "location": "cozinha",
+      "position": [
+        4.55,
+        0,
+        -2.55
+      ],
+      "rotation": 270,
+      "scale": 1,
+      "unlock_type": "lesson",
+      "unlock_reference": "o-que-e-uma-horta",
+      "description": "Um fogão para preparar comida fresca da horta.",
+      "meaning": "Você aprendeu de onde vêm os alimentos que cultivamos."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000035",
+      "code": "fridge",
+      "name": "Geladeira econômica",
+      "icon": "🧊",
+      "model": "fridge",
+      "category": "energia",
+      "location": "cozinha",
+      "position": [
+        4.5,
+        0,
+        -3.55
+      ],
+      "rotation": 270,
+      "scale": 1,
+      "unlock_type": "lesson",
+      "unlock_reference": "por-que-economizar-energia",
+      "description": "Uma geladeira com selo de eficiência, que gasta menos energia.",
+      "meaning": "Você aprendeu por que economizar energia faz diferença."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000036",
+      "code": "dining_table",
+      "name": "Mesa de jantar",
+      "icon": "🍽️",
+      "model": "dining_table",
+      "category": "casa",
+      "location": "cozinha",
+      "position": [
+        2.2,
+        0,
+        -1.8
+      ],
+      "rotation": 0,
+      "scale": 0.85,
+      "unlock_type": "achievement",
+      "unlock_reference": "primeiro-passo",
+      "description": "Uma mesa com cadeiras e uma fruteira para as refeições em família.",
+      "meaning": "Sua primeira ação ambiental: um passo que a família toda pode dar junto."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000037",
+      "code": "water_filter",
+      "name": "Filtro de barro",
+      "icon": "🏺",
+      "model": "water_filter",
+      "category": "agua",
+      "location": "cozinha",
+      "position": [
+        3.4,
+        0,
+        -3.7
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "lesson",
+      "unlock_reference": "por-que-precisamos-economizar-agua",
+      "description": "Um filtro de barro que deixa a água limpa e fresquinha.",
+      "meaning": "Você aprendeu por que a água limpa é preciosa."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000038",
+      "code": "nightstand",
+      "name": "Criado-mudo",
+      "icon": "🕯️",
+      "model": "nightstand",
+      "category": "casa",
+      "location": "quarto",
+      "position": [
+        -2.3,
+        0,
+        -7.5
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "level",
+      "unlock_reference": "3",
+      "description": "Um criado-mudo com abajur e um livro para antes de dormir.",
+      "meaning": "Você chegou ao nível 3 e seu quarto ficou mais aconchegante."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000039",
+      "code": "bedroom_rug",
+      "name": "Tapete do quarto",
+      "icon": "🧶",
+      "model": "rug",
+      "category": "casa",
+      "location": "quarto",
+      "position": [
+        -2.2,
+        0,
+        -5.4
+      ],
+      "rotation": 0,
+      "scale": 0.7,
+      "unlock_type": "level",
+      "unlock_reference": "6",
+      "description": "Um tapete macio ao lado da cama.",
+      "meaning": "Você chegou ao nível 6: sua jornada continua crescendo."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000040",
+      "code": "laundry_basket",
+      "name": "Cesto de roupas",
+      "icon": "🧺",
+      "model": "laundry_basket",
+      "category": "casa",
+      "location": "quarto",
+      "position": [
+        -0.5,
+        0,
+        -4.6
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "unlock_type": "challenge",
+      "unlock_reference": "dobre-suas-roupas",
+      "description": "Um cesto para separar as roupas que vão para a lavagem.",
+      "meaning": "Você dobrou suas roupas e ajudou a manter a casa em ordem."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000041",
+      "code": "desk_lamp",
+      "name": "Luminária de LED",
+      "icon": "💡",
+      "model": "desk_lamp",
+      "category": "energia",
+      "location": "estudos",
+      "position": [
+        3.5,
+        0.79,
+        -6.15
+      ],
+      "rotation": 0,
+      "scale": 1.2,
+      "unlock_type": "lesson",
+      "unlock_reference": "o-que-sao-fontes-renovaveis",
+      "description": "Uma luminária de LED que ilumina bem e gasta pouca energia.",
+      "meaning": "Você aprendeu sobre fontes de energia renováveis."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000042",
+      "code": "corkboard",
+      "name": "Mural de recados",
+      "icon": "📌",
+      "model": "corkboard",
+      "category": "educacao",
+      "location": "estudos",
+      "position": [
+        4.86,
+        1.5,
+        -6.0
+      ],
+      "rotation": 270,
+      "scale": 1,
+      "unlock_type": "achievement",
+      "unlock_reference": "estudante-da-natureza",
+      "description": "Um mural com recados e descobertas sobre a natureza.",
+      "meaning": "Dez lições concluídas: você é um estudante da natureza."
+    }
+  ]
+}

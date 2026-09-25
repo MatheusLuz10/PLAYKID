@@ -1,0 +1,1101 @@
+{
+  "$comment": "Fonte única dos conteúdos educativos. Gere o SQL com `npm run content:sql` (supabase/migrations/15_learning_content.sql). O modo demonstração lê este mesmo arquivo. Formato de 'content': parágrafos em linhas; linhas iniciadas por '- ' viram destaques.",
+  "lessons": [
+    {
+      "id": "20000000-0000-4000-8000-000000000001",
+      "category": "natureza",
+      "slug": "por-que-as-arvores-sao-importantes",
+      "topic": "Árvores",
+      "title": "Por que as árvores são importantes?",
+      "description": "Descubra o papel das árvores nos ecossistemas, na vida dos animais, na água e no solo — e o que pensar antes de plantar.",
+      "difficulty": "beginner",
+      "estimated_minutes": 5,
+      "xp_reward": 20,
+      "order_index": 1,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🌳",
+          "text": "Árvores fazem parte de ecossistemas."
+        },
+        {
+          "icon": "💧",
+          "text": "Vegetação está relacionada ao solo e à água."
+        },
+        {
+          "icon": "🐦",
+          "text": "Árvores podem fornecer recursos para diferentes espécies."
+        },
+        {
+          "icon": "🌱",
+          "text": "A escolha do local e da espécie é importante no plantio."
+        }
+      ],
+      "related": [
+        "como-uma-planta-cresce",
+        "por-que-os-polinizadores-sao-importantes",
+        "o-que-acontece-com-a-agua-da-chuva",
+        "o-que-e-uma-horta"
+      ],
+      "sections": [
+        {
+          "icon": "🌳",
+          "title": "Muito mais do que paisagem",
+          "content": "Uma árvore é muito mais do que um elemento da paisagem.\nÁrvores são plantas com tronco lenhoso que podem viver por muitos anos. Pela fotossíntese, elas usam a luz do sol para absorver gás carbônico (CO₂) do ar e liberar oxigênio.\nTambém fazem sombra e deixam o ambiente ao redor mais fresco.\n- Absorvem CO₂ e liberam oxigênio\n- Fazem sombra e refrescam o ambiente\n- Podem viver por muitos anos",
+          "image_url": "/lessons/arvores-1.svg",
+          "image_alt": "Ilustração de uma árvore grande ao lado de uma casa, com o sol ao fundo e sombra sobre o gramado.",
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Quantas árvores você consegue encontrar no caminho até sua casa?"
+            }
+          ]
+        },
+        {
+          "icon": "🌎",
+          "title": "Ecossistemas",
+          "content": "Um ecossistema é o conjunto de seres vivos de um lugar e das relações entre eles e o ambiente: luz, água, ar e solo.\nA árvore participa dessas relações o tempo todo. Ela retira água e nutrientes do solo, recebe luz do sol e devolve folhas, galhos e frutos que caem no chão.\nFungos, bactérias e pequenos animais decompõem esse material, que volta a nutrir o solo.\n- A árvore recebe luz, água e nutrientes\n- Folhas caídas são decompostas\n- Os nutrientes voltam para o solo",
+          "image_url": "/lessons/arvores-2.svg",
+          "image_alt": "Ciclo com setas: o sol ilumina a árvore, folhas caem no solo, são decompostas e os nutrientes voltam às raízes.",
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "Nas cidades, ruas arborizadas costumam ser mais frescas do que ruas sem árvores. Por isso as árvores são aliadas contra as chamadas “ilhas de calor”."
+            }
+          ]
+        },
+        {
+          "icon": "🐦",
+          "title": "Vida",
+          "content": "Uma única árvore pode ser casa e alimento para muitos seres vivos.\nSuas flores oferecem néctar e pólen para abelhas e borboletas. Os frutos alimentam aves e outros animais — que depois espalham as sementes. Galhos e ocos do tronco viram abrigo e lugar de ninho.\n- Flores: néctar e pólen\n- Frutos: alimento e dispersão de sementes\n- Galhos e troncos: abrigo e ninhos",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "observe",
+              "prompt": "Observe a ilustração. Quantos seres vivos estão usando esta árvore?",
+              "image_url": "/lessons/arvores-3.svg",
+              "image_alt": "Árvore com um ninho de pássaro em um galho, uma abelha visitando uma flor e uma lagarta comendo uma folha.",
+              "answer": "Três: um pássaro no ninho, uma abelha na flor e uma lagarta na folha. A mesma árvore oferece abrigo, néctar e alimento."
+            }
+          ]
+        },
+        {
+          "icon": "💧",
+          "title": "Água e solo",
+          "content": "As raízes seguram a terra e ajudam a diminuir a erosão, que acontece quando a chuva e o vento levam o solo embora.\nA copa amortece a força das gotas de chuva, e as folhas caídas cobrem o chão. Assim, mais água consegue penetrar no solo em vez de escorrer pela superfície.\n- Raízes seguram o solo\n- A copa amortece a chuva\n- Mais água infiltra no solo",
+          "image_url": "/lessons/arvores-4.svg",
+          "image_alt": "Corte do solo mostrando raízes de uma árvore e gotas de chuva infiltrando na terra.",
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "Pelas folhas, as plantas liberam vapor d’água para o ar. Esse processo se chama transpiração e faz parte do ciclo da água."
+            }
+          ]
+        },
+        {
+          "icon": "🌱",
+          "title": "Antes de plantar",
+          "content": "Não basta colocar uma árvore em qualquer lugar. Antes de plantar, vale pensar em alguns pontos:\n- Espécie: prefira espécies nativas da sua região\n- Espaço: imagine o tamanho da árvore adulta\n- Solo: a terra precisa receber as raízes\n- Água: a muda precisa de rega nos primeiros meses\n- Clima: a espécie deve combinar com o clima local\n- Futuro: raízes e copa não podem atrapalhar fios, canos e muros",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "🌳 Escolha o local: onde você plantaria uma árvore que vai ficar grande?",
+              "options": [
+                {
+                  "id": "fiacao",
+                  "icon": "⚡",
+                  "label": "Embaixo da fiação elétrica da rua",
+                  "is_best": false,
+                  "feedback": "Quando crescer, a copa vai alcançar os fios e precisará de podas frequentes. Para árvores grandes, procure um lugar sem fiação."
+                },
+                {
+                  "id": "quintal",
+                  "icon": "☀️",
+                  "label": "Em um espaço aberto e ensolarado, longe de muros e canos",
+                  "is_best": true,
+                  "feedback": "Boa escolha! Com espaço para a copa e as raízes, a árvore cresce saudável sem causar problemas."
+                },
+                {
+                  "id": "muro",
+                  "icon": "🧱",
+                  "label": "Colada ao muro da casa",
+                  "is_best": false,
+                  "feedback": "Sem espaço, as raízes podem danificar o muro e a copa cresce torta. Deixe uma boa distância de construções."
+                }
+              ]
+            },
+            {
+              "type": "tip",
+              "text": "Antes de plantar, pergunte em um viveiro ou na secretaria de meio ambiente da sua cidade quais espécies nativas combinam com a sua região."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000002",
+      "category": "natureza",
+      "slug": "como-uma-planta-cresce",
+      "topic": "Plantas",
+      "title": "Como uma planta cresce?",
+      "description": "Da semente à planta: o que ela precisa para germinar e crescer.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 2,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🌰",
+          "text": "A semente guarda uma planta em miniatura e reservas de alimento."
+        },
+        {
+          "icon": "☀️",
+          "text": "Com luz, água e ar, a planta produz o próprio alimento pela fotossíntese."
+        },
+        {
+          "icon": "🌿",
+          "text": "Solo, espaço e rega na medida certa ajudam no crescimento."
+        }
+      ],
+      "related": [
+        "o-que-e-uma-horta",
+        "por-que-as-arvores-sao-importantes",
+        "o-que-e-biodiversidade"
+      ],
+      "sections": [
+        {
+          "icon": "🌰",
+          "title": "Tudo começa na semente",
+          "content": "Dentro da semente existe um embrião — uma plantinha em miniatura — e uma reserva de alimento.\nQuando encontra água e temperatura adequada, a semente germina: primeiro surge a raiz, depois o caule e as primeiras folhas.\n- A raiz aparece primeiro\n- Depois surgem caule e folhas",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "☀️",
+          "title": "Luz, água e ar",
+          "content": "As folhas usam a luz do sol, a água que vem das raízes e o gás carbônico do ar para produzir açúcares. Isso é a fotossíntese.\nEsses açúcares são o alimento que faz a planta crescer. Nesse processo, a planta libera oxigênio.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "Muitas plantas crescem em direção à luz. Esse movimento se chama fototropismo — repare nas plantas perto de janelas."
+            }
+          ]
+        },
+        {
+          "icon": "🌿",
+          "title": "Cuidando do crescimento",
+          "content": "Além de luz, a planta precisa de solo com nutrientes e espaço para as raízes.\nA água deve vir na medida certa: terra encharcada o tempo todo também faz mal, porque as raízes precisam de ar.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Que plantas você vê crescendo perto de você? De onde elas recebem luz?"
+            },
+            {
+              "type": "tip",
+              "text": "Quer ver a germinação de perto? Coloque um grão de feijão em algodão úmido e observe por alguns dias."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000003",
+      "category": "natureza",
+      "slug": "o-que-e-uma-horta",
+      "topic": "Hortas",
+      "title": "O que é uma horta?",
+      "description": "Onde começar, o que plantar e como manter uma horta cheia de vida.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 3,
+      "prerequisite": "como-uma-planta-cresce",
+      "summary_points": [
+        {
+          "icon": "🥬",
+          "text": "Uma horta pode existir em quintais, escolas, vasos ou espaços comunitários."
+        },
+        {
+          "icon": "☀️",
+          "text": "Sol, água por perto e solo com matéria orgânica são o ponto de partida."
+        },
+        {
+          "icon": "🐞",
+          "text": "Uma horta saudável convive com insetos que ajudam as plantas."
+        }
+      ],
+      "related": [
+        "como-uma-planta-cresce",
+        "por-que-os-polinizadores-sao-importantes",
+        "o-que-significa-reutilizar"
+      ],
+      "sections": [
+        {
+          "icon": "🥬",
+          "title": "Um pedaço de terra que alimenta",
+          "content": "Horta é um espaço para cultivar hortaliças, temperos e ervas.\nEla pode estar no quintal, na escola, em vasos na varanda ou em um terreno da comunidade.\n- Quintais e varandas\n- Escolas\n- Hortas comunitárias",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "📍",
+          "title": "Onde e como começar",
+          "content": "A maioria das hortaliças precisa de algumas horas de sol direto por dia.\nTer água por perto facilita a rega, e um solo fofo com matéria orgânica ajuda as raízes.\nPara começar, escolha plantas fáceis, como cebolinha, alface e manjericão.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Onde você começaria uma horta?",
+              "options": [
+                {
+                  "id": "sombra",
+                  "icon": "🌑",
+                  "label": "Em um canto que fica na sombra o dia todo",
+                  "is_best": false,
+                  "feedback": "Sem sol, a maioria das hortaliças cresce fraca. Procure um lugar iluminado."
+                },
+                {
+                  "id": "sol",
+                  "icon": "🚰",
+                  "label": "Em um lugar com sol pela manhã e uma torneira perto",
+                  "is_best": true,
+                  "feedback": "Ótimo! Sol e água por perto são os melhores aliados de uma horta."
+                },
+                {
+                  "id": "entulho",
+                  "icon": "🧱",
+                  "label": "Sobre terra compactada e restos de obra",
+                  "is_best": false,
+                  "feedback": "Solo duro e com entulho dificulta as raízes. Seria preciso preparar a terra antes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "🐞",
+          "title": "Uma horta cheia de vida",
+          "content": "Flores perto da horta atraem polinizadores, e alguns insetos ajudam a controlar pragas.\nRestos de frutas e verduras podem virar adubo por meio da compostagem.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "Joaninhas se alimentam de pulgões, pequenos insetos que atacam as plantas. Por isso são consideradas aliadas das hortas."
+            },
+            {
+              "type": "tip",
+              "text": "Comece pequeno: um vaso de temperos já é uma horta e ensina muito sobre cuidar das plantas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000004",
+      "category": "agua",
+      "slug": "por-que-precisamos-economizar-agua",
+      "topic": "Economia de água",
+      "title": "Por que precisamos economizar água?",
+      "description": "Água doce é pouca, dá trabalho para chegar até a torneira — e pequenas atitudes fazem diferença.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 1,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🌍",
+          "text": "A maior parte da água do planeta é salgada; a água doce é uma pequena parte."
+        },
+        {
+          "icon": "🚰",
+          "text": "Tratar e distribuir água usa energia e recursos."
+        },
+        {
+          "icon": "💧",
+          "text": "Pequenas atitudes do dia a dia evitam desperdício."
+        }
+      ],
+      "related": [
+        "o-que-acontece-com-a-agua-da-chuva",
+        "por-que-economizar-energia",
+        "o-que-significa-reutilizar"
+      ],
+      "sections": [
+        {
+          "icon": "🌍",
+          "title": "Pouca água doce",
+          "content": "Parece que água é o que não falta: ela cobre a maior parte da superfície da Terra.\nMas quase toda essa água é salgada. A água doce é uma pequena parte, e muito dela está congelada em geleiras ou escondida no subsolo.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "Segundo o Serviço Geológico dos Estados Unidos (USGS), cerca de 97% da água da Terra é salgada."
+            }
+          ]
+        },
+        {
+          "icon": "🚰",
+          "title": "Da natureza até a torneira",
+          "content": "Antes de chegar à sua casa, a água é captada de rios ou represas, tratada e bombeada por canos.\nDepois de usada, vira esgoto, que também precisa de tratamento.\nTodo esse caminho usa energia e recursos. Economizar água também é economizar energia.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "💧",
+          "title": "Pequenas atitudes",
+          "content": "- Fechar a torneira enquanto escova os dentes\n- Tomar banhos mais curtos\n- Consertar vazamentos\n- Usar vassoura em vez de mangueira para limpar a calçada\n- Reaproveitar a água da máquina de lavar para limpar o quintal",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Em quais momentos do seu dia você usa água? Em qual deles daria para economizar?"
+            },
+            {
+              "type": "tip",
+              "text": "Uma torneira pingando o dia inteiro desperdiça muita água. Se encontrar um vazamento, avise um adulto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000005",
+      "category": "agua",
+      "slug": "o-que-acontece-com-a-agua-da-chuva",
+      "topic": "Chuva",
+      "title": "O que acontece com a água da chuva?",
+      "description": "O caminho da chuva no campo e na cidade, e como aproveitá-la com segurança.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 2,
+      "prerequisite": "por-que-precisamos-economizar-agua",
+      "summary_points": [
+        {
+          "icon": "🌧️",
+          "text": "A chuva pode infiltrar no solo, escorrer para os rios ou evaporar."
+        },
+        {
+          "icon": "🏙️",
+          "text": "Superfícies impermeáveis aumentam o escoamento e o risco de alagamentos."
+        },
+        {
+          "icon": "🪣",
+          "text": "Água da chuva pode ser reaproveitada, sempre em recipientes tampados."
+        }
+      ],
+      "related": [
+        "por-que-precisamos-economizar-agua",
+        "por-que-as-arvores-sao-importantes",
+        "o-que-e-uma-acao-ambiental-comunitaria"
+      ],
+      "sections": [
+        {
+          "icon": "🌧️",
+          "title": "O caminho da chuva",
+          "content": "Quando a chuva cai, a água pode seguir caminhos diferentes:\n- Infiltrar no solo e abastecer a água subterrânea\n- Escorrer pela superfície até rios e lagos\n- Evaporar e voltar para a atmosfera\nEsses caminhos fazem parte do ciclo da água.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "🏙️",
+          "title": "Chuva na cidade",
+          "content": "Asfalto, concreto e telhados não deixam a água infiltrar. Por isso, nas cidades, mais água escorre pelas ruas, o que aumenta o risco de alagamentos.\nLixo jogado na rua entope bueiros e piora o problema.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Em qual destes lugares a água da chuva infiltra melhor?",
+              "options": [
+                {
+                  "id": "asfalto",
+                  "icon": "🛣️",
+                  "label": "Rua asfaltada",
+                  "is_best": false,
+                  "feedback": "O asfalto é impermeável: a água escorre em vez de infiltrar."
+                },
+                {
+                  "id": "jardim",
+                  "icon": "🌿",
+                  "label": "Jardim com solo e plantas",
+                  "is_best": true,
+                  "feedback": "Isso! Solo coberto por plantas deixa a água penetrar e ainda segura a terra."
+                },
+                {
+                  "id": "concreto",
+                  "icon": "🏢",
+                  "label": "Pátio de concreto",
+                  "is_best": false,
+                  "feedback": "O concreto também impede a infiltração. Áreas verdes ajudam muito a cidade."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "🪣",
+          "title": "Aproveitar a chuva",
+          "content": "A água da chuva pode ser guardada em cisternas e usada para regar plantas e limpar áreas externas.\nEla não deve ser bebida sem tratamento adequado.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Todo recipiente com água parada precisa ficar tampado: aberto, ele pode virar criadouro do mosquito Aedes aegypti."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000006",
+      "category": "residuos",
+      "slug": "o-que-e-reciclagem",
+      "topic": "Reciclagem",
+      "title": "O que é reciclagem?",
+      "description": "Como materiais usados viram matéria-prima para novos produtos — e por que separar certo faz diferença.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 1,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "♻️",
+          "text": "Reciclar é transformar materiais usados em matéria-prima para novos produtos."
+        },
+        {
+          "icon": "🗑️",
+          "text": "Separar recicláveis limpos e secos facilita a coleta seletiva."
+        },
+        {
+          "icon": "🔁",
+          "text": "Antes de reciclar, vale reduzir e reutilizar."
+        }
+      ],
+      "related": [
+        "o-que-significa-reutilizar",
+        "o-que-e-uma-acao-ambiental-comunitaria",
+        "por-que-economizar-energia"
+      ],
+      "sections": [
+        {
+          "icon": "♻️",
+          "title": "Um novo começo para os materiais",
+          "content": "Reciclar é transformar materiais já usados em matéria-prima para fabricar novos produtos.\nPapel, plástico, metal e vidro estão entre os materiais mais recicláveis.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "🗑️",
+          "title": "Separar certo",
+          "content": "A reciclagem começa em casa: separe os recicláveis dos restos de comida.\nNa coleta seletiva, o Brasil usa um padrão de cores (Resolução CONAMA nº 275/2001):\n- Azul: papel\n- Vermelho: plástico\n- Verde: vidro\n- Amarelo: metal\n- Marrom: resíduos orgânicos",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Em qual lixeira vai uma lata de alumínio?",
+              "options": [
+                {
+                  "id": "azul",
+                  "icon": "🔵",
+                  "label": "Azul",
+                  "is_best": false,
+                  "feedback": "A azul é para papel. Metais vão em outra cor."
+                },
+                {
+                  "id": "amarela",
+                  "icon": "🟡",
+                  "label": "Amarela",
+                  "is_best": true,
+                  "feedback": "Isso mesmo! Amarelo é a cor dos metais, como latas de alumínio."
+                },
+                {
+                  "id": "verde",
+                  "icon": "🟢",
+                  "label": "Verde",
+                  "is_best": false,
+                  "feedback": "A verde é para vidro. A lata vai na amarela."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "🔁",
+          "title": "Reciclar é o último passo",
+          "content": "Antes de reciclar, pense em reduzir o que você consome e em reutilizar o que já tem. Reciclar é importante, mas gerar menos resíduo é ainda melhor.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "O alumínio pode ser reciclado muitas vezes sem perder suas propriedades."
+            },
+            {
+              "type": "tip",
+              "text": "Lave e seque as embalagens antes de separá-las: isso facilita o trabalho das cooperativas de reciclagem."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000007",
+      "category": "residuos",
+      "slug": "o-que-significa-reutilizar",
+      "topic": "Reutilização",
+      "title": "O que significa reutilizar?",
+      "description": "Dar uma nova vida aos objetos antes de pensar em descartá-los.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 2,
+      "prerequisite": "o-que-e-reciclagem",
+      "summary_points": [
+        {
+          "icon": "🔄",
+          "text": "Reutilizar é usar de novo um objeto, sem transformá-lo industrialmente."
+        },
+        {
+          "icon": "💡",
+          "text": "Consertar, doar e dar nova função são formas de reutilizar."
+        },
+        {
+          "icon": "🌎",
+          "text": "Reutilizar economiza recursos e reduz o lixo."
+        }
+      ],
+      "related": [
+        "o-que-e-reciclagem",
+        "o-que-e-uma-horta",
+        "o-que-e-uma-acao-ambiental-comunitaria"
+      ],
+      "sections": [
+        {
+          "icon": "🔄",
+          "title": "Usar de novo",
+          "content": "Reutilizar é usar novamente um objeto, com a mesma função ou com uma nova, sem que ele precise passar por uma fábrica.\nÉ diferente de reciclar, em que o material é transformado em matéria-prima.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "💡",
+          "title": "Ideias para reutilizar",
+          "content": "- Potes de vidro para guardar alimentos\n- Embalagens como vasos para mudas\n- Doar roupas, livros e brinquedos\n- Consertar em vez de jogar fora",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Que objeto da sua casa poderia ganhar uma nova função?"
+            }
+          ]
+        },
+        {
+          "icon": "🌎",
+          "title": "Por que isso importa",
+          "content": "Cada objeto reutilizado é um objeto novo que não precisou ser fabricado e um a menos no lixo. Isso economiza matéria-prima, água e energia.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Qual destas atitudes é um exemplo de reutilizar?",
+              "options": [
+                {
+                  "id": "descartar",
+                  "icon": "🗑️",
+                  "label": "Colocar o pote vazio na lixeira de recicláveis",
+                  "is_best": false,
+                  "feedback": "Isso é encaminhar para a reciclagem — importante, mas não é reutilizar."
+                },
+                {
+                  "id": "guardar",
+                  "icon": "🫙",
+                  "label": "Usar o pote de vidro para guardar grãos",
+                  "is_best": true,
+                  "feedback": "Exatamente! O pote ganhou uma nova função sem precisar ser fabricado de novo."
+                },
+                {
+                  "id": "comprar",
+                  "icon": "🛒",
+                  "label": "Comprar um pote novo",
+                  "is_best": false,
+                  "feedback": "Comprar um novo gera mais consumo. Reutilizar é aproveitar o que já existe."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000008",
+      "category": "energia",
+      "slug": "por-que-economizar-energia",
+      "topic": "Economia de energia",
+      "title": "Por que economizar energia?",
+      "description": "De onde vem a eletricidade, onde mais gastamos em casa e como economizar.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 1,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "⚡",
+          "text": "Toda forma de gerar eletricidade causa algum impacto ambiental."
+        },
+        {
+          "icon": "🏠",
+          "text": "Alguns aparelhos consomem mais energia do que outros."
+        },
+        {
+          "icon": "👣",
+          "text": "Atitudes simples reduzem o consumo."
+        }
+      ],
+      "related": [
+        "o-que-sao-fontes-renovaveis",
+        "por-que-precisamos-economizar-agua",
+        "o-que-e-reciclagem"
+      ],
+      "sections": [
+        {
+          "icon": "⚡",
+          "title": "De onde vem a energia",
+          "content": "A eletricidade é gerada em usinas — hidrelétricas, eólicas, solares, termelétricas — e viaja por linhas de transmissão até as casas.\nToda forma de geração tem algum impacto: represas alagam áreas, termelétricas queimam combustíveis.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "🏠",
+          "title": "Consumo em casa",
+          "content": "Chuveiro elétrico, ar-condicionado e geladeira estão entre os aparelhos que mais consomem energia em uma casa.\nAparelhos em modo de espera (standby) também continuam gastando um pouco.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "Lâmpadas de LED gastam bem menos energia do que as incandescentes para iluminar o mesmo ambiente."
+            }
+          ]
+        },
+        {
+          "icon": "👣",
+          "title": "Atitudes que fazem diferença",
+          "content": "- Apagar a luz ao sair do cômodo\n- Tirar da tomada carregadores que não estão em uso\n- Não deixar a porta da geladeira aberta\n- Tomar banhos mais curtos",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Aproveite a luz do dia: abrir cortinas e janelas pode dispensar lâmpadas acesas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000009",
+      "category": "energia",
+      "slug": "o-que-sao-fontes-renovaveis",
+      "topic": "Fontes renováveis",
+      "title": "O que são fontes renováveis?",
+      "description": "Sol, vento, água e biomassa: fontes que se renovam na natureza — e seus limites.",
+      "difficulty": "intermediate",
+      "estimated_minutes": 4,
+      "xp_reward": 20,
+      "order_index": 2,
+      "prerequisite": "por-que-economizar-energia",
+      "summary_points": [
+        {
+          "icon": "🔋",
+          "text": "Fontes renováveis se renovam na natureza; as não renováveis podem se esgotar."
+        },
+        {
+          "icon": "☀️",
+          "text": "Solar, eólica, hidrelétrica e biomassa são exemplos de fontes renováveis."
+        },
+        {
+          "icon": "⚖️",
+          "text": "Nenhuma fonte é livre de impactos — a energia mais limpa é a que não é desperdiçada."
+        }
+      ],
+      "related": [
+        "por-que-economizar-energia",
+        "o-que-e-biodiversidade",
+        "o-que-acontece-com-a-agua-da-chuva"
+      ],
+      "sections": [
+        {
+          "icon": "🔋",
+          "title": "Renováveis e não renováveis",
+          "content": "Fontes renováveis se renovam naturalmente: a luz do sol, o vento, o movimento da água e a biomassa (como o bagaço da cana).\nFontes não renováveis, como petróleo, carvão e gás natural, existem em quantidade limitada e liberam gases de efeito estufa quando queimadas.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "☀️",
+          "title": "Conhecendo as fontes",
+          "content": "- Solar: painéis transformam a luz do sol em eletricidade\n- Eólica: turbinas giram com o vento\n- Hidrelétrica: a força da água dos rios move turbinas\n- Biomassa: restos vegetais são usados para gerar energia",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "No Brasil, a maior parte da eletricidade vem de fontes renováveis, principalmente das usinas hidrelétricas."
+            }
+          ]
+        },
+        {
+          "icon": "⚖️",
+          "title": "Nenhuma fonte é perfeita",
+          "content": "Hidrelétricas alagam grandes áreas, parques eólicos mudam a paisagem e podem afetar aves, e painéis solares precisam de materiais para serem fabricados.\nPor isso, além de escolher fontes renováveis, é importante não desperdiçar energia.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Qual destas fontes é renovável?",
+              "options": [
+                {
+                  "id": "carvao",
+                  "icon": "⛏️",
+                  "label": "Carvão mineral",
+                  "is_best": false,
+                  "feedback": "O carvão levou milhões de anos para se formar e pode se esgotar: é não renovável."
+                },
+                {
+                  "id": "vento",
+                  "icon": "🌬️",
+                  "label": "Vento",
+                  "is_best": true,
+                  "feedback": "Isso! O vento se renova naturalmente e move as turbinas eólicas."
+                },
+                {
+                  "id": "petroleo",
+                  "icon": "🛢️",
+                  "label": "Petróleo",
+                  "is_best": false,
+                  "feedback": "O petróleo é um combustível fóssil, portanto não renovável."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000010",
+      "category": "biodiversidade",
+      "slug": "o-que-e-biodiversidade",
+      "topic": "Ecossistemas",
+      "title": "O que é biodiversidade?",
+      "description": "A variedade de vida no planeta, como tudo está conectado e o que ameaça essa riqueza.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 1,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🦋",
+          "text": "Biodiversidade é a variedade de vida: espécies, genes e ecossistemas."
+        },
+        {
+          "icon": "🕸️",
+          "text": "Os seres vivos dependem uns dos outros."
+        },
+        {
+          "icon": "🛡️",
+          "text": "Proteger a vegetação nativa ajuda a conservar a biodiversidade."
+        }
+      ],
+      "related": [
+        "por-que-os-polinizadores-sao-importantes",
+        "por-que-as-arvores-sao-importantes",
+        "como-uma-planta-cresce"
+      ],
+      "sections": [
+        {
+          "icon": "🦋",
+          "title": "A variedade da vida",
+          "content": "Biodiversidade é a variedade de vida na Terra. Ela inclui:\n- A diversidade de espécies\n- A diversidade genética dentro de cada espécie\n- A diversidade de ecossistemas, como florestas, rios e cerrados",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "🕸️",
+          "title": "Tudo conectado",
+          "content": "Os seres vivos dependem uns dos outros: plantas alimentam animais, animais espalham sementes, fungos decompõem restos e devolvem nutrientes ao solo.\nQuando uma espécie desaparece, outras podem ser afetadas.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "O Brasil é considerado um dos países com maior biodiversidade do mundo, com biomas como a Amazônia, o Cerrado e a Mata Atlântica."
+            }
+          ]
+        },
+        {
+          "icon": "🛡️",
+          "title": "Ameaças e cuidados",
+          "content": "A destruição de habitats, a poluição e as espécies invasoras estão entre as principais ameaças à biodiversidade.\nProteger a vegetação nativa e nunca retirar animais silvestres da natureza são formas de cuidar.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Quantos tipos diferentes de seres vivos você consegue ver hoje, contando plantas, insetos e aves?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000011",
+      "category": "biodiversidade",
+      "slug": "por-que-os-polinizadores-sao-importantes",
+      "topic": "Abelhas",
+      "title": "Por que os polinizadores são importantes?",
+      "description": "Abelhas, borboletas, aves e morcegos: quem são os polinizadores e por que dependemos deles.",
+      "difficulty": "intermediate",
+      "estimated_minutes": 4,
+      "xp_reward": 20,
+      "order_index": 2,
+      "prerequisite": "o-que-e-biodiversidade",
+      "summary_points": [
+        {
+          "icon": "🌸",
+          "text": "Polinização é o transporte de pólen que permite a formação de frutos e sementes."
+        },
+        {
+          "icon": "🐝",
+          "text": "Abelhas, borboletas, aves e morcegos estão entre os polinizadores."
+        },
+        {
+          "icon": "🍎",
+          "text": "Muitos alimentos dependem, em algum grau, dos polinizadores."
+        }
+      ],
+      "related": [
+        "o-que-e-biodiversidade",
+        "o-que-e-uma-horta",
+        "por-que-as-arvores-sao-importantes"
+      ],
+      "sections": [
+        {
+          "icon": "🌸",
+          "title": "O que é polinização",
+          "content": "Para formar frutos e sementes, muitas plantas precisam que o pólen de uma flor chegue a outra.\nEsse transporte se chama polinização. Às vezes é feito pelo vento, mas muitas plantas dependem de animais.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "🐝",
+          "title": "Quem poliniza",
+          "content": "- Abelhas, incluindo as abelhas nativas sem ferrão\n- Borboletas e mariposas\n- Besouros\n- Beija-flores\n- Morcegos",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Da próxima vez que vir uma flor, observe: algum animal a visita?"
+            }
+          ]
+        },
+        {
+          "icon": "🍎",
+          "title": "Alimento e natureza",
+          "content": "Sem polinizadores, muitas plantas produziriam menos frutos e sementes — o que afeta tanto a natureza quanto a nossa alimentação.\nO uso excessivo de agrotóxicos e a perda de áreas naturais estão entre as ameaças a esses animais.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "fun_fact",
+              "title": "Você sabia?",
+              "text": "Segundo a IPBES, plataforma científica internacional sobre biodiversidade, cerca de 75% dos tipos de cultivos alimentares do mundo dependem, em algum grau, da polinização por animais."
+            },
+            {
+              "type": "tip",
+              "text": "Plantar flores variadas e evitar agrotóxicos no jardim ajuda os polinizadores."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000012",
+      "category": "comunidade",
+      "slug": "o-que-e-uma-acao-ambiental-comunitaria",
+      "topic": "Ações coletivas",
+      "title": "O que é uma ação ambiental comunitária?",
+      "description": "Como pessoas se organizam para cuidar juntas do lugar onde vivem.",
+      "difficulty": "beginner",
+      "estimated_minutes": 3,
+      "xp_reward": 20,
+      "order_index": 1,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🤝",
+          "text": "Ações comunitárias reúnem pessoas em torno de um objetivo ambiental comum."
+        },
+        {
+          "icon": "🗺️",
+          "text": "Tudo começa identificando um problema e conversando com as pessoas."
+        },
+        {
+          "icon": "🎉",
+          "text": "Cuidar do resultado e celebrar mantém a comunidade engajada."
+        }
+      ],
+      "related": [
+        "o-que-e-reciclagem",
+        "o-que-e-uma-horta",
+        "por-que-as-arvores-sao-importantes"
+      ],
+      "sections": [
+        {
+          "icon": "🤝",
+          "title": "Juntos pelo lugar onde vivemos",
+          "content": "Uma ação ambiental comunitária acontece quando um grupo de pessoas se organiza para cuidar do ambiente onde vive.\n- Mutirões de limpeza\n- Hortas comunitárias\n- Plantio de árvores em praças",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": []
+        },
+        {
+          "icon": "🗺️",
+          "title": "Como começar",
+          "content": "Identifique um problema, converse com vizinhos, escola ou associação do bairro e planejem juntos: materiais, segurança e, quando necessário, autorização da prefeitura.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Qual costuma ser o primeiro passo de uma ação comunitária?",
+              "options": [
+                {
+                  "id": "comprar",
+                  "icon": "🛒",
+                  "label": "Comprar materiais",
+                  "is_best": false,
+                  "feedback": "Materiais vêm depois do planejamento. Primeiro é preciso saber o que fazer e com quem."
+                },
+                {
+                  "id": "conversar",
+                  "icon": "💬",
+                  "label": "Identificar o problema e conversar com as pessoas",
+                  "is_best": true,
+                  "feedback": "Isso! Uma ação comunitária nasce do diálogo sobre um problema comum."
+                },
+                {
+                  "id": "sozinho",
+                  "icon": "🙈",
+                  "label": "Fazer tudo sozinho, sem avisar ninguém",
+                  "is_best": false,
+                  "feedback": "Sozinho não é comunitário, e sem combinar com as pessoas a ação pode não se manter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "🎉",
+          "title": "Depois da ação",
+          "content": "O cuidado continua depois do mutirão: regar as mudas, manter o lugar limpo, compartilhar os resultados e celebrar juntos.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Em ações de limpeza, use luvas e nunca recolha objetos cortantes ou perigosos com as mãos. Crianças sempre acompanhadas de adultos."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000013",
+      "category": "natureza",
+      "slug": "a-vaca-e-os-derivados-do-leite",
+      "topic": "Alimentação e animais",
+      "title": "A vaca e os derivados do leite",
+      "description": "Descubra de onde vem o leite, quais alimentos podem ser feitos com ele e como respeitar os animais.",
+      "difficulty": "beginner",
+      "estimated_minutes": 5,
+      "xp_reward": 20,
+      "order_index": 13,
+      "prerequisite": null,
+      "summary_points": [
+        { "icon": "🐄", "text": "Vacas são animais que precisam de cuidado, espaço, água e alimento." },
+        { "icon": "🥛", "text": "O leite pode ser transformado em diferentes alimentos." },
+        { "icon": "🧀", "text": "Queijo, iogurte e manteiga são exemplos de derivados do leite." },
+        { "icon": "🌱", "text": "Escolhas conscientes valorizam o bem-estar animal e evitam desperdício." }
+      ],
+      "related": ["o-que-e-uma-acao-ambiental-comunitaria", "o-que-e-uma-horta"],
+      "sections": [
+        {
+          "icon": "🐄",
+          "title": "Conhecendo a vaca",
+          "content": "A vaca é um mamífero: quando filhote, alimenta-se do leite da mãe. Em fazendas, as vacas precisam de água limpa, alimento, abrigo, espaço e cuidados de pessoas responsáveis.\n- É um mamífero\n- Precisa de água, alimento e descanso\n- Deve ser tratada com respeito e cuidado",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [{ "type": "think", "prompt": "O que um animal precisa para viver bem?" }]
+        },
+        {
+          "icon": "🥛",
+          "title": "Do leite aos alimentos",
+          "content": "O leite pode ser usado para fazer alimentos como queijo, iogurte, manteiga e coalhada. Esses alimentos são chamados de derivados do leite. Cada um passa por uma preparação diferente.\n- Leite pode virar queijo\n- Leite pode virar iogurte\n- Leite pode virar manteiga",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [{ "type": "choice", "prompt": "Qual destes é um derivado do leite?", "options": [{ "id": "arroz", "icon": "🍚", "label": "Arroz", "is_best": false, "feedback": "Arroz é um grão, não um derivado do leite." }, { "id": "queijo", "icon": "🧀", "label": "Queijo", "is_best": true, "feedback": "Isso! O queijo pode ser produzido a partir do leite." }, { "id": "maca", "icon": "🍎", "label": "Maçã", "is_best": false, "feedback": "A maçã é uma fruta, não um derivado do leite." }] }]
+        },
+        {
+          "icon": "💚",
+          "title": "Cuidar e não desperdiçar",
+          "content": "Conhecer a origem dos alimentos ajuda a agradecer o trabalho das pessoas e a respeitar os animais. Podemos servir apenas o que vamos comer, guardar corretamente o que sobrar e conversar com um adulto sobre escolhas alimentares.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [{ "type": "tip", "text": "Nunca entre em uma fazenda, toque ou alimente um animal sem a autorização e a presença de um adulto responsável." }]
+        }
+      ]
+    }
+  ]
+}

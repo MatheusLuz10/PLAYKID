@@ -1,3 +1,4 @@
+import { createClient as createNeonClient, SupabaseAuthAdapter } from '@neondatabase/neon-js';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 /**
@@ -31,11 +32,28 @@ if (key && !keyIsSafe) {
   );
 }
 
-export const isSupabaseConfigured = Boolean(url) && keyIsSafe;
+/**
+ * Neon (Managed Better Auth + Data API): o SDK do Neon oferece a mesma forma do
+ * cliente Supabase (auth.signInWithPassword, rpc, from), então o app usa o mesmo
+ * backend. Só as fotos mudam (vão pelo Worker, ver evidenceFiles.ts).
+ * Os dois endereços são públicos (não dão acesso a nada sem o login).
+ */
+const neonAuthUrl = import.meta.env.VITE_NEON_AUTH_URL as string | undefined;
+const neonDataApiUrl = import.meta.env.VITE_NEON_DATA_API_URL as string | undefined;
+export const isNeonConfigured = Boolean(neonAuthUrl && neonDataApiUrl);
 
-export const supabase: SupabaseClient | null = isSupabaseConfigured
-  ? createClient(url!, key!, { auth: { persistSession: true, autoRefreshToken: true } })
-  : null;
+/** Há um backend online (Neon ou Supabase)? Sem ele o app roda em modo demonstração. */
+export const isSupabaseConfigured = isNeonConfigured || (Boolean(url) && keyIsSafe);
+
+export const supabase: SupabaseClient | null = isNeonConfigured
+  ? (createNeonClient({
+      // o jogo só consulta o banco depois do login (GameProvider): sempre com o token da pessoa
+      auth: { url: neonAuthUrl!, adapter: SupabaseAuthAdapter() },
+      dataApi: { url: neonDataApiUrl! },
+    }) as unknown as SupabaseClient)
+  : isSupabaseConfigured
+    ? createClient(url!, key!, { auth: { persistSession: true, autoRefreshToken: true } })
+    : null;
 
 export function requireSupabase(): SupabaseClient {
   if (!supabase) throw new Error('Supabase não configurado');

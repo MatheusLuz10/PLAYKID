@@ -1,13 +1,27 @@
-// Publicação no Cloudflare Workers (site estático).
-// Build: `npm run build` (gera dist/) · Deploy: `npx wrangler deploy`.
-// Sem variáveis VITE_SUPABASE_* no build, o site publicado roda em modo demonstração.
+// Publicação no Cloudflare Workers: site estático (dist/) + API de fotos (worker/index.ts).
+// Build: `npm run build` (gera dist/, com os endereços públicos do Neon de .env.production)
+// Deploy: `npx wrangler deploy`
+// Segredos (uma vez, `npx wrangler secret put NOME`): DATABASE_URL, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "playkid",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-09-01",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     // rotas do app (/mundo, /meu-lugar, /perfil…) abrem o index.html; o React Router cuida do resto
-    "not_found_handling": "single-page-application"
-  }
+    "not_found_handling": "single-page-application",
+    // a API passa pelo Worker; o resto é servido direto dos arquivos estáticos
+    "run_worker_first": ["/api/*"]
+  },
+  // Endereços públicos do Neon (branch production). Não são segredos.
+  "vars": {
+    "NEON_AUTH_BASE_URL": "https://ep-calm-scene-b42gn9ky.neonauth.c-6.us-east-2.aws.neon.tech/neondb/auth",
+    "NEON_AUTH_JWKS_URL": "https://ep-calm-scene-b42gn9ky.neonauth.c-6.us-east-2.aws.neon.tech/neondb/auth/.well-known/jwks.json",
+    "AWS_ENDPOINT_URL_S3": "https://br-cool-band-b46oj4la.storage.c-6.us-east-2.aws.neon.tech",
+    "AWS_REGION": "us-east-2",
+    "EVIDENCE_BUCKET": "evidence"
+  },
+  "observability": { "enabled": true }
 }

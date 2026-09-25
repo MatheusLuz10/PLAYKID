@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { authService, backend, isSupabaseConfigured, SESSION_EXPIRED_EVENT } from '../services';
 import { sessionPlayerId, signOutDemo } from '../services/demoPlayers';
 
@@ -26,15 +26,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState<string | null>(null);
   const [sessionExpired, setSessionExpired] = useState(false);
 
+  /** Aplica a sessão atual (online). Chamado no início, nos avisos do login e depois de entrar/cadastrar/sair. */
+  const applySession = useCallback((session: Awaited<ReturnType<typeof authService.getSession>>) => {
+    setUserId(session?.user.id ?? null);
+    setEmail(session?.user.email ?? null);
+    setStatus(session ? 'signedIn' : 'signedOut');
+    if (session) setSessionExpired(false);
+  }, []);
+  // O aviso de mudança do login nem sempre chega (ex.: SDK do Neon logo após o cadastro):
+  // depois de cada ação, a sessão é conferida de novo.
+  const refreshSession = useCallback(async () => applySession(await authService.getSession()), [applySession]);
+
   useEffect(() => {
     if (!isSupabaseConfigured) return;
     let active = true;
     const apply = (session: Awaited<ReturnType<typeof authService.getSession>>) => {
-      if (!active) return;
-      setUserId(session?.user.id ?? null);
-      setEmail(session?.user.email ?? null);
-      setStatus(session ? 'signedIn' : 'signedOut');
-      if (session) setSessionExpired(false);
+      if (active) applySession(session);
     };
     authService.getSession().then(apply);
     const unsubscribe = authService.onChange(apply);
@@ -58,16 +65,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       userId,
       email,
       sessionExpired,
-      signIn: authService.signIn,
-      signUp: authService.signUp,
+      signIn: async (email, password) => {
+        await authService.signIn(email, password);
+        await refreshSession();
+      },
+      signUp: async (email, password) => {
+        const result = await authService.signUp(email, password);
+        await refreshSession();
+        return result;
+      },
       signOut: isSupabaseConfigured
-        ? authService.signOut
+        ? async () => {
+            await authService.signOut();
+            await refreshSession();
+          }
         : async () => {
             signOutDemo();
             window.location.assign('/');
           },
     }),
-    [status, userId, email, sessionExpired],
+    [status, userId, email, sessionExpired, refreshSession],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

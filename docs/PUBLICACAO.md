@@ -1,5 +1,43 @@
 # ECO QUEST · Guia de publicação
 
+## 0. Publicação atual: Cloudflare Workers + Neon
+
+O site está em **https://playkid.mluz787.workers.dev** (Worker `playkid`, conta Cloudflare mluz787@gmail.com) e usa
+o Neon (projeto `empty-firefly-39961521` "PLAY KIDS", branch `production`, `aws-us-east-2`):
+
+| Peça | Onde | Observação |
+|---|---|---|
+| Site (React) | Worker `playkid`, arquivos de `dist/` | `npm run build` usa os endereços públicos de `.env.production` |
+| API de fotos | mesmo Worker, `worker/index.ts` (`/api/evidencia`) | confere o token do Neon Auth e as regras no banco |
+| Login | Neon Auth (Managed Better Auth) | e-mail e senha; verificação de e-mail desligada |
+| Banco | Neon Postgres + Data API | mesmas migrations do Supabase + `supabase/neon/*.sql` |
+| Fotos | Neon Object Storage, bucket privado `evidence` | só o Worker tem as chaves; o navegador recebe links assinados de 1 h |
+
+**Atualizar o site:** `npm run build && npx wrangler deploy`.
+
+**Atualizar o banco** (depois de mudar migrations ou `content/*.json` + `npm run content:sql`):
+`npm run db:neon` (lê `DATABASE_URL_UNPOOLED` do `.env.local`, gerado por `neon link`). O instalador aplica
+`supabase/neon/00_compat.sql`, as migrations novas, sempre as de conteúdo, e `supabase/neon/99_accounts.sql`.
+Teste antes num branch: `neon branch create --name teste` e `npm run db:neon -- --url <url do branch>`.
+
+**Serviços do Neon:** declarados em `neon.ts` (`auth`, `dataApi`, bucket `evidence`) e aplicados com `neon deploy`.
+Domínio do site liberado no login: `neon neon-auth domain add https://SEU-DOMINIO` (já feito para o workers.dev).
+
+**Segredos do Worker** (não vão para o repositório; já configurados): `DATABASE_URL`, `AWS_ACCESS_KEY_ID`,
+`AWS_SECRET_ACCESS_KEY` — trocar com `npx wrangler secret put NOME`. Os demais valores são públicos e estão em
+`wrangler.jsonc` (`vars`).
+
+**Diferenças do Neon em relação ao Supabase** (tratadas em `supabase/neon/`):
+- o papel sem login chama `anonymous` (recebe o que `anon` tem); o jogo só consulta o banco depois do login;
+- o esquema `auth` é do Neon: a tabela de usuários do jogo é `app_auth.users`, preenchida por `ensure_account()`
+  na primeira entrada; `app_auth.uid()` repassa o `auth.uid()` do login para as funções e regras;
+- excluir a conta apaga fotos, dados e o login (`neon_auth.user`);
+- o e-mail compartilhado do Neon serve para começar; para recuperação de senha por link, configure um SMTP próprio
+  (https://neon.com/docs/auth/production-checklist).
+
+**Build automático pelo GitHub (opcional):** no painel da Cloudflare, Worker `playkid` → Settings → Builds →
+conectar o repositório `MatheusLuz10/PLAYKID` com *Build* `npm run build` e *Deploy* `npx wrangler deploy`.
+
 ## 1. Supabase (produção)
 
 1. Crie o projeto de produção (separado do de testes).

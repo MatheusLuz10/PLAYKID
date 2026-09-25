@@ -34,7 +34,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000001' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000001') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000001') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000001' and id not in ('41000000-0000-4000-8000-000000000001', '41000000-0000-4000-8000-000000000008', '41000000-0000-4000-8000-000000000009', '41000000-0000-4000-8000-000000000002', '41000000-0000-4000-8000-000000000003', '41000000-0000-4000-8000-000000000010', '41000000-0000-4000-8000-000000000005', '41000000-0000-4000-8000-000000000006', '41000000-0000-4000-8000-000000000007');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -78,7 +82,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000002' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000002') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000002') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000002' and id not in ('41000000-0000-4000-8000-002000000001', '41000000-0000-4000-8000-002000000002', '41000000-0000-4000-8000-002000000003', '41000000-0000-4000-8000-002000000004', '41000000-0000-4000-8000-002000000005', '41000000-0000-4000-8000-002000000006');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -119,7 +127,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000003' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000003') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000003') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000003' and id not in ('41000000-0000-4000-8000-003000000001', '41000000-0000-4000-8000-003000000002', '41000000-0000-4000-8000-003000000003', '41000000-0000-4000-8000-003000000004', '41000000-0000-4000-8000-003000000005', '41000000-0000-4000-8000-003000000006');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -156,7 +168,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000004' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000004') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000004') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000004' and id not in ('41000000-0000-4000-8000-004000000001', '41000000-0000-4000-8000-004000000002', '41000000-0000-4000-8000-004000000003', '41000000-0000-4000-8000-004000000004', '41000000-0000-4000-8000-004000000005');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -191,7 +207,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000005' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000005') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000005') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000005' and id not in ('41000000-0000-4000-8000-005000000001', '41000000-0000-4000-8000-005000000002', '41000000-0000-4000-8000-005000000003', '41000000-0000-4000-8000-005000000004', '41000000-0000-4000-8000-005000000005', '41000000-0000-4000-8000-005000000006', '41000000-0000-4000-8000-005000000007', '41000000-0000-4000-8000-005000000008', '41000000-0000-4000-8000-005000000009');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -229,7 +249,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000006' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000006') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000006') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000006' and id not in ('41000000-0000-4000-8000-006000000001', '41000000-0000-4000-8000-006000000002', '41000000-0000-4000-8000-006000000003', '41000000-0000-4000-8000-006000000004', '41000000-0000-4000-8000-006000000005', '41000000-0000-4000-8000-006000000006', '41000000-0000-4000-8000-006000000007', '41000000-0000-4000-8000-006000000008', '41000000-0000-4000-8000-006000000009');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -273,7 +297,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000007' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000007') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000007') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000007' and id not in ('41000000-0000-4000-8000-007000000001', '41000000-0000-4000-8000-007000000002', '41000000-0000-4000-8000-007000000003', '41000000-0000-4000-8000-007000000004', '41000000-0000-4000-8000-007000000005');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -310,7 +338,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000008' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000008') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000008') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000008' and id not in ('41000000-0000-4000-8000-008000000001', '41000000-0000-4000-8000-008000000002', '41000000-0000-4000-8000-008000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -343,7 +375,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000009' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000009') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000009') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000009' and id not in ('41000000-0000-4000-8000-009000000001', '41000000-0000-4000-8000-009000000002', '41000000-0000-4000-8000-009000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -377,7 +413,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000010' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000010') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000010') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000010' and id not in ('41000000-0000-4000-8000-010000000001', '41000000-0000-4000-8000-010000000002', '41000000-0000-4000-8000-010000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -413,7 +453,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000011' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000011') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000011') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000011' and id not in ('41000000-0000-4000-8000-011000000001', '41000000-0000-4000-8000-011000000002', '41000000-0000-4000-8000-011000000003', '41000000-0000-4000-8000-011000000004');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -447,7 +491,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000012' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000012') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000012') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000012' and id not in ('41000000-0000-4000-8000-012000000001', '41000000-0000-4000-8000-012000000002', '41000000-0000-4000-8000-012000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -483,7 +531,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000013' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000013') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000013') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000013' and id not in ('41000000-0000-4000-8000-013000000001', '41000000-0000-4000-8000-013000000002', '41000000-0000-4000-8000-013000000003', '41000000-0000-4000-8000-013000000004');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -517,7 +569,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000014' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000014') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000014') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000014' and id not in ('41000000-0000-4000-8000-014000000001', '41000000-0000-4000-8000-014000000002', '41000000-0000-4000-8000-014000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -551,7 +607,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000015' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000015') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000015') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000015' and id not in ('41000000-0000-4000-8000-015000000001', '41000000-0000-4000-8000-015000000002', '41000000-0000-4000-8000-015000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -584,7 +644,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000016' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000016') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000016') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000016' and id not in ('41000000-0000-4000-8000-016000000001', '41000000-0000-4000-8000-016000000002', '41000000-0000-4000-8000-016000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -618,7 +682,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000017' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000017') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000017') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000017' and id not in ('41000000-0000-4000-8000-017000000001', '41000000-0000-4000-8000-017000000002', '41000000-0000-4000-8000-017000000003');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
@@ -653,7 +721,11 @@ on conflict (id) do update set
   materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
   duration_label = excluded.duration_label;
 
-update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = '40000000-0000-4000-8000-000000000018' and order_index >= 0;
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000018') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000018') x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000018' and id not in ('41000000-0000-4000-8000-018000000001', '41000000-0000-4000-8000-018000000002', '41000000-0000-4000-8000-018000000003', '41000000-0000-4000-8000-018000000004');
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values

@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { visibleCatalog } from '../logic/catalog';
+import { useAuth } from './AuthContext';
 import { diffProgress } from '../logic/gamification';
 import type { Achievement, ContentCatalog, Level, LessonDetail, PlayerState, Question, QuizAttemptRecord, XpTransaction } from '../models';
 import {
@@ -116,7 +117,17 @@ type LoadState =
   | { status: 'error'; message: string }
   | { status: 'ready'; content: ContentCatalog; player: PlayerState };
 
+/**
+ * Dados do jogo só existem para quem entrou: sem sessão (páginas públicas, tela de
+ * entrar) nada é carregado — online, o banco recusaria o jogador de quem não entrou.
+ */
 export function GameProvider({ children }: { children: ReactNode }) {
+  const { status } = useAuth();
+  if (status !== 'signedIn') return <>{children}</>;
+  return <SignedInGameProvider>{children}</SignedInGameProvider>;
+}
+
+function SignedInGameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<LoadState>({ status: 'loading' });
   // Leitura síncrona do estado atual dentro das ações (os updaters do setState rodam depois).
   const stateRef = useRef(state);

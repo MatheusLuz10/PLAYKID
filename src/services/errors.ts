@@ -93,9 +93,10 @@ function classify(err: ErrorLike): string | null {
   if (code === '23514' && /display_name/i.test(message)) return 'display_name_invalid';
 
   // Supabase Auth
-  if (/invalid login credentials/i.test(message)) return 'invalid_credentials';
+  // Supabase: "Invalid login credentials"; Neon Auth (Better Auth): "Invalid email or password"
+  if (/invalid login credentials|invalid email or password/i.test(message)) return 'invalid_credentials';
   if (/email not confirmed/i.test(message)) return 'email_not_confirmed';
-  if (/already registered|already been registered/i.test(message) || code === 'user_already_exists') return 'user_exists';
+  if (/already registered|already been registered|user already exists/i.test(message) || code === 'user_already_exists' || code === 'USER_ALREADY_EXISTS') return 'user_exists';
   if (code === 'weak_password' || /password should be at least/i.test(message)) return 'weak_password';
   if (err.status === 429 || /rate limit/i.test(message)) return 'rate_limited';
   if (/jwt expired|invalid jwt|not_authenticated/i.test(message)) return 'not_authenticated';

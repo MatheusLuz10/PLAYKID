@@ -29,7 +29,9 @@ export const authService = {
       options: { emailRedirectTo: window.location.origin },
     });
     if (error) throw toAppError(error);
-    return { needsConfirmation: !data.session };
+    // Alguns provedores (ex.: Neon Auth) só expõem a sessão depois: confere antes de pedir confirmação.
+    const session = data.session ?? (await supabase!.auth.getSession()).data.session;
+    return { needsConfirmation: !session };
   },
 
   async signOut(): Promise<void> {

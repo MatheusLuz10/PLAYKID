@@ -265,7 +265,13 @@ on conflict (id) do update set
 `);
   const steps = c.steps.map((s, si) => ({ ...s, id: s.id ?? stepId(n, si + 1) }));
   totalSteps += steps.length;
-  cout.push(`update public.challenge_steps set order_index = -order_index - 1000 where challenge_id = ${q(id)} and order_index >= 0;
+  // Tira todas as etapas do caminho (ordem negativa ÚNICA, abaixo da menor já usada) antes do upsert:
+  // assim reaplicar o SQL não colide com etapas desativadas em execuções anteriores.
+  cout.push(`update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = ${q(id)}) as base
+      from public.challenge_steps where challenge_id = ${q(id)}) x
+where s.id = x.id;
 update public.challenge_steps set active = false where challenge_id = ${q(id)} and id not in (${steps.map((s) => q(s.id)).join(', ')});
 insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
   day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values

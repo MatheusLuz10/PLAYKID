@@ -11,6 +11,7 @@ O banco é testado à parte por `npm run test:db`.
 | `06-gamificacao.cjs` | XP por ação, conquistas, subida de nível (inclusive vários níveis), evolução, galeria, perfil |
 | `07-mundo.cjs` | mundo inicial (3D), desbloqueios, árvore nova crescendo na cena, detalhes, história, teclado, redução de movimento |
 | `08-integracao-final.cjs` | páginas públicas, boas-vindas, primeira missão, admin, exclusão de conta, offline, 9 larguras (320–1920), acessibilidade (axe) e CSP de produção |
+| `12-online-neon.cjs` | site publicado com Neon: conta, perfil, aula, quiz, desafio, foto no Object Storage, sair/entrar, excluir conta |
 | `11-mundo-3d.cjs` | mundo em 3D: visão geral das 5 áreas, voo até cada área, marcadores de todos os itens, detalhes, câmera, teclado e o mapa 2D sem WebGL |
 | `10-jogadores.cjs` | login de cada usuário (demonstração): criar conta, senha errada, sair/entrar, evolução separada, pausa após 5 tentativas, conta de demonstração, excluir só uma conta |
 | `09-meu-lugar.cjs` | casa 3D: cena desenhada, controles, cômodos, objetos liberados por aula/foto/desafio, origem e registro, evolução, sem duplicar, versão sem WebGL |
@@ -22,7 +23,7 @@ O banco é testado à parte por `npm run test:db`.
 npm i -D playwright axe-core && npx playwright install chromium
 
 # 2. build + servidor de pré-visualização na porta 4318
-npm run build && npx vite preview --port 4318 --strictPort
+npm run build:demo && npx vite preview --port 4318 --strictPort
 
 # 3. em outro terminal
 node tests/e2e/05-desafios.cjs
@@ -48,3 +49,8 @@ o Chromium desenha por software, bem mais devagar. `E2E_SEM_GPU=1` força o modo
 Na demonstração é preciso entrar numa conta: os roteiros criam uma com `conta.cjs` (`criarConta`) ou entram na
 conta de demonstração (`entrarNaDemonstracao`). Os dados de cada conta ficam em `eco-quest:demo:v2:<id>`
 (`CHAVE_DA_CONTA`); a conta de demonstração continua em `eco-quest:demo:v2`.
+
+Os roteiros 03 a 11 usam o **modo demonstração** (`npm run build:demo`); o `npm run build` normal gera a versão
+com Neon (endereços de `.env.production`). O roteiro `12-online-neon.cjs` testa o **site publicado**
+(`ONLINE_URL`, padrão https://playkid.mluz787.workers.dev): cria uma conta real no Neon Auth, faz aula, quiz,
+desafio e envia uma foto pelo Worker, e no fim **exclui a conta** (não deixa dados).

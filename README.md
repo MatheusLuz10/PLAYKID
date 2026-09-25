@@ -33,6 +33,12 @@ só como resumo PBKDF2) e a própria evolução — aulas, quizzes, desafios, XP
 `/jogadores` lista as contas; a conta de demonstração (sem senha) abre com tudo desbloqueado. No Supabase o login
 é o do servidor (e-mail e senha), válido em qualquer aparelho.
 
+## Publicação atual (Cloudflare Workers + Neon)
+
+O site está em https://playkid.mluz787.workers.dev: Worker da Cloudflare (site + API de fotos) e Neon
+(login, banco pela Data API e fotos no Object Storage). Passo a passo e comandos em `docs/PUBLICACAO.md` (seção 0).
+`npm run build` gera a versão com Neon; `npm run build:demo`, a demonstração local (usada nos testes).
+
 ## Configurar o Supabase
 
 1. Crie um projeto em <https://supabase.com>.

@@ -1,7 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { AppError, toAppError } from '../errors';
 import { prepareEvidenceImage } from '../imageService';
-import { EVIDENCE_BUCKET } from '../supabaseClient';
+import { supabaseEvidenceFiles, workerEvidenceFiles, type EvidenceFiles } from '../evidenceFiles';
+import { EVIDENCE_BUCKET, isNeonConfigured } from '../supabaseClient';
 import { normalizeSearch } from '../../logic/learning';
 import {
   buildCatalog,
@@ -48,12 +49,38 @@ import type {
 export class SupabaseBackend implements GameBackend {
   readonly mode = 'supabase' as const;
 
-  constructor(private readonly sb: SupabaseClient) {}
+  /** Fotos: Supabase Storage ou, no Neon, a API do Worker (mesmas regras). */
+  private readonly files: EvidenceFiles;
+  /** No Neon a conta do login vira perfil do jogo na primeira entrada (ensure_account). */
+  private accountReady: Promise<void> | null = null;
+
+  constructor(private readonly sb: SupabaseClient) {
+    this.files = isNeonConfigured
+      ? workerEvidenceFiles(async () => (await this.sb.auth.getSession()).data.session?.access_token ?? null)
+      : supabaseEvidenceFiles(sb, EVIDENCE_BUCKET);
+  }
+
+  private ensureAccount(): Promise<void> {
+    if (!isNeonConfigured) return Promise.resolve();
+    // (rpc() já tenta de novo quando o banco ainda não reconhece o token)
+    this.accountReady ??= this.rpc<void>('ensure_account').catch((err) => {
+      this.accountReady = null;
+      throw err;
+    });
+    return this.accountReady;
+  }
 
   private async rpc<T = any>(fn: string, args?: Record<string, unknown>): Promise<T> {
-    const { data, error } = await this.sb.rpc(fn, args);
-    if (error) throw toAppError(error);
-    return data as T;
+    // Neon: logo depois de a computação acordar, o banco às vezes ainda não reconhece o
+    // token (auth.uid() nulo) mesmo com a sessão válida. Tenta de novo antes de desistir;
+    // só a última falha vira erro (e encerra a sessão, se for mesmo falta de login).
+    for (let n = 0; ; n++) {
+      const { data, error } = await this.sb.rpc(fn, args);
+      if (!error) return data as T;
+      const retry = isNeonConfigured && n < 4 && /not_authenticated/i.test(error.message);
+      if (!retry) throw toAppError(error);
+      await new Promise((r) => setTimeout(r, 350 * (n + 1)));
+    }
   }
 
   private async userId(): Promise<string> {
@@ -114,6 +141,7 @@ export class SupabaseBackend implements GameBackend {
   }
 
   async loadPlayer() {
+    await this.ensureAccount();
     const state = await this.rpc('get_player_state');
     if (!state?.profile) throw new AppError('load_progress');
     return mapPlayerState(state);
@@ -258,14 +286,14 @@ export class SupabaseBackend implements GameBackend {
     const base = `users/${userId}/challenges/${challengeId}/${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
     const filePath = `${base}.jpg`;
     const thumbnailPath = `${base}-thumb.jpg`;
-    const bucket = this.sb.storage.from(EVIDENCE_BUCKET);
-    const [a, b] = await Promise.all([
-      bucket.upload(filePath, image, { contentType: 'image/jpeg', upsert: false }),
-      bucket.upload(thumbnailPath, thumbnail, { contentType: 'image/jpeg', upsert: false }),
+    const [a, b] = await Promise.allSettled([
+      this.files.upload(filePath, image, 'image/jpeg'),
+      this.files.upload(thumbnailPath, thumbnail, 'image/jpeg'),
     ]);
-    if (a.error || b.error) {
-      await this.removeFiles([a.error ? null : filePath, b.error ? null : thumbnailPath]);
-      throw toAppError(a.error ?? b.error, 'upload_failed');
+    if (a.status === 'rejected' || b.status === 'rejected') {
+      await this.removeFiles([a.status === 'rejected' ? null : filePath, b.status === 'rejected' ? null : thumbnailPath]);
+      const reason = a.status === 'rejected' ? a.reason : (b as PromiseRejectedResult).reason;
+      throw toAppError(reason, 'upload_failed');
     }
     return { filePath, thumbnailPath, fileName: file.name.slice(0, 200), mimeType: 'image/jpeg', fileSize: image.size };
   }
@@ -274,8 +302,7 @@ export class SupabaseBackend implements GameBackend {
   private async removeFiles(paths: (string | null)[]) {
     const list = paths.filter((x): x is string => Boolean(x));
     if (!list.length) return;
-    const { error } = await this.sb.storage.from(EVIDENCE_BUCKET).remove(list);
-    if (error) console.warn('[ECO QUEST] limpeza de upload', error.message);
+    await this.files.remove(list);
   }
 
   /** Chama a RPC e, se o servidor recusar, apaga as fotos que acabaram de subir. */
@@ -389,21 +416,8 @@ export class SupabaseBackend implements GameBackend {
 
   async deleteAccount() {
     await this.rpc('request_account_deletion');
-    // Fotos: users/{id}/challenges/{desafio}/{arquivo}
-    const userId = await this.userId();
-    const bucket = this.sb.storage.from(EVIDENCE_BUCKET);
-    const root = `users/${userId}/challenges`;
-    const { data: folders, error } = await bucket.list(root, { limit: 1000 });
-    if (error) throw toAppError(error, 'delete_account_failed');
-    for (const folder of folders ?? []) {
-      const { data: files, error: listError } = await bucket.list(`${root}/${folder.name}`, { limit: 1000 });
-      if (listError) throw toAppError(listError, 'delete_account_failed');
-      const paths = (files ?? []).map((f) => `${root}/${folder.name}/${f.name}`);
-      if (paths.length) {
-        const { error: removeError } = await bucket.remove(paths);
-        if (removeError) throw toAppError(removeError, 'delete_account_failed');
-      }
-    }
+    // Fotos primeiro (users/{id}/challenges/…); depois a conta e todos os dados.
+    await this.files.removeAll(await this.userId());
     await this.rpc('delete_my_account');
     // A sessão deixou de valer: limpa só neste dispositivo.
     await this.sb.auth.signOut({ scope: 'local' }).catch(() => {});
@@ -492,11 +506,6 @@ export class SupabaseBackend implements GameBackend {
   }
 
   async getEvidenceImageUrl(path: string) {
-    const { data, error } = await this.sb.storage.from(EVIDENCE_BUCKET).createSignedUrl(path, 60 * 60);
-    if (error) {
-      console.error('[ECO QUEST]', error);
-      return null;
-    }
-    return data.signedUrl;
+    return this.files.signedUrl(path);
   }
 }

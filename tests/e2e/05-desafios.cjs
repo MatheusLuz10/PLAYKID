@@ -75,29 +75,29 @@ async function run(label, viewport) {
   await page.getByRole('button', { name: 'Criar perfil' }).click();
   await page.waitForURL('**/inicio');
 
-  // Página de desafios: tudo bloqueado com requisito claro
+  // Página de desafios: missões abertas, tudo disponível desde o início
   await page.goto(BASE + '/desafios');
-  await see('🔒 Bloqueados');
+  await see('🔓 Disponíveis');
   await page.locator('.challenge-card').nth(7).waitFor();
   if ((await page.locator('.challenge-card').count()) !== C.challengesTotal) throw new Error(`expected ${C.challengesTotal} challenges`);
-  await see('Aprenda sobre árvores e conclua o quiz para desbloquear este desafio.');
+  if (await page.getByText('🔒 Bloqueados').count()) throw new Error('seção Bloqueados com missões abertas');
   await page.getByRole('group', { name: 'Filtrar por categoria' }).getByRole('button', { name: /Água/ }).click();
   await page.waitForFunction(() => document.querySelectorAll('.challenge-card').length === 1);
-  log('Desafios: 8 cadastrados, seção Bloqueados com requisito; filtro por categoria');
+  log('Desafios: 8 cadastrados, todos disponíveis; filtro por categoria');
   await page.goto(BASE + '/desafios');
   await checkOverflow('desafios');
-  await shot('01-desafios-bloqueados');
+  await shot('01-desafios-abertos');
 
-  // Detalhe bloqueado (Testes 1/2)
+  // Detalhe (Testes 1/2): aberto antes da aula; executar só depois de aceitar
   await page.goto(BASE + TREE + '/desafio');
-  await see('🔒 Desafio bloqueado');
+  await see('🔓 Disponível');
   for (const t of ['Por que isso importa?', 'O que você vai precisar', 'Como realizar', 'Como comprovar', 'Acompanhamento', 'Recompensa', 'Dia 180']) await see(t);
-  if (await page.getByRole('button', { name: 'Aceitar desafio' }).count()) throw new Error('accept visible while locked');
+  await page.getByRole('button', { name: 'Aceitar desafio' }).waitFor();
   await page.goto(BASE + TREE + '/comprovar');
-  await see('Desafio bloqueado');
-  log('Testes 1/2 · detalhe completo e bloqueado; execução bloqueada pela URL');
+  await see('Aceite o desafio primeiro');
+  log('Testes 1/2 · detalhe completo e aberto; execução só depois de aceitar');
   await checkOverflow('detalhe');
-  await shot('02-detalhe-bloqueado');
+  await shot('02-detalhe-aberto');
 
   // Aula + quiz (Teste 3)
   await doLesson('por-que-as-arvores-sao-importantes', 5);

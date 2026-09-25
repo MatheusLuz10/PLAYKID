@@ -128,7 +128,7 @@ async function checkPassword(password: string, stored: PasswordHash): Promise<bo
 }
 
 export function validateNewPassword(password: string, confirm: string): string | null {
-  if (password.length < 6) return 'A senha precisa ter pelo menos 6 caracteres.';
+  if (password.length < 8) return 'A senha precisa ter pelo menos 8 caracteres.';
   if (password.length > 128) return 'Senha longa demais.';
   if (password !== confirm) return 'As duas senhas não são iguais.';
   return null;

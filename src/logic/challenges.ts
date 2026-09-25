@@ -4,7 +4,7 @@
  * para a interface, usando a HORA DO SERVIDOR (player.clockOffsetMs).
  */
 import type { Challenge, ChallengeStatus, ChallengeStep, ContentCatalog, Followup, PlayerState, UserChallenge } from '../models';
-import { findLesson, findQuizForLesson } from './catalog';
+import { findLesson } from './catalog';
 
 const DAY_MS = 86_400_000;
 /** Depois de quantos dias da data prevista um acompanhamento é considerado atrasado. */
@@ -53,10 +53,12 @@ export function isOverdue(c: Challenge, uc: UserChallenge | undefined, now: numb
   );
 }
 
-export function isUnlocked(content: ContentCatalog, c: Challenge, player: PlayerState) {
-  if (player.lessons[c.lessonId]?.status !== 'completed') return false;
-  const quiz = findQuizForLesson(content, c.lessonId);
-  return !quiz || Boolean(player.quizzes[quiz.id]?.passed);
+/**
+ * Missões abertas (migration 28): todo desafio pode ser aceito sem a aula e o quiz,
+ * que continuam recomendados e dando XP. Assinatura mantida para quem já a usa.
+ */
+export function isUnlocked(_content: ContentCatalog, _c: Challenge, _player: PlayerState) {
+  return true;
 }
 
 export function getChallengeState(content: ContentCatalog, c: Challenge, player: PlayerState): ChallengeStatus {

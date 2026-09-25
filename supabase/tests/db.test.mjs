@@ -113,6 +113,19 @@ async function expectError(uid, sql, match, msg, params = []) {
   }
 }
 const one = async (uid, sql, params) => (await as(uid, sql, params))[0];
+/** A ação é permitida? Executa e DESFAZ (rollback): confere a regra sem mudar o estado dos testes seguintes. */
+async function expectAllowed(uid, sql, msg, params = []) {
+  await db.exec('begin');
+  try {
+    await db.exec(`set local role authenticated; select set_config('request.jwt.claim.sub', '${uid}', true);`);
+    await db.query(sql, params);
+    ok(true, msg);
+  } catch (e) {
+    ok(false, `${msg} → "${e.message}"`);
+  } finally {
+    await db.exec('rollback');
+  }
+}
 
 const A = 'aaaaaaaa-0000-4000-8000-00000000000a';
 const B = 'bbbbbbbb-0000-4000-8000-00000000000b';
@@ -174,7 +187,7 @@ await expectError(A, `select public.sync_world('${A}')`, 'permission denied', 'N
 
 console.log('\n# Ordem do jogo: aula → quiz → desafio');
 await expectError(A, `select public.start_quiz_attempt('${QUIZ}')`, 'lesson_not_completed', 'quiz bloqueado antes da aula');
-await expectError(A, `select public.accept_challenge('${CH}')`, 'lesson_not_completed', 'desafio bloqueado antes da aula');
+await expectAllowed(A, `select public.accept_challenge('${CH}')`, 'missões abertas (28): desafio pode ser aceito antes da aula');
 // Etapa 3 · Testes 1–4: abrir a aula, salvar progresso, sair e retomar
 let t = (await one(A, `select public.track_lesson_progress('${LESSON}', 0) r`)).r;
 ok(t.status === 'in_progress' && t.progress_percentage === 20 && t.last_section_index === 0, 'Teste 1 · aula aberta: parte 1 de 5 (20%)');
@@ -193,7 +206,7 @@ let r = await one(A, `select public.complete_lesson('${LESSON}') r`);
 ok(r.r.xp_awarded === 20 && r.r.achievements[0]?.slug === 'primeiro-aprendizado', `aula concluída +20 XP e "Primeiro Aprendizado" ${JSON.stringify(r.r)}`);
 r = await one(A, `select public.complete_lesson('${LESSON}') r`);
 ok(r.r.xp_awarded === 0, 'concluir de novo não duplica XP');
-await expectError(A, `select public.accept_challenge('${CH}')`, 'quiz_not_passed', 'desafio bloqueado sem quiz aprovado');
+await expectAllowed(A, `select public.accept_challenge('${CH}')`, 'missões abertas (28): desafio pode ser aceito sem quiz aprovado');
 
 console.log('\n# Quiz: tentativa reprovada');
 let att = (await one(A, `select public.start_quiz_attempt('${QUIZ}')->>'attempt_id' id`)).id;
@@ -203,7 +216,7 @@ for (let i = 0; i < 5; i++) {
 }
 r = await one(A, `select public.finish_quiz_attempt('${att}') r`);
 ok(r.r.passed === false && r.r.xp_awarded === 0 && r.r.score === 0, `reprovado sem XP ${JSON.stringify(r.r)}`);
-await expectError(A, `select public.accept_challenge('${CH}')`, 'quiz_not_passed', 'desafio continua bloqueado após reprovação');
+await expectAllowed(A, `select public.accept_challenge('${CH}')`, 'missões abertas (28): reprovar no quiz não impede aceitar o desafio');
 
 console.log('\n# Quiz: tentativa aprovada (4/5)');
 att = (await one(A, `select public.start_quiz_attempt('${QUIZ}')->>'attempt_id' id`)).id;
@@ -400,8 +413,8 @@ ok((await as(B, `select user_id from public.user_lesson_progress where user_id =
 
 console.log('\n# Pré-requisitos');
 const horta = '20000000-0000-4000-8000-000000000003';
-await expectError(A, `select public.track_lesson_progress('${horta}', 0)`, 'lesson_locked', 'aula bloqueada sem o pré-requisito');
-await expectError(A, `select public.complete_lesson('${horta}')`, 'lesson_locked', 'não conclui aula bloqueada');
+await expectAllowed(A, `select public.track_lesson_progress('${horta}', 0)`, 'aulas abertas (28): sem pré-requisito, qualquer aula pode ser começada');
+await expectError(A, `select public.complete_lesson('${horta}')`, 'lesson_not_finished', 'aula aberta, mas só conclui depois de ler até o fim');
 await as(A, `select public.track_lesson_progress('${planta}', 2)`);
 r = await one(A, `select public.complete_lesson('${planta}') r`);
 ok(r.r.xp_awarded === 20, 'aula curta concluída (+20 XP)');
@@ -462,9 +475,9 @@ ok(oldAttempt.status === 'completed' && oldAttempt.attempt_number === 1, 'tentat
 // Testes 1 e 2 · aula não concluída / concluída
 const TREE_QUIZ = QUIZ;
 await expectError(D, `select public.start_quiz_attempt('${TREE_QUIZ}')`, 'lesson_not_completed', 'Teste 1 · quiz bloqueado sem concluir a aula');
-await expectError(D, `select public.accept_challenge('${CH}')`, 'lesson_not_completed', 'Teste negativo · desafio bloqueado (sem aula)');
+await expectAllowed(D, `select public.accept_challenge('${CH}')`, 'missões abertas (28): aceitar sem a aula');
 await finishLesson(D, LESSON);
-await expectError(D, `select public.accept_challenge('${CH}')`, 'quiz_not_passed', 'Teste negativo · desafio bloqueado (sem quiz aprovado)');
+await expectAllowed(D, `select public.accept_challenge('${CH}')`, 'missões abertas (28): aceitar sem quiz aprovado');
 
 // Testes 3, 4, 5 · começar, abandonar e retornar
 const treeQs = await questionsOf(TREE_QUIZ);
@@ -490,7 +503,7 @@ ok(res.passed === false && res.score === 60 && res.passing_score === 70 && res.c
 ok(res.xp_awarded === 0 && res.challenge_unlocked === null && res.review.length === 5 && res.review.filter((x) => !x.is_correct).length === 2,
    'reprovação: sem XP, sem desafio, revisão com as 2 perguntas erradas');
 await expectError(D, `select public.finish_quiz_attempt('${s2.attempt_id}')`, 'attempt_closed', 'não finaliza a mesma tentativa duas vezes');
-await expectError(D, `select public.accept_challenge('${CH}')`, 'quiz_not_passed', 'desafio continua bloqueado após reprovação');
+await expectAllowed(D, `select public.accept_challenge('${CH}')`, 'missões abertas (28): reprovação não bloqueia o desafio');
 
 // Testes 7, 8, 10, 11, 13, 14 · tentar de novo e ser aprovado
 const s3 = await start(D, TREE_QUIZ);

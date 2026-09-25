@@ -34,13 +34,13 @@ export function MissionRoute({ step, children }: MissionRouteProps) {
   } else if (locked && (currentStep === 'aprender' || currentStep === 'quiz')) {
     lockedView = (
       <StateMessage
-        icon="🔒"
-        title="Desafio bloqueado"
-        text="Conclua o conteúdo e seja aprovado no quiz para desbloquear este desafio."
+        icon="🎯"
+        title="Aceite o desafio primeiro"
+        text="Todas as missões estão abertas: aceite o desafio para começar a executá-lo."
         role="alert"
       >
-        <Link to={missionPath(challenge.slug, currentStep)} className="btn btn--primary">
-          {currentStep === 'aprender' ? 'Ir para o conteúdo' : 'Fazer o quiz'}
+        <Link to={missionPath(challenge.slug, 'desafio')} className="btn btn--primary">
+          Ver o desafio
         </Link>
       </StateMessage>
     );

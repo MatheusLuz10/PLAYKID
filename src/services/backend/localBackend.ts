@@ -906,9 +906,7 @@ export class LocalBackend implements GameBackend {
   async acceptChallenge(challengeId: string) {
     const challenge = demoCatalog.challenges.find((c) => c.id === challengeId);
     if (!challenge || this.isInactive('challenge', challengeId)) throw new AppError('not_found');
-    if (!this.lessonCompleted(challenge.lessonId)) throw new AppError('lesson_not_completed');
-    const quiz = demoCatalog.quizzes.find((q) => q.lessonId === challenge.lessonId);
-    if (quiz && !this.db.attempts.some((a) => a.quizId === quiz.id && a.passed)) throw new AppError('quiz_not_passed');
+    // Missões abertas (como a migration 28): aceitar não exige a aula nem o quiz.
 
     const existing = this.db.player.challenges[challengeId];
     if (existing && !this.isOverdue(existing)) return; // não duplica

@@ -20,7 +20,7 @@ const STATUS_FILTERS: { id: StatusFilter; label: string; statuses: ChallengeStat
 const SECTIONS: { title: string; statuses: ChallengeStatus[]; hint?: string }[] = [
   { title: '⏳ Em andamento', statuses: ['accepted', 'in_progress', 'expired'] },
   { title: '🌱 Aguardando acompanhamento', statuses: ['waiting_follow_up'], hint: 'Desafios que pedem uma nova verificação no futuro.' },
-  { title: '🔓 Disponíveis', statuses: ['available'], hint: 'Você já aprendeu o necessário: é só aceitar.' },
+  { title: '🔓 Disponíveis', statuses: ['available'], hint: 'Todas as missões estão abertas: é só aceitar (a aula e o quiz ajudam e dão XP).' },
   { title: '🏆 Concluídos', statuses: ['completed'] },
   { title: '🔒 Bloqueados', statuses: ['locked'], hint: 'Conclua a aula e o quiz do tema para liberar.' },
 ];

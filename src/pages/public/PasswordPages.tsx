@@ -128,12 +128,12 @@ export function ResetPasswordPage() {
             )}
             <label className="field">
               <span className="field__label">Nova senha</span>
-              <input className="input" type="password" autoComplete="new-password" minLength={6} required value={password} onChange={(e) => setPassword(e.target.value)} />
-              <span className="muted small">Pelo menos 6 caracteres.</span>
+              <input className="input" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={(e) => setPassword(e.target.value)} />
+              <span className="muted small">Pelo menos 8 caracteres.</span>
             </label>
             <label className="field">
               <span className="field__label">Repita a nova senha</span>
-              <input className="input" type="password" autoComplete="new-password" minLength={6} required value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+              <input className="input" type="password" autoComplete="new-password" minLength={8} required value={confirm} onChange={(e) => setConfirm(e.target.value)} />
             </label>
             <button type="submit" className="btn btn--primary btn--block" disabled={busy}>
               {busy ? 'Salvando…' : 'Salvar nova senha'}

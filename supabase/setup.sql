@@ -2523,15 +2523,15 @@ on conflict (id) do update set
 -- Pré-requisitos (depois que todas as aulas existem)
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000001';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000002';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000002' where id = '20000000-0000-4000-8000-000000000003';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000003';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000004';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000004' where id = '20000000-0000-4000-8000-000000000005';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000005';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000006';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000006' where id = '20000000-0000-4000-8000-000000000007';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000007';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000008';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000008' where id = '20000000-0000-4000-8000-000000000009';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000009';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000010';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000010' where id = '20000000-0000-4000-8000-000000000011';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000011';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000012';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000013';
 
@@ -8182,3 +8182,59 @@ update public.place_items set active = false where id not in ('80000000-0000-400
 
 -- Aplica as regras a todos os jogadores (casa inicial + objetos já merecidos).
 select public.sync_place(user_id) from public.profiles;
+
+-- >>> 28_open_missions.sql
+-- =====================================================================
+-- 28 · Missões abertas para todos os jogadores
+-- - Todo desafio pode ser aceito sem concluir a aula nem ser aprovado no quiz.
+-- - As aulas não têm mais pré-requisito (conteúdo em content/lessons.json → 15).
+-- A aula e o quiz continuam existindo e dando XP. O quiz segue depois da sua aula.
+-- =====================================================================
+
+create or replace function public.accept_challenge(p_challenge_id uuid)
+returns uuid
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_user       uuid := public.require_user();
+  v_challenge  public.challenges;
+  v_existing   public.user_challenges;
+  v_id         uuid;
+begin
+  select * into v_challenge from public.challenges where id = p_challenge_id and active;
+  if not found then
+    raise exception 'not_found';
+  end if;
+
+  -- Missões abertas: o desafio pode ser aceito sem concluir a aula nem passar no quiz
+  -- (a aula e o quiz continuam disponíveis e dando XP, mas não são obrigatórios).
+
+  select * into v_existing from public.user_challenges
+  where user_id = v_user and challenge_id = p_challenge_id and status not in ('expired', 'cancelled')
+  for update;
+
+  if found then
+    if public.challenge_is_overdue(v_existing.id) then
+      -- Prazo vencido: o registro antigo expira e um novo começa.
+      update public.user_challenges set status = 'expired' where id = v_existing.id;
+    else
+      return v_existing.id; -- já existe um ativo/concluído: não duplica
+    end if;
+  end if;
+
+  insert into public.user_challenges (user_id, challenge_id, status, accepted_at, deadline_at)
+  values (v_user, p_challenge_id, 'accepted', now(), now() + make_interval(days => v_challenge.deadline_days))
+  returning id into v_id;
+
+  insert into public.user_challenge_steps (user_challenge_id, challenge_step_id)
+  select v_id, cs.id from public.challenge_steps cs where cs.challenge_id = p_challenge_id and cs.active;
+
+  perform public.refresh_user_challenge_progress(v_id);
+  -- XP de início: uma vez por desafio (recomeçar ou encerrar não repete).
+  perform public.process_gamification_event(v_user, 'challenge_started', p_challenge_id);
+  perform public.check_achievements(v_user);
+  return v_id;
+end;
+$$;

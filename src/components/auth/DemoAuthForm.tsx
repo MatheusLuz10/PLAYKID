@@ -102,14 +102,14 @@ export function DemoAuthForm({ initialTab, next }: DemoAuthFormProps) {
             className="input"
             type="password"
             autoComplete={tab === 'entrar' ? 'current-password' : 'new-password'}
-            minLength={tab === 'cadastrar' ? 6 : undefined}
+            minLength={tab === 'cadastrar' ? 8 : undefined}
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           {tab === 'cadastrar' && (
             <span className="muted small" id={`${ids}-pass-hint`}>
-              Pelo menos 6 caracteres. Não use a mesma senha de outros sites.
+              Pelo menos 8 caracteres. Não use a mesma senha de outros sites.
             </span>
           )}
         </label>

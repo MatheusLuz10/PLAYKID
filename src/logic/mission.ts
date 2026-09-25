@@ -27,13 +27,17 @@ export function getMainEvidence(uc: UserChallenge | undefined) {
 
 /** Etapa em que o jogador está atualmente nesta missão (segue o status do servidor). */
 export function getCurrentStep(challenge: Challenge, quiz: Quiz | undefined, player: PlayerState): MissionStep {
+  // Missões abertas: um desafio já aceito segue o próprio andamento, mesmo sem aula/quiz.
+  const uc = player.challenges[challenge.id];
+  if (uc) {
+    if (uc.status === 'completed') return 'recompensa';
+    if (uc.status === 'waiting_follow_up') return 'acompanhar';
+    return 'comprovar';
+  }
+  // Ainda não aceito: a aula e o quiz são o caminho recomendado (o desafio já pode ser aceito).
   if (player.lessons[challenge.lessonId]?.status !== 'completed') return 'aprender';
   if (quiz && !player.quizzes[quiz.id]?.passed) return 'quiz';
-  const uc = player.challenges[challenge.id];
-  if (!uc) return 'desafio';
-  if (uc.status === 'completed') return 'recompensa';
-  if (uc.status === 'waiting_follow_up') return 'acompanhar';
-  return 'comprovar';
+  return 'desafio';
 }
 
 export function isStepUnlocked(step: MissionStep, current: MissionStep): boolean {

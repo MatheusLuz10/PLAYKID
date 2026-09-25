@@ -5,9 +5,9 @@ O banco é testado à parte por `npm run test:db`.
 
 | Arquivo | O que cobre |
 |---|---|
-| `03-aprendizagem.cjs` | biblioteca, busca, favoritos, aula em partes com retomada, resumo, relacionados, pré-requisitos |
-| `04-quiz.cjs` | quiz bloqueado pela URL, reprovação, nova tentativa, aprovação, XP sem duplicar, histórico, desempenho |
-| `05-desafios.cjs` | desafio bloqueado/liberado, checklist em ordem, foto (inválida, remover, trocar), acompanhamentos, conclusão, prazo vencido |
+| `03-aprendizagem.cjs` | biblioteca, busca, favoritos, aula em partes com retomada, resumo, relacionados, aulas abertas (sem pré-requisito) |
+| `04-quiz.cjs` | quiz bloqueado pela URL até ver a aula, desafio aberto sem quiz, reprovação, nova tentativa, aprovação, XP sem duplicar, histórico, desempenho |
+| `05-desafios.cjs` | missões abertas (aceitar sem aula/quiz), execução só após aceitar, checklist em ordem, foto (inválida, remover, trocar), acompanhamentos, conclusão, prazo vencido |
 | `06-gamificacao.cjs` | XP por ação, conquistas, subida de nível (inclusive vários níveis), evolução, galeria, perfil |
 | `07-mundo.cjs` | mundo inicial (3D), desbloqueios, árvore nova crescendo na cena, detalhes, história, teclado, redução de movimento |
 | `08-integracao-final.cjs` | páginas públicas, boas-vindas, primeira missão, admin, exclusão de conta, offline, 9 larguras (320–1920), acessibilidade (axe) e CSP de produção |

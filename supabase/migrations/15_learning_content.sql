@@ -100,15 +100,15 @@ on conflict (id) do update set
 -- Pré-requisitos (depois que todas as aulas existem)
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000001';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000002';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000002' where id = '20000000-0000-4000-8000-000000000003';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000003';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000004';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000004' where id = '20000000-0000-4000-8000-000000000005';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000005';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000006';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000006' where id = '20000000-0000-4000-8000-000000000007';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000007';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000008';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000008' where id = '20000000-0000-4000-8000-000000000009';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000009';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000010';
-update public.lessons set prerequisite_lesson_id = '20000000-0000-4000-8000-000000000010' where id = '20000000-0000-4000-8000-000000000011';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000011';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000012';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000013';
 

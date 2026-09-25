@@ -57,17 +57,16 @@ async function run(label, viewport) {
 
   // TESTE NEGATIVO · URL direta
   await page.goto(BASE + MQ + '/desafio');
-  await see('Desafio bloqueado');
-  await see('Aprenda sobre árvores e conclua o quiz para desbloquear este desafio.');
+  await see('🔓 Disponível'); // missões abertas: o desafio não depende do quiz
   await page.goto(BASE + MQ + '/comprovar');
-  await see('Desafio bloqueado');
+  await see('Aceite o desafio primeiro');
   await page.goto(BASE + MQ + '/quiz');
   await see('Quiz bloqueado');
   await see('Conclua o conteúdo para testar seus conhecimentos.');
   await page.goto(BASE + TREE + '/quiz');
   await see('Quiz bloqueado');
-  log('Teste 1 / negativo · quiz e desafio bloqueados pela URL');
-  await shot('01-desafio-bloqueado');
+  log('Teste 1 / negativo · quiz bloqueado pela URL até ver a aula; desafio aberto, execução só após aceitar');
+  await shot('01-quiz-bloqueado');
 
   // Aula → quiz liberado
   await page.goto(BASE + TREE);
@@ -128,8 +127,8 @@ async function run(label, viewport) {
   log('Teste 9 · reprovado (60%) com perguntas erradas, explicações e revisão');
   await shot('05-reprovado');
   await page.goto(BASE + MQ + '/desafio');
-  await see('Desafio bloqueado');
-  log('Desafio continua bloqueado após reprovação');
+  await see('🔓 Disponível');
+  log('Reprovar no quiz não bloqueia o desafio (missões abertas)');
 
   // Tentar novamente → aprovado 80%
   await page.goto(BASE + MQ + '/quiz');

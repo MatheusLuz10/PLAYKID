@@ -221,7 +221,7 @@
       "estimated_minutes": 3,
       "xp_reward": 20,
       "order_index": 3,
-      "prerequisite": "como-uma-planta-cresce",
+      "prerequisite": null,
       "summary_points": [
         {
           "icon": "🥬",
@@ -390,7 +390,7 @@
       "estimated_minutes": 3,
       "xp_reward": 20,
       "order_index": 2,
-      "prerequisite": "por-que-precisamos-economizar-agua",
+      "prerequisite": null,
       "summary_points": [
         {
           "icon": "🌧️",
@@ -577,7 +577,7 @@
       "estimated_minutes": 3,
       "xp_reward": 20,
       "order_index": 2,
-      "prerequisite": "o-que-e-reciclagem",
+      "prerequisite": null,
       "summary_points": [
         {
           "icon": "🔄",
@@ -737,7 +737,7 @@
       "estimated_minutes": 4,
       "xp_reward": 20,
       "order_index": 2,
-      "prerequisite": "por-que-economizar-energia",
+      "prerequisite": null,
       "summary_points": [
         {
           "icon": "🔋",
@@ -898,7 +898,7 @@
       "estimated_minutes": 4,
       "xp_reward": 20,
       "order_index": 2,
-      "prerequisite": "o-que-e-biodiversidade",
+      "prerequisite": null,
       "summary_points": [
         {
           "icon": "🌸",
@@ -1064,12 +1064,27 @@
       "order_index": 13,
       "prerequisite": null,
       "summary_points": [
-        { "icon": "🐄", "text": "Vacas são animais que precisam de cuidado, espaço, água e alimento." },
-        { "icon": "🥛", "text": "O leite pode ser transformado em diferentes alimentos." },
-        { "icon": "🧀", "text": "Queijo, iogurte e manteiga são exemplos de derivados do leite." },
-        { "icon": "🌱", "text": "Escolhas conscientes valorizam o bem-estar animal e evitam desperdício." }
+        {
+          "icon": "🐄",
+          "text": "Vacas são animais que precisam de cuidado, espaço, água e alimento."
+        },
+        {
+          "icon": "🥛",
+          "text": "O leite pode ser transformado em diferentes alimentos."
+        },
+        {
+          "icon": "🧀",
+          "text": "Queijo, iogurte e manteiga são exemplos de derivados do leite."
+        },
+        {
+          "icon": "🌱",
+          "text": "Escolhas conscientes valorizam o bem-estar animal e evitam desperdício."
+        }
       ],
-      "related": ["o-que-e-uma-acao-ambiental-comunitaria", "o-que-e-uma-horta"],
+      "related": [
+        "o-que-e-uma-acao-ambiental-comunitaria",
+        "o-que-e-uma-horta"
+      ],
       "sections": [
         {
           "icon": "🐄",
@@ -1077,7 +1092,12 @@
           "content": "A vaca é um mamífero: quando filhote, alimenta-se do leite da mãe. Em fazendas, as vacas precisam de água limpa, alimento, abrigo, espaço e cuidados de pessoas responsáveis.\n- É um mamífero\n- Precisa de água, alimento e descanso\n- Deve ser tratada com respeito e cuidado",
           "image_url": null,
           "image_alt": null,
-          "blocks": [{ "type": "think", "prompt": "O que um animal precisa para viver bem?" }]
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "O que um animal precisa para viver bem?"
+            }
+          ]
         },
         {
           "icon": "🥛",
@@ -1085,7 +1105,35 @@
           "content": "O leite pode ser usado para fazer alimentos como queijo, iogurte, manteiga e coalhada. Esses alimentos são chamados de derivados do leite. Cada um passa por uma preparação diferente.\n- Leite pode virar queijo\n- Leite pode virar iogurte\n- Leite pode virar manteiga",
           "image_url": null,
           "image_alt": null,
-          "blocks": [{ "type": "choice", "prompt": "Qual destes é um derivado do leite?", "options": [{ "id": "arroz", "icon": "🍚", "label": "Arroz", "is_best": false, "feedback": "Arroz é um grão, não um derivado do leite." }, { "id": "queijo", "icon": "🧀", "label": "Queijo", "is_best": true, "feedback": "Isso! O queijo pode ser produzido a partir do leite." }, { "id": "maca", "icon": "🍎", "label": "Maçã", "is_best": false, "feedback": "A maçã é uma fruta, não um derivado do leite." }] }]
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Qual destes é um derivado do leite?",
+              "options": [
+                {
+                  "id": "arroz",
+                  "icon": "🍚",
+                  "label": "Arroz",
+                  "is_best": false,
+                  "feedback": "Arroz é um grão, não um derivado do leite."
+                },
+                {
+                  "id": "queijo",
+                  "icon": "🧀",
+                  "label": "Queijo",
+                  "is_best": true,
+                  "feedback": "Isso! O queijo pode ser produzido a partir do leite."
+                },
+                {
+                  "id": "maca",
+                  "icon": "🍎",
+                  "label": "Maçã",
+                  "is_best": false,
+                  "feedback": "A maçã é uma fruta, não um derivado do leite."
+                }
+              ]
+            }
+          ]
         },
         {
           "icon": "💚",
@@ -1093,7 +1141,12 @@
           "content": "Conhecer a origem dos alimentos ajuda a agradecer o trabalho das pessoas e a respeitar os animais. Podemos servir apenas o que vamos comer, guardar corretamente o que sobrar e conversar com um adulto sobre escolhas alimentares.",
           "image_url": null,
           "image_alt": null,
-          "blocks": [{ "type": "tip", "text": "Nunca entre em uma fazenda, toque ou alimente um animal sem a autorização e a presença de um adulto responsável." }]
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Nunca entre em uma fazenda, toque ou alimente um animal sem a autorização e a presença de um adulto responsável."
+            }
+          ]
         }
       ]
     }

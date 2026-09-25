@@ -147,7 +147,7 @@
 
 .tag--status-available {
   background: var(--water-soft);
-  color: var(--water);
+  color: #1d5a80;
 }
 
 .tag--status-in_progress {

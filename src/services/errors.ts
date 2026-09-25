@@ -49,7 +49,9 @@ const MESSAGES: Record<string, string> = {
   invalid_credentials: 'E-mail ou senha incorretos.',
   email_not_confirmed: 'Confirme seu e-mail antes de entrar (confira sua caixa de entrada).',
   user_exists: 'Já existe uma conta com esse e-mail.',
-  weak_password: 'A senha precisa ter pelo menos 6 caracteres.',
+  weak_password: 'A senha precisa ter pelo menos 8 caracteres.',
+  password_too_long: 'A senha é longa demais (use até 128 caracteres).',
+  invalid_email: 'Confira o e-mail: ele parece incompleto ou inválido.',
   rate_limited: 'Muitas tentativas seguidas. Aguarde um pouco e tente de novo.',
   load_progress: 'Não foi possível carregar seu progresso.',
   load_content: 'Não foi possível carregar os conteúdos.',
@@ -97,7 +99,10 @@ function classify(err: ErrorLike): string | null {
   if (/invalid login credentials|invalid email or password/i.test(message)) return 'invalid_credentials';
   if (/email not confirmed/i.test(message)) return 'email_not_confirmed';
   if (/already registered|already been registered|user already exists/i.test(message) || code === 'user_already_exists' || code === 'USER_ALREADY_EXISTS') return 'user_exists';
-  if (code === 'weak_password' || /password should be at least/i.test(message)) return 'weak_password';
+  // Supabase: "Password should be at least…"; Neon Auth (Better Auth): PASSWORD_TOO_SHORT / PASSWORD_TOO_LONG / INVALID_EMAIL
+  if (code === 'weak_password' || code === 'PASSWORD_TOO_SHORT' || /password should be at least|password too short/i.test(message)) return 'weak_password';
+  if (code === 'PASSWORD_TOO_LONG' || /password too long/i.test(message)) return 'password_too_long';
+  if (code === 'INVALID_EMAIL' || /invalid email$/i.test(message)) return 'invalid_email';
   if (err.status === 429 || /rate limit/i.test(message)) return 'rate_limited';
   if (/jwt expired|invalid jwt|not_authenticated/i.test(message)) return 'not_authenticated';
 

@@ -56,9 +56,8 @@ async function run(label, viewport) {
   await page.waitForURL('**/aprender/natureza');
   await page.locator('.lesson-tile').nth(2).waitFor();
   if ((await page.locator('.lesson-tile').count()) !== C.lessonsIn('natureza')) throw new Error(`expected ${C.lessonsIn('natureza')} lessons`);
-  await see('🔒 Conclua “Como uma planta cresce?” para liberar.');
-  await see('🔒 1 bloqueado');
-  log('Categoria: 3 conteúdos, 1 bloqueado por pré-requisito');
+  if (await page.getByText(/🔒/).count()) throw new Error('categoria com aula bloqueada');
+  log('Categoria: 3 conteúdos, todos abertos (missões abertas: sem pré-requisito)');
   await checkOverflow('categoria');
   await shot('02-categoria');
 
@@ -175,15 +174,16 @@ async function run(label, viewport) {
   await page.getByRole('link', { name: 'Fazer quiz' }).click();
   await page.waitForURL('**/missao/plante-uma-arvore/quiz');
   await page.getByRole('button', { name: 'Começar', exact: true }).waitFor();
-  log('Teste 8 · "Fazer quiz" leva ao quiz (desafio ainda bloqueado)');
+  log('Teste 8 · "Fazer quiz" leva ao quiz');
   await page.goto(BASE + '/missao/plante-uma-arvore/desafio');
-  await see('Desafio bloqueado');
-  log('Desafio continua exigindo quiz aprovado (tela mostra o requisito)');
+  await see('🔓 Disponível');
+  await page.getByRole('button', { name: 'Aceitar desafio' }).waitFor();
+  log('Missões abertas: o desafio pode ser aceito antes do quiz');
 
   // (O ciclo quiz → desafio → evidência → recompensa → mundo é coberto por e2e5, e2e6 e e2e7,
   //  com o fluxo atual de checklist, acompanhamentos e conclusão definitiva.)
 
-  // Outra aula: quiz em preparação + desbloqueio por pré-requisito
+  // Outra aula: quiz da aula; e a aula seguinte já está aberta
   await page.goto(BASE + '/aula/como-uma-planta-cresce');
   await see('1 de 3');
   await page.getByRole('button', { name: 'Continuar →' }).click();
@@ -197,15 +197,15 @@ async function run(label, viewport) {
   await shot('09-quiz-preparacao');
   await page.goto(BASE + '/aula/o-que-e-uma-horta');
   await see('1 de 3');
-  log('Pré-requisito concluído libera "O que é uma horta?"');
+  log('"O que é uma horta?" aberta');
 
   // Estados de erro / indisponível
   await page.goto(BASE + '/aula/nao-existe');
   await see('Conteúdo não encontrado');
   await page.goto(BASE + '/aula/o-que-significa-reutilizar');
-  await see('Conteúdo indisponível por enquanto');
-  log('Estados: conteúdo inexistente e conteúdo bloqueado');
-  await shot('10-bloqueado');
+  await page.getByRole('button', { name: 'Continuar →' }).waitFor();
+  log('Estados: conteúdo inexistente; aula que antes exigia pré-requisito agora abre');
+  await shot('10-aula-aberta');
 
   console.log(`  [${label}] overflow: ${overflowChecks.length ? overflowChecks.join(',') : 'nenhum'} · erros: ${JSON.stringify(errors)}`);
   await browser.close();

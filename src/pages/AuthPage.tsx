@@ -130,12 +130,12 @@ export function AuthPage() {
               className="input"
               type="password"
               autoComplete={tab === 'entrar' ? 'current-password' : 'new-password'}
-              minLength={6}
+              minLength={8}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {tab === 'cadastrar' && <span className="muted small">Pelo menos 6 caracteres.</span>}
+            {tab === 'cadastrar' && <span className="muted small">Pelo menos 8 caracteres.</span>}
           </label>
 
           <button type="submit" className="btn btn--primary btn--lg btn--block" disabled={busy}>

@@ -49,7 +49,7 @@ export function CategoryPage() {
         <ul className="category-card__stats">
           <li>🔓 {plural(stats.available, 'disponível', 'disponíveis')}</li>
           <li>▶️ {stats.inProgress} em andamento</li>
-          <li>🔒 {plural(stats.locked, 'bloqueado', 'bloqueados')}</li>
+          {stats.locked > 0 && <li>🔒 {plural(stats.locked, 'bloqueado', 'bloqueados')}</li>}
         </ul>
       </section>
 

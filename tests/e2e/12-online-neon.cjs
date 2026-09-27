@@ -53,6 +53,15 @@ const log = (m) => {
     await see('Olá, Teste Online!');
     log('perfil salvo no banco do Neon (RLS: cada um só vê o seu)');
 
+    // Missões abertas (migration 28): aceita outro desafio sem aula e sem quiz; aula sem pré-requisito abre
+    await page.goto(BASE + '/missao/reduza-o-desperdicio-de-agua/desafio');
+    await see('🔓 Disponível');
+    await page.getByRole('button', { name: 'Aceitar desafio' }).click();
+    await page.waitForURL('**/missao/reduza-o-desperdicio-de-agua/comprovar', { timeout: 30000 });
+    await page.goto(BASE + '/aula/o-que-e-uma-horta');
+    await page.getByRole('button', { name: 'Continuar →' }).waitFor({ timeout: 20000 });
+    log('missões abertas: desafio aceito sem aula/quiz pelo servidor e aula sem pré-requisito');
+
     // Aula → quiz → desafio
     await page.goto(BASE + '/aula/por-que-as-arvores-sao-importantes');
     await see('1 de 5');

@@ -77,10 +77,11 @@ async function run(label, viewport) {
 
   // Página de desafios: missões abertas, tudo disponível desde o início
   await page.goto(BASE + '/desafios');
-  await see('🔓 Disponíveis');
+  await page.locator('#secao-disponiveis .challenge-section__title', { hasText: 'Disponíveis' }).waitFor();
+  await page.locator('.challenge-group__title', { hasText: 'Natureza' }).waitFor(); // disponíveis separados por tema
   await page.locator('.challenge-card').nth(7).waitFor();
   if ((await page.locator('.challenge-card').count()) !== C.challengesTotal) throw new Error(`expected ${C.challengesTotal} challenges`);
-  if (await page.getByText('🔒 Bloqueados').count()) throw new Error('seção Bloqueados com missões abertas');
+  if (await page.locator('#secao-bloqueados').count()) throw new Error('seção Bloqueados com missões abertas');
   await page.getByRole('group', { name: 'Filtrar por categoria' }).getByRole('button', { name: /Água/ }).click();
   await page.waitForFunction(() => document.querySelectorAll('.challenge-card').length === 1);
   log('Desafios: 8 cadastrados, todos disponíveis; filtro por categoria');
@@ -166,17 +167,29 @@ async function run(label, viewport) {
   await checkOverflow('acompanhar');
   await shot('05-timeline-bloqueada');
 
-  // Meus desafios (Início)
+  // Meus desafios (Início): o desafio que só espera a data fica compacto e dá lugar à próxima atividade
   await page.goto(BASE + '/inicio');
   await see('Meus desafios');
-  await see('Próxima ação:');
+  await see('🌱 Aguardando acompanhamento (1)');
   await see('Primeiro acompanhamento a partir de');
-  log('Início · "Meus desafios" com progresso, próxima ação e data');
+  await see('Próxima atividade');
+  if (await page.getByRole('heading', { name: '🌱 Sua primeira missão' }).count()) throw new Error('primeira missão ainda em destaque');
+  if (await page.locator('.my-challenge').count()) throw new Error('desafio em espera com cartão cheio');
+  await checkOverflow('inicio-aguardando');
+  await shot('05b-inicio-compacto');
+  log('Início · desafio em acompanhamento numa linha (com a data) e "Próxima atividade" em destaque');
+  await page.goto(BASE + '/desafios');
+  await page.locator('.waiting-list__row', { hasText: 'Plante uma árvore' }).waitFor();
+  const sectionOrder = await page.locator('.challenge-section__title').allInnerTexts();
+  if (sectionOrder.findIndex((s) => s.includes('Disponíveis')) > sectionOrder.findIndex((s) => s.includes('Aguardando'))) throw new Error('ordem: ' + sectionOrder);
+  log('Desafios · disponíveis primeiro; aguardando acompanhamento em lista compacta');
 
   // O tempo passa (somente no teste): acompanhamentos abertos
   await shiftDemo(page, `for (const uc of Object.values(db.player.challenges)) for (const f of uc.followups) f.scheduledFor = new Date(Date.now() - 86400000).toISOString();`);
-  await page.reload();
+  await page.goto(BASE + '/inicio');
   await see('Seu acompanhamento de “Plante uma árvore” está disponível.');
+  await page.locator('.my-challenge', { hasText: 'Plante uma árvore' }).waitFor();
+  log('Acompanhamento liberado: o desafio volta ao destaque em "Meus desafios"');
   await shot('06-lembrete');
   await page.getByRole('link', { name: 'Registrar' }).first().click();
   await page.waitForURL('**' + TREE + '/acompanhar');
@@ -206,7 +219,7 @@ async function run(label, viewport) {
   await see('Plante uma árvore');
   log('Teste 24 · desafio concluído aparece no perfil');
   await page.goto(BASE + '/desafios');
-  await see('🏆 Concluídos');
+  await page.locator('#secao-concluidos .challenge-section__title', { hasText: 'Concluídos' }).waitFor();
 
   // Outro desafio: prazo vencido → recomeçar → concluir sem acompanhamento
   await doLesson('o-que-e-uma-acao-ambiental-comunitaria', 3);

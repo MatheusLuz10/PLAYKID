@@ -18,7 +18,16 @@ const ctaByStatus: Record<ChallengeStatus, { label: string; step: MissionStep }>
 };
 
 /** Card do desafio: ícone, nome, categoria, dificuldade, duração, XP, status, progresso e ação. */
-export function ChallengeCard({ challenge }: { challenge: Challenge }) {
+/** showStatus/showCategory: false quando a seção ou o grupo já dizem isso (evita repetir a etiqueta em todo cartão). */
+export function ChallengeCard({
+  challenge,
+  showStatus = true,
+  showCategory = true,
+}: {
+  challenge: Challenge;
+  showStatus?: boolean;
+  showCategory?: boolean;
+}) {
   const { content, player } = useGame();
   const status = getChallengeState(content, challenge, player);
   const category = findCategory(content, challenge.categoryId);
@@ -38,12 +47,12 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
       </div>
       <div className="challenge-card__body">
         <div className="challenge-card__tags">
-          {category && (
+          {category && showCategory && (
             <span className="tag tag--muted">
               {category.icon} {category.name}
             </span>
           )}
-          <span className={`tag tag--status-${status}`}>{challengeStatusLabels[status]}</span>
+          {showStatus && <span className={`tag tag--status-${status}`}>{challengeStatusLabels[status]}</span>}
         </div>
         <h3 id={titleId} className="challenge-card__title">
           {challenge.title}

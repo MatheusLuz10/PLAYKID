@@ -133,6 +133,19 @@ export function nextAction(c: Challenge, uc: UserChallenge | undefined, player: 
   return null;
 }
 
+/**
+ * Desafio feito que só espera a data do próximo acompanhamento (nada a fazer agora).
+ * Esses ficam numa lista compacta para as outras atividades aparecerem; quando um
+ * acompanhamento libera (ou atrasa), o desafio volta ao destaque.
+ */
+export function isWaitingQuietly(c: Challenge, uc: UserChallenge | undefined, player: PlayerState): boolean {
+  if (!uc || uc.status !== 'waiting_follow_up' || readyToComplete(c, uc)) return false;
+  const now = serverNow(player);
+  return !uc.followups.some(
+    (f) => f.status !== 'completed' && ['available', 'late'].includes(followupState(f, c.steps.find((s) => s.id === f.stepId), now)),
+  );
+}
+
 // ---------- Lembretes (dentro do app; sem push nesta etapa) ----------
 
 export interface Reminder {

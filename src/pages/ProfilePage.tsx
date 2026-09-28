@@ -34,6 +34,15 @@ export function ProfilePage() {
     }
   };
 
+  // Online: para cadastrar outra pessoa neste aparelho, sai desta conta e abre o cadastro.
+  const newAccount = async () => {
+    try {
+      await signOut();
+    } finally {
+      navigate('/entrar?modo=cadastro');
+    }
+  };
+
   return (
     <div className="stack">
       <PageHeader
@@ -152,6 +161,9 @@ export function ProfilePage() {
         <section className="card card--muted">
           <h2 className="section-title">Conta</h2>
           <p className="muted small">Conectado como {email}</p>
+          <button type="button" className="btn btn--ghost" onClick={() => void newAccount()}>
+            👥 Criar outra conta
+          </button>
           <button type="button" className="btn btn--danger-ghost" onClick={leave}>
             Sair
           </button>

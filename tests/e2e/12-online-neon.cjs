@@ -120,6 +120,27 @@ const log = (m) => {
     await page.reload();
     await page.locator('img[src*="neon.tech"]').first().waitFor({ timeout: 30000 });
     log('recarregar a página mantém a sessão');
+
+    // Outra pessoa no mesmo aparelho: "Trocar de conta" sai e abre a tela de entrar;
+    // Perfil → "Criar outra conta" abre direto o cadastro.
+    await page.goto(BASE + '/inicio');
+    await page.getByRole('button', { name: /Trocar de conta/ }).click();
+    await page.waitForURL('**/entrar', { timeout: 20000 });
+    await page.getByRole('tab', { name: 'Criar conta' }).waitFor();
+    await page.getByLabel('E-mail').fill(email);
+    await page.getByLabel('Senha').fill(senha);
+    await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+    await page.waitForURL('**/inicio', { timeout: 30000 });
+    await page.goto(BASE + '/perfil');
+    await page.getByRole('button', { name: '👥 Criar outra conta' }).click();
+    await page.waitForURL('**/entrar?modo=cadastro', { timeout: 20000 });
+    await page.getByRole('tab', { name: 'Criar conta', selected: true }).waitFor();
+    await page.getByLabel('E-mail').fill(email);
+    await page.getByLabel('Senha').fill(senha);
+    await page.getByRole('tab', { name: 'Entrar' }).click();
+    await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+    await page.waitForURL('**/inicio', { timeout: 30000 });
+    log('com alguém conectado: "Trocar de conta" (Início) e "Criar outra conta" (Perfil) levam ao login/cadastro');
   } finally {
     // Limpeza: exclui a conta de teste (fotos, dados e login)
     try {

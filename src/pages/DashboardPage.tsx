@@ -1,15 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ReminderBanner } from '../components/challenge/ReminderBanner';
+import { WaitingList } from '../components/challenge/WaitingList';
 import { FirstMission, Onboarding } from '../components/onboarding/FirstMission';
 import { LevelProgress } from '../components/player/LevelProgress';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { findCategory, findQuizForLesson } from '../logic/catalog';
 import { latestAchievement } from '../logic/gamification';
-import { challengeStatusLabels, daysUntil, getChallengeState, nextAction, serverNow } from '../logic/challenges';
-import { MISSION_STEPS, getCurrentStep, isStepDone, missionPath, type MissionStep } from '../logic/mission';
+import { challengeStatusLabels, daysUntil, getChallengeState, isWaitingQuietly, nextAction, serverNow } from '../logic/challenges';
+import { MISSION_STEPS, getCurrentStep, isStepDone, missionPath, stepIndex, type MissionStep } from '../logic/mission';
 import { worldStatusLabels } from '../logic/world';
 import { calculateUserLevel } from '../logic/xp';
 import { safeImageSrc } from '../logic/safeUrl';
+import { useAuth } from '../state/AuthContext';
 import { useGame } from '../state/GameContext';
 
 const nextStepCopy: Record<MissionStep, { title: string; cta: string }> = {
@@ -21,8 +23,28 @@ const nextStepCopy: Record<MissionStep, { title: string; cta: string }> = {
   recompensa: { title: 'Ciclo concluído! Visite seu mundo', cta: 'Ver meu mundo' },
 };
 
+/** Botão da próxima atividade, conforme a etapa em que a missão está. */
+const nextActivityCta: Record<MissionStep, string> = {
+  aprender: 'Começar aula',
+  quiz: 'Fazer quiz',
+  desafio: 'Ver missão',
+  comprovar: 'Continuar',
+  acompanhar: 'Registrar acompanhamento',
+  recompensa: 'Ver recompensa',
+};
+
 export function DashboardPage() {
   const { content, player, mode } = useGame();
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+  // Online: trocar de conta = sair desta e ir para a tela de entrar (lá também dá para criar outra conta).
+  const switchAccount = async () => {
+    try {
+      await signOut();
+    } finally {
+      navigate('/entrar');
+    }
+  };
   const { profile } = player;
   const level = calculateUserLevel(profile.totalXp, content.levels);
   const lastAchievement = latestAchievement(content, player);
@@ -35,10 +57,21 @@ export function DashboardPage() {
   const next = nextStepCopy[step];
   const nextHref = !mainChallenge ? '/aprender' : step === 'recompensa' ? '/mundo' : missionPath(mainChallenge.slug, step);
 
-  const activeChallenges = content.challenges.filter((c) => {
+  const openChallenges = content.challenges.filter((c) => {
     const uc = player.challenges[c.id];
     return uc && uc.status !== 'completed';
   });
+  // Feitos, só esperando a data do acompanhamento: ficam numa lista compacta.
+  const waitingChallenges = openChallenges.filter((c) => isWaitingQuietly(c, player.challenges[c.id], player));
+  const activeChallenges = openChallenges.filter((c) => !waitingChallenges.includes(c));
+
+  // Depois que a primeira missão chega ao acompanhamento, o destaque passa para a próxima atividade:
+  // um desafio com algo a fazer agora ou, senão, a próxima missão ainda não aceita.
+  const firstMissionOpen = mainChallenge && stepIndex(step) < stepIndex('acompanhar');
+  const nextChallenge = activeChallenges[0] ?? content.challenges.find((c) => !player.challenges[c.id]);
+  const nextChallengeStep = nextChallenge
+    ? getCurrentStep(nextChallenge, findQuizForLesson(content, nextChallenge.lessonId), player)
+    : null;
   const now = serverNow(player);
   const learnedLessons = content.lessons.filter((l) => player.lessons[l.id]?.status === 'completed');
   const world = player.world;
@@ -68,10 +101,14 @@ export function DashboardPage() {
           <p className="player-header__level">
             {level.current.icon} Nível {level.current.number} · {level.current.name}
           </p>
-          {mode === 'demo' && (
+          {mode === 'demo' ? (
             <Link to="/jogadores" className="player-header__switch">
               Não é você? 👥 Trocar de conta
             </Link>
+          ) : (
+            <button type="button" className="player-header__switch link-button" onClick={() => void switchAccount()}>
+              Não é você? 👥 Trocar de conta
+            </button>
           )}
         </div>
       </header>
@@ -80,7 +117,7 @@ export function DashboardPage() {
 
       <Onboarding userId={profile.userId} show={firstVisit} />
 
-      {mainChallenge && step !== 'recompensa' ? (
+      {firstMissionOpen ? (
         <FirstMission
           lesson={content.lessons.find((l) => l.id === mainChallenge.lessonId)}
           challenge={mainChallenge}
@@ -88,6 +125,21 @@ export function DashboardPage() {
           href={nextHref}
           cta={next.cta}
         />
+      ) : nextChallenge && nextChallengeStep ? (
+        <section className="card card--accent next-step">
+          <p className="eyebrow">Próxima atividade</p>
+          <h2 className="card__title">
+            <span aria-hidden>{nextChallenge.icon}</span> {nextChallenge.title}
+          </h2>
+          <p className="small">
+            {player.challenges[nextChallenge.id]
+              ? nextAction(nextChallenge, player.challenges[nextChallenge.id], player)?.text ?? 'Continue de onde parou.'
+              : 'Uma nova missão para você: aprenda, faça e veja seu mundo crescer.'}
+          </p>
+          <Link to={missionPath(nextChallenge.slug, nextChallengeStep)} className="btn btn--primary">
+            {nextActivityCta[nextChallengeStep]}
+          </Link>
+        </section>
       ) : mainChallenge && (
         <section className="card card--accent next-step">
           <p className="eyebrow">Próximo passo</p>
@@ -130,7 +182,9 @@ export function DashboardPage() {
         <section className="card">
           <h2 className="section-title">🎯 Meus desafios</h2>
           {activeChallenges.length === 0 ? (
-            <p className="empty">Nenhum desafio ativo. Aprenda algo novo para liberar um desafio.</p>
+            <p className="empty">
+              Nenhum desafio com algo a fazer agora. <Link to="/desafios">Escolha um novo desafio →</Link>
+            </p>
           ) : (
             <ul className="my-challenges">
               {activeChallenges.map((c) => {
@@ -177,6 +231,12 @@ export function DashboardPage() {
                 );
               })}
             </ul>
+          )}
+          {waitingChallenges.length > 0 && (
+            <div className="stack stack--sm">
+              <h3 className="small muted">🌱 Aguardando acompanhamento ({waitingChallenges.length})</h3>
+              <WaitingList challenges={waitingChallenges} />
+            </div>
           )}
         </section>
 

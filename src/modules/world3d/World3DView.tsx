@@ -15,6 +15,8 @@ interface World3DViewProps {
   onSelect: (item: WorldItem) => void;
   /** Tocou na casa (ou no botão "Minha casa"): entrar nela. */
   onEnterHome: () => void;
+  /** Abrir já em tela cheia (voltando da casa pelo "Sair da casa"). */
+  startInside?: boolean;
   /** O 3D não abriu: a página mostra o mapa 2D no lugar. */
   onFail: () => void;
 }
@@ -25,7 +27,7 @@ const itemLabel = (item: WorldItem, owned: boolean) =>
     : `Espaço bloqueado: ${item.name}. Ver como desbloquear`;
 
 /** 🌎 Mundo em 3D: as 5 áreas numa paisagem, com navegação por área e lista acessível. */
-export default function World3DView({ content, player, highlightIds = [], onSelect, onEnterHome, onFail }: World3DViewProps) {
+export default function World3DView({ content, player, highlightIds = [], onSelect, onEnterHome, startInside = false, onFail }: World3DViewProps) {
   const areas = useMemo(() => buildAreas(content, player), [content, player]);
   const holder = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<WorldScene3D | null>(null);
@@ -33,7 +35,7 @@ export default function World3DView({ content, player, highlightIds = [], onSele
   const [pins, setPins] = useState<{ items: ScreenPin[]; areas: ScreenPin[]; home: ScreenPin | null }>({ items: [], areas: [], home: null });
   const [reducedMotion] = useState(prefersReducedMotion);
   // Fora do mundo a cena é só prévia: a página rola. "Entrar no mundo" abre em tela cheia.
-  const [inside, setInside] = useState(false);
+  const [inside, setInside] = useState(startInside);
 
   const allItems = useMemo(() => areas.flatMap((a) => a.items), [areas]);
   const specs = useMemo<WorldItemSpec[]>(

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useSearchParams } from 'react-router-dom';
 import { ErrorBoundary } from './components/layout/ErrorBoundary';
 import { RequireAdmin } from './components/layout/RequireAdmin';
 import { LoadingMessage } from './components/ui/StateMessage';
@@ -38,9 +38,13 @@ const TermsPage = lazy(() => import('./pages/public/TermsPage').then((m) => ({ d
 const PrivacyPage = lazy(() => import('./pages/public/PrivacyPage').then((m) => ({ default: m.PrivacyPage })));
 const RecoverPasswordPage = lazy(() => import('./pages/public/PasswordPages').then((m) => ({ default: m.RecoverPasswordPage })));
 const ResetPasswordPage = lazy(() => import('./pages/public/PasswordPages').then((m) => ({ default: m.ResetPasswordPage })));
-// Módulo Meu Lugar (casa 3D): carregado só quando aberto (o three.js fica fora do app principal).
-const PlacePage = lazy(() => import('./modules/place/PlacePage').then((m) => ({ default: m.PlacePage })));
 const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
+
+/** Endereço antigo da casa: abre a casa dentro do Meu Mundo (mantendo o "já andando"). */
+function HouseRedirect() {
+  const [params] = useSearchParams();
+  return <Navigate to={`/mundo?casa=${params.get('andar') === '1' ? 'andar' : '1'}`} replace />;
+}
 
 export function App() {
   return (
@@ -82,7 +86,8 @@ export function App() {
               {/* Nomes alternativos */}
               <Route path="/dashboard" element={<Navigate to="/inicio" replace />} />
               <Route path="/meu-mundo" element={<Navigate to="/mundo" replace />} />
-              <Route path="/meu-lugar" element={<PlacePage />} />
+              {/* Meu Lugar agora fica dentro do Meu Mundo */}
+              <Route path="/meu-lugar" element={<HouseRedirect />} />
               {/* A prévia 3D virou o próprio mundo */}
               <Route path="/mundo/previa-3d" element={<Navigate to="/mundo" replace />} />
               {/* Administração: a tela confere o papel; o servidor confere de novo em cada chamada */}

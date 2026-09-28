@@ -306,8 +306,8 @@ export function DashboardPage() {
             </span>
           ))}
         </Link>
-        <Link to="/meu-lugar" className="text-link">
-          🏡 Visitar Meu Lugar (sua casa em 3D) →
+        <Link to="/mundo?casa=1" className="text-link">
+          🏡 Visitar sua casa em 3D →
         </Link>
       </section>
     </div>

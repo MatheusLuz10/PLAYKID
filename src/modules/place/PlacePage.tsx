@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { ProgressBar } from '../../components/ui/ProgressBar';
 import { LoadingMessage, StateMessage } from '../../components/ui/StateMessage';
@@ -32,11 +32,27 @@ function usePlace() {
 
 const PANEL_CATEGORIES: PlaceCategory[] = ['natureza', 'agua', 'reciclagem', 'biodiversidade', 'educacao', 'energia', 'comunidade'];
 
-/** 🏡 Meu Lugar — a casa e o jardim em 3D, construídos pelo que o jogador aprende e faz. */
-export function PlacePage() {
-  // Vindo do "Meu Mundo" (tocou na casa): abre já andando lá dentro.
-  const [params] = useSearchParams();
-  const walkIn = params.get('andar') === '1';
+interface PlacePageProps {
+  /** Abrir já andando lá dentro (tocou na casa do mapa). */
+  walkIn?: boolean;
+  /** "Sair da casa": volta para o mapa do mundo (fullscreen = estava em tela cheia). */
+  onLeave: (fullscreen: boolean) => void;
+}
+
+/** Cabeçalho da casa dentro do Meu Mundo, com o caminho de volta para o mapa. */
+function HouseHeader({ onLeave }: { onLeave: () => void }) {
+  return (
+    <div className="place-header">
+      <PageHeader title="🏡 Minha casa" subtitle="Minha casa é construída pelas coisas que eu aprendo e faço." />
+      <button type="button" className="btn btn--ghost" onClick={onLeave}>
+        🚪 Sair da casa
+      </button>
+    </div>
+  );
+}
+
+/** 🏡 A casa e o jardim em 3D (dentro do Meu Mundo), construídos pelo que o jogador aprende e faz. */
+export function PlacePage({ walkIn = false, onLeave }: PlacePageProps) {
   const { content, player } = useGame();
   const { state, error, retry } = usePlace();
   const [selected, setSelected] = useState<string | null>(null);
@@ -67,7 +83,7 @@ export function PlacePage() {
   if (error && !state) {
     return (
       <div className="stack">
-        <PageHeader title="🏡 Meu Lugar" subtitle="Minha casa é construída pelas coisas que eu aprendo e faço." />
+        <HouseHeader onLeave={() => onLeave(false)} />
         <StateMessage icon="⚠️" title="Não foi possível carregar a sua casa" text={error} role="alert">
           <button type="button" className="btn btn--primary" onClick={() => void retry()}>
             Tentar novamente
@@ -79,7 +95,7 @@ export function PlacePage() {
   if (!state) {
     return (
       <div className="stack">
-        <PageHeader title="🏡 Meu Lugar" subtitle="Minha casa é construída pelas coisas que eu aprendo e faço." />
+        <HouseHeader onLeave={() => onLeave(false)} />
         <LoadingMessage text="Carregando a sua casa…" />
       </div>
     );
@@ -95,7 +111,7 @@ export function PlacePage() {
 
   return (
     <div className="stack">
-      <PageHeader title="🏡 Meu Lugar" subtitle="Minha casa é construída pelas coisas que eu aprendo e faço." />
+      <HouseHeader onLeave={() => onLeave(false)} />
 
       {newDefs.length > 0 && (
         <div className="banner banner--success" role="status">
@@ -109,7 +125,7 @@ export function PlacePage() {
         </div>
       )}
 
-      <PlaceViewer objects={sceneObjects} onSelect={setSelected} startWalking={walkIn} />
+      <PlaceViewer objects={sceneObjects} onSelect={setSelected} startWalking={walkIn} onLeave={onLeave} />
 
       <section className="card place-panel" aria-labelledby="place-evolution-title">
         <h2 className="section-title" id="place-evolution-title">

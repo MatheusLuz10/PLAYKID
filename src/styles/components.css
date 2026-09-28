@@ -1165,14 +1165,15 @@ a.stepper__link:hover .stepper__dot {
   touch-action: auto !important;
 }
 
-.immersive.is-preview .world3d-stage,
-.immersive.is-preview .place-stage {
-  touch-action: auto;
+/* nenhuma camada da cena (fundo, tela, marcadores) segura o deslizar do dedo na prévia */
+.immersive.is-preview,
+.immersive.is-preview * {
+  touch-action: auto !important;
 }
 
 .immersive.is-preview .world3d-controls,
 .immersive.is-preview .place-controls,
-.immersive.is-preview .place-pad,
+.immersive.is-preview .joystick,
 .immersive.is-preview .place-room {
   display: none;
 }

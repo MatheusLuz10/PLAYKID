@@ -300,54 +300,60 @@
   pointer-events: none;
 }
 
-.place-pad {
+.joystick {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
+  right: 18px;
+  bottom: 18px;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
   display: grid;
-  grid-template-columns: repeat(3, 52px);
-  grid-template-rows: repeat(2, 52px);
-  grid-template-areas:
-    '. up .'
-    'left down right';
-  gap: 6px;
-}
-
-.place-pad__btn {
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--text);
-  font-size: 1.2rem;
-  font-weight: 800;
-  cursor: pointer;
+  place-items: center;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.3) 70%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
   box-shadow: var(--shadow);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  cursor: grab;
 }
 
-.place-pad__btn:active {
-  background: var(--primary-soft);
+.joystick.is-active {
+  cursor: grabbing;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(226, 238, 221, 0.55) 70%);
 }
 
-.place-pad__btn:focus-visible {
+.joystick:focus-visible {
   outline: 3px solid var(--primary);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-.place-pad__btn--up {
-  grid-area: up;
+.joystick__ring {
+  position: absolute;
+  inset: 22px;
+  border-radius: 50%;
+  border: 2px dashed rgba(47, 107, 63, 0.35);
 }
 
-.place-pad__btn--left {
-  grid-area: left;
+.joystick__knob {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #5d9a6b, var(--primary));
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgba(20, 40, 20, 0.35);
+  pointer-events: none;
 }
 
-.place-pad__btn--right {
-  grid-area: right;
+.joystick:not(.is-active) .joystick__knob {
+  transition: transform 0.15s ease-out;
 }
 
-.place-pad__btn--down {
-  grid-area: down;
+/* Casa dentro do Meu Mundo: título e o caminho de volta para o mapa */
+.place-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
 }

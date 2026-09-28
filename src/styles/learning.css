@@ -585,3 +585,12 @@
   font-weight: 700;
   font-size: 0.9rem;
 }
+
+/* o mesmo cartão, quando é um botão (ex.: "Minha casa" no Meu Mundo) */
+button.library-link {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}

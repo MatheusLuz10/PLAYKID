@@ -54,7 +54,8 @@ async function run(browser, label, viewport, extra) {
   await createProfile(page);
 
   await page.goto(BASE + '/meu-lugar');
-  await page.getByRole('heading', { name: '🏡 Meu Lugar' }).waitFor();
+  await page.waitForURL('**/mundo?casa=1'); // o endereço antigo leva à casa dentro do Meu Mundo
+  await page.getByRole('heading', { name: '🏡 Minha casa' }).waitFor();
   await page.locator('canvas.place-canvas').waitFor();
   await page.waitForTimeout(600);
   const colors = await canvasColors(page);
@@ -71,8 +72,8 @@ async function run(browser, label, viewport, extra) {
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
   await page.locator('.immersive.is-active').waitFor();
-  await page.getByRole('button', { name: '✕ Fechar a casa' }).waitFor();
-  log(label, 'prévia não prende a página (a roda rola a tela); "Entrar na casa" abre em tela cheia com "Fechar" sempre à vista');
+  await page.getByRole('button', { name: '✕ Sair da casa' }).waitFor();
+  log(label, 'casa dentro do Meu Mundo; prévia não prende a página (a roda rola a tela); "Entrar na casa" abre em tela cheia com "Sair da casa" sempre à vista');
 
   // controles
   const inside = page.getByRole('button', { name: '🔍 Ver por dentro' });
@@ -97,13 +98,21 @@ async function run(browser, label, viewport, extra) {
   await page.mouse.up();
   await page.mouse.wheel(0, -300);
   log(label, 'controles: ver por dentro, girar, aproximar/afastar, cômodos, jardim, arrastar e roda do mouse');
-  await page.keyboard.press('Escape');
-  await page.locator('.immersive.is-preview').waitFor();
-  await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
-  await page.getByRole('button', { name: '✕ Fechar a casa' }).click();
-  await page.locator('.immersive.is-preview').waitFor();
+  // "Sair da casa" (tela cheia) volta para o mapa do mundo, na visão geral
+  await page.getByRole('button', { name: '✕ Sair da casa' }).click();
+  await page.waitForURL('**/mundo?tela=cheia');
+  await page.getByRole('button', { name: '✕ Sair do mundo' }).waitFor();
+  await page.waitForFunction(() => document.querySelector('.world3d-stage')?.getAttribute('data-focus') === 'overview');
+  await page.getByRole('button', { name: '✕ Sair do mundo' }).click();
   if (await page.evaluate(() => document.body.style.overflow === 'hidden')) throw new Error('página continuou travada');
-  log(label, 'Esc e "Fechar a casa" voltam para a página (que volta a rolar)');
+  // o botão "Sair da casa" do topo (fora da tela cheia) também volta para o mapa
+  await page.getByRole('button', { name: /Minha casa/ }).click();
+  await page.getByRole('heading', { name: '🏡 Minha casa' }).waitFor();
+  await page.getByRole('button', { name: '🚪 Sair da casa' }).click();
+  await page.locator('canvas.world3d-canvas').waitFor();
+  if (page.url().includes('casa=')) throw new Error('continuou na casa');
+  log(label, '"Sair da casa" volta para o mapa do mundo na visão geral (e a página volta a rolar)');
+  await page.goto(BASE + '/meu-lugar');
   await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
 
   if (STAGE >= 2 && extra) await extra(page, label, log);

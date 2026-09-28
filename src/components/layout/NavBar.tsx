@@ -14,11 +14,9 @@ export function NavBar() {
   const { pathname } = useLocation();
   const { player } = useGame();
   // Admin aparece no menu lateral (no celular, o acesso fica no Perfil).
-  // "Meu Lugar" e "Admin" aparecem no menu lateral; no celular, o acesso fica no Início/Meu Mundo e no Perfil.
+  // A casa (antigo "Meu Lugar") fica dentro do Meu Mundo.
   const items = [
-    ...NAV_ITEMS.slice(0, 2),
-    { to: '/meu-lugar', icon: '🏡', label: 'Meu Lugar', desktopOnly: true },
-    ...NAV_ITEMS.slice(2),
+    ...NAV_ITEMS,
     ...(player.profile.role === 'admin' ? [{ to: '/admin', icon: '🔐', label: 'Admin', desktopOnly: true }] : []),
   ];
   // As aulas (/aula/...) pertencem à área Aprender.

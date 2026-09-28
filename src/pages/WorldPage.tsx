@@ -1,7 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../components/layout/PageHeader';
 import { ProgressBar } from '../components/ui/ProgressBar';
+import { LoadingMessage } from '../components/ui/StateMessage';
 import { WorldItemDialog } from '../components/world/WorldItemDialog';
 import { WorldMap } from '../components/world/WorldMap';
 import { hasWebGL } from '../modules/place/scene/webgl';
@@ -20,10 +21,42 @@ import { useGame } from '../state/GameContext';
 
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-// Mundo em 3D: carregado sob demanda (o three.js fica fora do app principal).
+// Mundo em 3D e a casa: carregados sob demanda (o three.js fica fora do app principal).
 const World3DView = lazy(() => import('../modules/world3d/World3DView'));
+const PlacePage = lazy(() => import('../modules/place/PlacePage').then((m) => ({ default: m.PlacePage })));
 
+/** Meu Mundo: o mapa do mundo ou, ao entrar nela, a casa (?casa=1, ou ?casa=andar já andando). */
 export function WorldPage() {
+  const [params, setParams] = useSearchParams();
+  const house = params.get('casa');
+  // Saindo da casa, o mapa volta na visão geral (sem voar de novo até os itens novos).
+  const [cameBack, setCameBack] = useState(false);
+  const enterHouse = useCallback(
+    (walk: boolean) => {
+      window.scrollTo(0, 0);
+      setParams({ casa: walk ? 'andar' : '1' });
+    },
+    [setParams],
+  );
+  const leaveHouse = useCallback(
+    (fullscreen: boolean) => {
+      setCameBack(true);
+      window.scrollTo(0, 0);
+      setParams(fullscreen ? { tela: 'cheia' } : {});
+    },
+    [setParams],
+  );
+  if (house) {
+    return (
+      <Suspense fallback={<LoadingMessage text="Abrindo a sua casa…" />}>
+        <PlacePage key={house} walkIn={house === 'andar'} onLeave={leaveHouse} />
+      </Suspense>
+    );
+  }
+  return <WorldMapPage onEnterHouse={enterHouse} fullscreen={params.get('tela') === 'cheia'} cameBack={cameBack} />;
+}
+
+function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (walk: boolean) => void; fullscreen: boolean; cameBack: boolean }) {
   const { content, player, actions } = useGame();
   const [selected, setSelected] = useState<WorldItem | null>(null);
   const closeDialog = useCallback(() => setSelected(null), []);
@@ -31,8 +64,7 @@ export function WorldPage() {
   const [use3d, setUse3d] = useState(hasWebGL);
   const fallbackTo2d = useCallback(() => setUse3d(false), []);
   // Tocar na casa do mundo: entra nela, já andando pelos cômodos.
-  const navigate = useNavigate();
-  const enterHome = useCallback(() => navigate('/meu-lugar?andar=1'), [navigate]);
+  const enterHome = useCallback(() => onEnterHouse(true), [onEnterHouse]);
 
   // Itens que o jogador ainda não viu surgir: animam agora e fecham o ciclo (EVOLUIR).
   const [newlyRevealed] = useState(() =>
@@ -121,23 +153,24 @@ export function WorldPage() {
         </div>
       )}
 
-      <Link to="/meu-lugar?andar=1" className="card library-link">
+      <button type="button" className="card library-link" onClick={() => onEnterHouse(false)}>
         <span className="big-icon big-icon--sm" aria-hidden>
           🏡
         </span>
         <span>
-          <strong>Meu Lugar</strong>
+          <strong>Minha casa</strong>
           <span className="block muted small">Entre na sua casa e ande pelos cômodos: ela cresce com o que você aprende e faz</span>
         </span>
         <span aria-hidden>→</span>
-      </Link>
+      </button>
 
       {use3d ? (
         <Suspense fallback={<div className="world3d-loading" role="status">🌍 Carregando o mundo em 3D…</div>}>
           <World3DView
             content={content}
             player={player}
-            highlightIds={newlyRevealed}
+            highlightIds={cameBack ? [] : newlyRevealed}
+            startInside={fullscreen}
             onSelect={setSelected}
             onEnterHome={enterHome}
             onFail={fallbackTo2d}

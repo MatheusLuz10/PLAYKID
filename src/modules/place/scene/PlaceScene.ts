@@ -393,10 +393,12 @@ export class PlaceScene {
     this.invalidate();
   }
 
-  /** Botões da tela (segurar): anda e vira enquanto estiver apertado. */
+  /** Controle analógico: anda e vira na intensidade pedida (0 a 1) enquanto estiver acionado. */
   setWalkInput(input: WalkInput) {
+    // só reinicia o relógio quando começa a andar (o controle manda vários valores por segundo)
+    const idle = !this.input.forward && !this.input.turn && this.keys.size === 0;
     this.input = input;
-    this.lastWalkAt = performance.now();
+    if (idle) this.lastWalkAt = performance.now();
     this.invalidate();
   }
 

@@ -124,27 +124,28 @@ async function run(browser, label, viewport) {
   await page.waitForTimeout(1500);
   await snap('03-casa-no-mundo');
   await page.locator('.world3d-home-pin').click();
-  await page.waitForURL('**/meu-lugar?andar=1');
+  await page.waitForURL('**/mundo?casa=andar');
   const where = (text) => page.locator('.place-room', { hasText: text }).waitFor({ timeout: 30000 });
   await where('Sala');
-  await page.getByRole('button', { name: '✕ Fechar a casa' }).waitFor();
+  await page.getByRole('button', { name: '✕ Sair da casa' }).waitFor();
   log('casa no mundo: tocar em "Minha casa" entra nela, já andando (começa na sala)');
-  const hold = async (name, ms) => {
-    const b = await page.getByRole('button', { name }).boundingBox();
-    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+  // controle analógico: arrasta a bolinha (dx, dy) a partir do centro e segura
+  const stick = async (dx, dy, ms) => {
+    const b = await page.getByRole('application', { name: /Controle para andar pela casa/ }).boundingBox();
+    const cx = b.x + b.width / 2;
+    const cy = b.y + b.height / 2;
+    await page.mouse.move(cx, cy);
     await page.mouse.down();
+    await page.mouse.move(cx + dx, cy + dy, { steps: 5 });
     await page.waitForTimeout(ms);
     await page.mouse.up();
   };
   await page.waitForTimeout(1500);
-  await hold('Andar para frente', 2600);
+  await stick(0, -60, 2600);
   await where('Quarto');
-  log('segurar ▲ anda pela sala e passa pela porta até o quarto');
-  for (let i = 0; i < 4; i++) {
-    await page.getByRole('button', { name: 'Virar para a direita' }).focus();
-    await page.keyboard.press('Enter'); // teclado: cada Enter vira um pouco
-  }
-  await hold('Andar para frente', 2500);
+  log('controle analógico: bolinha para cima anda pela sala e passa pela porta até o quarto');
+  await stick(-60, 0, 800); // bolinha para a esquerda: vira para a parede de fora do quarto
+  await stick(0, -60, 2500);
   await page.waitForTimeout(300);
   if (!(await page.locator('.place-room', { hasText: 'Quarto' }).count())) throw new Error('atravessou a parede do quarto');
   log('a parede segura o passo: virado para ela, continua no quarto');
@@ -157,9 +158,11 @@ async function run(browser, label, viewport) {
   await page.screenshot({ path: `${OUT}/${label}-04-dentro-da-casa.png`, clip: await page.locator('.place-stage').boundingBox() });
   await page.getByRole('button', { name: '🔭 Ver de fora' }).click();
   await page.getByRole('button', { name: '🚶 Andar pela casa' }).waitFor();
-  await page.getByRole('button', { name: '✕ Fechar a casa' }).click();
-  await page.getByRole('button', { name: '🏡 Entrar na casa' }).waitFor();
-  log('setas do teclado viram; botões dos cômodos levam até eles; "Ver de fora" e "Fechar a casa" funcionam');
+  await page.getByRole('button', { name: '✕ Sair da casa' }).click();
+  await page.waitForURL('**/mundo?tela=cheia');
+  await focusIs('overview');
+  await page.getByRole('button', { name: '✕ Sair do mundo' }).waitFor();
+  log('setas do teclado viram; botões dos cômodos levam até eles; "Ver de fora" funciona; "Sair da casa" volta ao mapa na visão geral');
 
   console.log(`  [${label}] erros no console: ${JSON.stringify(errors)}`);
   if (errors.length) results.failed++;
@@ -196,6 +199,37 @@ async function run(browser, label, viewport) {
   } catch (e) {
     results.failed++;
     console.error(`  [sem WebGL] FAIL ${e.message.split('\n')[0]}`);
+  }
+  // Celular com toque de verdade: deslizar o dedo por cima da cena (sem entrar) rola a página
+  try {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const page = await context.newPage();
+    await page.addInitScript(() => localStorage.setItem('eco-quest:onboarding-visto:demo-user', '1'));
+    await entrarNaDemonstracao(page, BASE);
+    const cdp = await context.newCDPSession(page);
+    for (const [path, sel] of [['/mundo', '.world3d-stage'], ['/mundo?casa=1', '.place-stage']]) {
+      await page.goto(BASE + path);
+      await page.locator(`${sel} canvas`).waitFor({ timeout: 60000 });
+      await page.evaluate((s) => document.querySelector(s).scrollIntoView({ block: 'center' }), sel);
+      await page.waitForTimeout(800);
+      const b = await page.locator(sel).boundingBox();
+      const y0 = await page.evaluate(() => window.scrollY);
+      // dedo no meio da cena, deslizando para cima
+      const x = Math.round(b.x + b.width / 2);
+      const y = Math.round(Math.min(700, Math.max(300, b.y + b.height / 2)));
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+      for (let i = 1; i <= 10; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: y - i * 25 }] });
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await page.waitForTimeout(400);
+      const y1 = await page.evaluate(() => window.scrollY);
+      if (y1 <= y0 + 50) throw new Error(`${path}: deslizar o dedo na cena não rolou a página (${y0} → ${y1})`);
+    }
+    results.passed++;
+    console.log('  [toque] ✓ deslizar o dedo por cima da cena 3D (mundo e casa, sem entrar) rola a página');
+    await context.close();
+  } catch (e) {
+    results.failed++;
+    console.error(`  [toque] FAIL ${e.message.split('\n')[0]}`);
   }
   await browser.close();
   console.log(`\n${results.passed} verificações ok, ${results.failed} falharam`);

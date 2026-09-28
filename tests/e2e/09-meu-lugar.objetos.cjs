@@ -89,7 +89,8 @@ module.exports = async function objetos(page, label, log) {
   await dialog.getByText('Desbloqueado em').waitFor();
   await page.screenshot({ path: `${OUT}/${label}-06-origem.png` });
   await dialog.getByRole('button', { name: 'Fechar' }).click();
-  await page.getByRole('button', { name: '✕ Fechar a casa' }).click();
+  await page.getByRole('button', { name: '✕ Sair da casa' }).click();
+  await page.goto(BASE + '/meu-lugar');
   log(label, 'desafio concluído → Minha Árvore no jardim; toque mostra origem, data e o registro do jogador (diário)');
 
   // Painel com números reais (conferidos com o que ficou salvo)

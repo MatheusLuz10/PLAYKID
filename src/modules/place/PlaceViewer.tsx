@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ImmersiveFrame } from '../../components/ui/ImmersiveFrame';
-import { PlaceScene, ROOMS, type FocusTarget, type Hotspot, type RoomCode, type SceneObject, type WalkInput } from './scene/PlaceScene';
+import { Joystick } from './Joystick';
+import { PlaceScene, ROOMS, type FocusTarget, type Hotspot, type RoomCode, type SceneObject } from './scene/PlaceScene';
 import { hasWebGL, prefersReducedMotion } from './scene/webgl';
 
 interface PlaceViewerProps {
   objects: SceneObject[];
   onSelect: (code: string) => void;
-  /** Abrir já andando dentro da casa (vindo do "Meu Mundo"). */
+  /** Abrir já andando dentro da casa (tocou na casa do mapa). */
   startWalking?: boolean;
+  /** "Sair da casa" na tela cheia: volta para o mapa do mundo. */
+  onLeave: (fullscreen: boolean) => void;
 }
 
 const FOCUS: { id: FocusTarget; label: string }[] = [
@@ -27,19 +30,11 @@ const ROOM_PLACE: Record<RoomCode, string> = {
   estudos: `na 📚 ${ROOMS.estudos.name}`,
 };
 
-/** Botões de andar: segurar anda sem parar; um clique (ou Enter) dá um passo. */
-const PAD: { label: string; icon: string; input: WalkInput; area: string }[] = [
-  { label: 'Andar para frente', icon: '▲', input: { forward: 1, turn: 0 }, area: 'up' },
-  { label: 'Virar para a esquerda', icon: '◀', input: { forward: 0, turn: -1 }, area: 'left' },
-  { label: 'Virar para a direita', icon: '▶', input: { forward: 0, turn: 1 }, area: 'right' },
-  { label: 'Andar para trás', icon: '▼', input: { forward: -1, turn: 0 }, area: 'down' },
-];
-
 /**
  * Cena 3D + controles. Sem WebGL (ou se a cena falhar), mostra um aviso — a
  * lista de objetos da página continua funcionando como alternativa.
  */
-export function PlaceViewer({ objects, onSelect, startWalking = false }: PlaceViewerProps) {
+export function PlaceViewer({ objects, onSelect, startWalking = false, onLeave }: PlaceViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<PlaceScene | null>(null);
   const [supported] = useState(hasWebGL);
@@ -52,7 +47,6 @@ export function PlaceViewer({ objects, onSelect, startWalking = false }: PlaceVi
   const [spots, setSpots] = useState<Hotspot[]>([]);
   const selectRef = useRef(onSelect);
   selectRef.current = onSelect;
-  const held = useRef(false);
 
   useEffect(() => {
     if (!supported || !containerRef.current) return;
@@ -116,29 +110,8 @@ export function PlaceViewer({ objects, onSelect, startWalking = false }: PlaceVi
     if (!walking && f !== 'geral' && f !== 'jardim') setInterior(true);
   };
 
-  const press = (input: WalkInput) => (e: ReactPointerEvent<HTMLButtonElement>) => {
-    held.current = true;
-    e.currentTarget.setPointerCapture?.(e.pointerId);
-    sceneRef.current?.setWalkInput(input);
-  };
-  const release = () => sceneRef.current?.setWalkInput({ forward: 0, turn: 0 });
-  // clique sem segurar (ou Enter/Espaço no teclado): um passo
-  const tap = (input: WalkInput) => {
-    if (held.current) {
-      held.current = false;
-      return;
-    }
-    sceneRef.current?.nudge(input.forward, input.turn);
-  };
-
-  const close = () => {
-    setInside(false);
-    if (walking) {
-      setWalking(false);
-      setRoom(null);
-      sceneRef.current?.setWalk(false);
-    }
-  };
+  // "Sair da casa" na tela cheia: volta direto para o mapa do mundo (visão geral)
+  const close = () => onLeave(true);
 
   return (
     <div className="place-viewer">
@@ -147,7 +120,7 @@ export function PlaceViewer({ objects, onSelect, startWalking = false }: PlaceVi
         onEnter={() => setInside(true)}
         onExit={close}
         enterLabel="🏡 Entrar na casa"
-        exitLabel="Fechar a casa"
+        exitLabel="Sair da casa"
         className="place-frame"
       >
         <div className="place-toolbar" role="toolbar" aria-label="Navegar pela casa">
@@ -180,25 +153,7 @@ export function PlaceViewer({ objects, onSelect, startWalking = false }: PlaceVi
               📍 Você está {ROOM_PLACE[room]}
             </p>
           )}
-          {walking && (
-            <div className="place-pad" role="group" aria-label="Andar pela casa">
-              {PAD.map((b) => (
-                <button
-                  key={b.area}
-                  type="button"
-                  className={`place-pad__btn place-pad__btn--${b.area}`}
-                  aria-label={b.label}
-                  onPointerDown={press(b.input)}
-                  onPointerUp={release}
-                  onPointerCancel={release}
-                  onLostPointerCapture={release}
-                  onClick={() => tap(b.input)}
-                >
-                  {b.icon}
-                </button>
-              ))}
-            </div>
-          )}
+          {walking && <Joystick onChange={(input) => sceneRef.current?.setWalkInput(input)} />}
           <div className="place-controls">
             <button type="button" className="place-control place-control--walk" onClick={toggleWalk} aria-pressed={walking}>
               {walking ? '🔭 Ver de fora' : '🚶 Andar pela casa'}
@@ -229,7 +184,7 @@ export function PlaceViewer({ objects, onSelect, startWalking = false }: PlaceVi
       </ImmersiveFrame>
       <p className="small muted place-help">
         {walking
-          ? 'Use as setas (ou W A S D) ou os botões ▲ ◀ ▶ ▼ para andar. Arraste para olhar em volta. Passe pelas portas para ir de um cômodo a outro e toque em um objeto para ver a origem.'
+          ? 'Arraste a bolinha do controle para andar: para cima anda, para os lados vira (no teclado: setas ou W A S D). Arraste a cena para olhar em volta. Passe pelas portas para ir de um cômodo a outro e toque em um objeto para ver a origem.'
           : 'Toque em "Entrar na casa" para explorar em tela cheia. Lá dentro: arraste para girar · pinça ou roda do mouse para aproximar · toque em um objeto para ver a origem · "Andar pela casa" para passear pelos cômodos.'}
       </p>
     </div>

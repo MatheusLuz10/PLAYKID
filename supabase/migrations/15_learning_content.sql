@@ -96,6 +96,13 @@ on conflict (id) do update set
   description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
   xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
   active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000014', '10000000-0000-4000-8000-000000000006', 'Móveis da casa', 'Os móveis da nossa casa', 'os-moveis-da-nossa-casa', 'Descubra para que servem os móveis, do que eles são feitos e como cuidar deles para durarem muito tempo.', 'beginner', 4, 20, 2, '[{"icon":"🛋️","text":"Cada móvel tem uma função: sentar, dormir, guardar ou apoiar."},{"icon":"🌳","text":"Muitos móveis são feitos de madeira, que vem das árvores."},{"icon":"🧽","text":"Cuidar dos móveis faz com que eles durem mais e evita desperdício."},{"icon":"♻️","text":"Um móvel velho pode ser consertado, reaproveitado ou doado."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
 
 -- Pré-requisitos (depois que todas as aulas existem)
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000001';
@@ -111,9 +118,10 @@ update public.lessons set prerequisite_lesson_id = null where id = '20000000-000
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000011';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000012';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000013';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000014';
 
 -- Seções (recriadas)
-delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013');
+delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
 insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
   ('21000000-0000-4000-8000-000000001001', '20000000-0000-4000-8000-000000000001', 'content', '🌳', 'Muito mais do que paisagem', 'Uma árvore é muito mais do que um elemento da paisagem.
 Árvores são plantas com tronco lenhoso que podem viver por muitos anos. Pela fotossíntese, elas usam a luz do sol para absorver gás carbônico (CO₂) do ar e liberar oxigênio.
@@ -258,9 +266,20 @@ insert into public.lesson_sections (id, lesson_id, section_type, icon, title, co
 - Leite pode virar iogurte
 - Leite pode virar manteiga', null, null, '[{"type":"choice","prompt":"Qual destes é um derivado do leite?","options":[{"id":"arroz","icon":"🍚","label":"Arroz","is_best":false,"feedback":"Arroz é um grão, não um derivado do leite."},{"id":"queijo","icon":"🧀","label":"Queijo","is_best":true,"feedback":"Isso! O queijo pode ser produzido a partir do leite."},{"id":"maca","icon":"🍎","label":"Maçã","is_best":false,"feedback":"A maçã é uma fruta, não um derivado do leite."}]}]'::jsonb, 2),
   ('21000000-0000-4000-8000-000000013003', '20000000-0000-4000-8000-000000000013', 'content', '💚', 'Cuidar e não desperdiçar', 'Conhecer a origem dos alimentos ajuda a agradecer o trabalho das pessoas e a respeitar os animais. Podemos servir apenas o que vamos comer, guardar corretamente o que sobrar e conversar com um adulto sobre escolhas alimentares.', null, null, '[{"type":"tip","text":"Nunca entre em uma fazenda, toque ou alimente um animal sem a autorização e a presença de um adulto responsável."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000014001', '20000000-0000-4000-8000-000000000014', 'content', '🏠', 'Para que servem os móveis?', 'Móveis são os objetos grandes que deixam a casa confortável. Cada cômodo tem os seus: na sala tem sofá, no quarto tem cama e guarda-roupa, na cozinha tem mesa e cadeiras.
+- Sofá e cadeira: para sentar
+- Cama: para dormir e descansar
+- Guarda-roupa e estante: para guardar coisas
+- Mesa: para apoiar, comer e estudar', null, null, '[{"type":"choice","prompt":"Qual móvel serve para guardar roupas?","options":[{"id":"guarda-roupa","icon":"🚪","label":"Guarda-roupa","is_best":true,"feedback":"Isso! O guarda-roupa guarda roupas, sapatos e cobertores."},{"id":"sofa","icon":"🛋️","label":"Sofá","is_best":false,"feedback":"O sofá serve para sentar e descansar na sala."},{"id":"mesa","icon":"🍽️","label":"Mesa","is_best":false,"feedback":"A mesa serve para apoiar pratos, livros e cadernos."}]}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000014002', '20000000-0000-4000-8000-000000000014', 'content', '🌳', 'Do que os móveis são feitos?', 'Muitos móveis são feitos de madeira, que vem das árvores. Outros usam metal, plástico, vidro ou tecido. Olhar com atenção ajuda a descobrir: a madeira tem desenhos de linhas, o metal é frio e brilhante, o tecido é macio.
+- Madeira: vem das árvores
+- Metal: frio e resistente
+- Tecido: macio, como no sofá', null, null, '[{"type":"think","prompt":"Qual é o móvel de madeira mais perto de você agora?"}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000014003', '20000000-0000-4000-8000-000000000014', 'content', '🧽', 'Cuidar para durar', 'Quando cuidamos dos móveis, eles duram muitos anos e menos árvores precisam ser cortadas para fazer móveis novos. Não pular em cima da cama, não riscar a mesa e limpar a poeira são jeitos de cuidar. Um móvel velho pode ser consertado, pintado ou doado para outra família.', null, null, '[{"type":"tip","text":"Nunca suba em móveis nem tente mover um móvel pesado sozinho: peça ajuda a um adulto."}]'::jsonb, 3);
 
 -- Conteúdos relacionados (recriados)
-delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013');
+delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
 insert into public.lesson_related (lesson_id, related_lesson_id, order_index) values
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', 1),
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000011', 2),
@@ -300,4 +319,6 @@ insert into public.lesson_related (lesson_id, related_lesson_id, order_index) va
   ('20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000003', 2),
   ('20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000001', 3),
   ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000012', 1),
-  ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', 2);
+  ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', 2),
+  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000012', 1),
+  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000007', 2);

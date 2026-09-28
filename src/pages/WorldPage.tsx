@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PageHeader } from '../components/layout/PageHeader';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { WorldItemDialog } from '../components/world/WorldItemDialog';
@@ -30,6 +30,9 @@ export function WorldPage() {
   // Sem WebGL (ou se o 3D falhar), o mundo aparece no mapa 2D.
   const [use3d, setUse3d] = useState(hasWebGL);
   const fallbackTo2d = useCallback(() => setUse3d(false), []);
+  // Tocar na casa do mundo: entra nela, já andando pelos cômodos.
+  const navigate = useNavigate();
+  const enterHome = useCallback(() => navigate('/meu-lugar?andar=1'), [navigate]);
 
   // Itens que o jogador ainda não viu surgir: animam agora e fecham o ciclo (EVOLUIR).
   const [newlyRevealed] = useState(() =>
@@ -118,20 +121,27 @@ export function WorldPage() {
         </div>
       )}
 
-      <Link to="/meu-lugar" className="card library-link">
+      <Link to="/meu-lugar?andar=1" className="card library-link">
         <span className="big-icon big-icon--sm" aria-hidden>
           🏡
         </span>
         <span>
           <strong>Meu Lugar</strong>
-          <span className="block muted small">Sua casa e seu jardim em 3D, construídos pelo que você aprende e faz</span>
+          <span className="block muted small">Entre na sua casa e ande pelos cômodos: ela cresce com o que você aprende e faz</span>
         </span>
         <span aria-hidden>→</span>
       </Link>
 
       {use3d ? (
         <Suspense fallback={<div className="world3d-loading" role="status">🌍 Carregando o mundo em 3D…</div>}>
-          <World3DView content={content} player={player} highlightIds={newlyRevealed} onSelect={setSelected} onFail={fallbackTo2d} />
+          <World3DView
+            content={content}
+            player={player}
+            highlightIds={newlyRevealed}
+            onSelect={setSelected}
+            onEnterHome={enterHome}
+            onFail={fallbackTo2d}
+          />
         </Suspense>
       ) : (
         <>

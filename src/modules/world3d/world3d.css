@@ -230,3 +230,14 @@
     font-size: 0.95rem;
   }
 }
+
+/* Casa do jogador: botão de destaque na barra e etiqueta sobre a casa */
+.world3d-toolbar .world3d-toolbar__home {
+  background: var(--sun-soft);
+  border-color: #c98b1e;
+}
+
+.world3d-home-pin {
+  background: #fff7e6;
+  border-color: #e3a233;
+}

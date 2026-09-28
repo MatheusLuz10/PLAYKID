@@ -6,11 +6,13 @@
  * - Câmera: visão geral ou voo até cada área; arrastar gira, roda/pinça aproxima.
  * - Itens novos crescem ao aparecer. Sem movimento (preferência do sistema)
  *   nada anima e a cena só é desenhada quando algo muda.
+ * - A casa do jogador (a mesma de "Meu Lugar") fica na frente; tocar nela abre a casa.
  * - Libera a memória da GPU ao sair (dispose).
  */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { AREA_CODES, ITEM_OFFSETS, OVERVIEW, OVERVIEW_PORTRAIT, slotToWorld, ZONES, zoneView, type AreaCode } from './layout';
+import { buildHouse, HOUSE } from '../../place/scene/house';
+import { AREA_CODES, HOME, ITEM_OFFSETS, OVERVIEW, OVERVIEW_PORTRAIT, slotToWorld, ZONES, zoneView, type AreaCode } from './layout';
 import { animateModel } from './models/animate';
 import { waterClock, waterMaterial } from './models/common';
 import { buildWorldModel, lockedSlot } from './models';
@@ -54,7 +56,9 @@ interface Options {
   reducedMotion: boolean;
   lowPower: boolean;
   onSelect: (id: string) => void;
-  onPins: (items: ScreenPin[], areas: ScreenPin[]) => void;
+  onPins: (items: ScreenPin[], areas: ScreenPin[], home: ScreenPin) => void;
+  /** Tocou na casa. */
+  onHome: () => void;
 }
 
 interface ItemEntry {
@@ -78,6 +82,7 @@ export class WorldScene3D {
   private wind: Wind = { uniforms: { uTime: { value: 0 } } };
   private grass: THREE.InstancedMesh | null = null;
   private clouds: THREE.Group;
+  private home: THREE.Group;
   private envTarget: THREE.WebGLRenderTarget | null = null;
   /** Os shaders são preparados em segundo plano; só então a cena é desenhada. */
   private ready = false;
@@ -149,6 +154,8 @@ export class WorldScene3D {
     this.scene.add(buildTerrain(), buildPaths(), buildRocks(), buildGardenFence(), buildWildflowers(opts.lowPower ? 350 : 700));
     this.clouds = buildClouds();
     this.scene.add(this.clouds);
+    this.home = buildHome();
+    this.scene.add(this.home);
 
     // Câmera
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.3, 700);
@@ -278,8 +285,8 @@ export class WorldScene3D {
     const view = target === 'overview' ? (portrait ? OVERVIEW_PORTRAIT : OVERVIEW) : zoneView(target);
     const to = new THREE.Vector3(...view.pos);
     const tTo = new THREE.Vector3(...view.target);
-    // tela estreita: afasta um pouco a câmera para caber a área inteira
-    if (target !== 'overview') to.sub(tTo).multiplyScalar(Math.min(1.45, Math.max(1, 1.1 / this.aspect))).add(tTo);
+    // tela estreita (celular em pé, tela cheia): afasta a câmera para caber a área inteira
+    if (target !== 'overview') to.sub(tTo).multiplyScalar(Math.min(2.4, Math.max(1, 1.1 / this.aspect))).add(tTo);
     if (!animate || this.opts.reducedMotion) {
       this.flight = null;
       this.camera.position.copy(to);
@@ -343,10 +350,11 @@ export class WorldScene3D {
     this.pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
     this.raycaster.setFromCamera(this.pointer, this.camera);
     const groups = [...this.items.values()].map((i) => i.group);
-    const hit = this.raycaster.intersectObjects(groups, true)[0];
+    const hit = this.raycaster.intersectObjects([...groups, this.home], true)[0];
     let node: THREE.Object3D | null = hit?.object ?? null;
-    while (node && !node.userData.itemId) node = node.parent;
-    if (node) this.opts.onSelect(node.userData.itemId as string);
+    while (node && !node.userData.itemId && !node.userData.home) node = node.parent;
+    if (node?.userData.home) this.opts.onHome();
+    else if (node) this.opts.onSelect(node.userData.itemId as string);
   };
 
   private project(x: number, y: number, z: number, rect: DOMRect, id: string): ScreenPin {
@@ -373,7 +381,10 @@ export class WorldScene3D {
       const pad = Math.min(110, rect.width / 3);
       return { ...pin, x: THREE.MathUtils.clamp(pin.x, pad, rect.width - pad) };
     });
-    this.opts.onPins(items, areas);
+    const top = new THREE.Box3().setFromObject(this.home).max.y;
+    const home = this.project(HOME.x, top + 0.9, HOME.z, rect, 'home');
+    const homePad = Math.min(80, rect.width / 4);
+    this.opts.onPins(items, areas, { ...home, x: THREE.MathUtils.clamp(home.x, homePad, rect.width - homePad) });
   }
 
   private animate(t: number, dt: number) {
@@ -455,6 +466,37 @@ export class WorldScene3D {
       this.renderer.render(this.scene, this.camera);
     }
   };
+}
+
+/** A casa de "Meu Lugar" em miniatura, sobre uma base de pedra que acompanha o terreno. */
+function buildHome(): THREE.Group {
+  const wrapper = new THREE.Group();
+  const house = buildHouse().group;
+  house.position.set(0, 0, 0); // a casa gira e escala em torno do próprio centro
+  wrapper.add(house);
+  wrapper.scale.setScalar(HOME.scale);
+  const hx = (HOUSE.width / 2 + 0.3) * HOME.scale;
+  const hz = (HOUSE.depth / 2 + 0.9) * HOME.scale;
+  const heights = [-1, 0, 1].flatMap((i) => [-1, 0, 1].map((j) => heightAt(HOME.x + i * hx, HOME.z + j * hz)));
+  const top = Math.max(...heights);
+  const bottom = Math.min(...heights) - 0.3;
+  wrapper.position.set(HOME.x, top + 0.05, HOME.z);
+  // base de pedra até o chão mais baixo (o terreno não é plano)
+  const baseH = (top - bottom + 0.1) / HOME.scale;
+  const base = new THREE.Mesh(
+    new THREE.BoxGeometry(HOUSE.width + 0.6, baseH, HOUSE.depth + 1.4),
+    new THREE.MeshStandardMaterial({ color: 0xbdb5a3, roughness: 0.95 }),
+  );
+  base.position.set(0, -baseH / 2 - 0.05, 0.3);
+  base.receiveShadow = true;
+  wrapper.add(base);
+  wrapper.traverse((o) => {
+    const m = o as THREE.Mesh;
+    if (m.isMesh) m.castShadow = m.receiveShadow = true;
+  });
+  wrapper.userData.home = true;
+  wrapper.name = 'minha-casa';
+  return wrapper;
 }
 
 /** Libera geometrias e materiais (os compartilhados são liberados de novo sem problema). */

@@ -513,3 +513,46 @@ insert into public.quiz_options (id, question_id, option_text, is_correct, expla
 on conflict (id) do update set
   question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
   explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Os móveis da nossa casa
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000014', 'Quiz: Os móveis da nossa casa', '4 perguntas sobre para que servem os móveis, do que são feitos e como cuidar deles.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000014' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000014' and id not in ('31000000-0000-4000-8000-014000000001', '31000000-0000-4000-8000-014000000002', '31000000-0000-4000-8000-014000000003', '31000000-0000-4000-8000-014000000004');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-014000000001', '30000000-0000-4000-8000-000000000014', 'Para que serve a cama?', 'A cama é o móvel do quarto onde dormimos e descansamos.', '🛏️ Funções', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-014000000002', '30000000-0000-4000-8000-000000000014', 'De onde vem a madeira usada em muitos móveis?', 'A madeira vem do tronco das árvores. Por isso cuidar dos móveis também ajuda a cuidar das florestas.', '🌳 Materiais', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-014000000003', '30000000-0000-4000-8000-000000000014', 'Qual destas atitudes ajuda um móvel a durar mais?', 'Limpar a poeira com um pano seco e não pular em cima dos móveis ajudam eles a durarem muitos anos.', '🧽 Cuidado', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-014000000004', '30000000-0000-4000-8000-000000000014', 'O que podemos fazer com uma cadeira velha que ainda dá para usar?', 'Consertar, pintar ou doar evita que a cadeira vire lixo e que outra precise ser fabricada.', '♻️ Reaproveitar', 'single_choice', 4, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-014000000001', '31000000-0000-4000-8000-014000000002', '31000000-0000-4000-8000-014000000003', '31000000-0000-4000-8000-014000000004') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-014000001001', '31000000-0000-4000-8000-014000000001', 'Para dormir e descansar', true, 'Isso! A cama é para dormir e descansar.', 1),
+  ('32000000-0000-4000-8000-014000001002', '31000000-0000-4000-8000-014000000001', 'Para cozinhar', false, 'Cozinhamos no fogão, na cozinha.', 2),
+  ('32000000-0000-4000-8000-014000001003', '31000000-0000-4000-8000-014000000001', 'Para guardar pratos', false, 'Pratos ficam no armário da cozinha.', 3),
+  ('32000000-0000-4000-8000-014000001004', '31000000-0000-4000-8000-014000000001', 'Para lavar a louça', false, 'A louça é lavada na pia.', 4),
+  ('32000000-0000-4000-8000-014000002001', '31000000-0000-4000-8000-014000000002', 'Das árvores', true, 'Correto! A madeira vem do tronco das árvores.', 1),
+  ('32000000-0000-4000-8000-014000002002', '31000000-0000-4000-8000-014000000002', 'Das pedras', false, 'Pedras não viram madeira.', 2),
+  ('32000000-0000-4000-8000-014000002003', '31000000-0000-4000-8000-014000000002', 'Da água do rio', false, 'A água não vira madeira.', 3),
+  ('32000000-0000-4000-8000-014000002004', '31000000-0000-4000-8000-014000000002', 'Das nuvens', false, 'As nuvens são feitas de gotinhas de água.', 4),
+  ('32000000-0000-4000-8000-014000003001', '31000000-0000-4000-8000-014000000003', 'Limpar a poeira com um pano seco', true, 'Isso! Móvel limpo e bem cuidado dura mais.', 1),
+  ('32000000-0000-4000-8000-014000003002', '31000000-0000-4000-8000-014000000003', 'Pular em cima da cama', false, 'Pular pode quebrar a cama e machucar você.', 2),
+  ('32000000-0000-4000-8000-014000003003', '31000000-0000-4000-8000-014000000003', 'Riscar a mesa com caneta', false, 'Riscos estragam a mesa.', 3),
+  ('32000000-0000-4000-8000-014000003004', '31000000-0000-4000-8000-014000000003', 'Deixar o móvel na chuva', false, 'A água da chuva estraga a madeira.', 4),
+  ('32000000-0000-4000-8000-014000004001', '31000000-0000-4000-8000-014000000004', 'Consertar, pintar ou doar', true, 'Correto! Assim ela continua sendo útil.', 1),
+  ('32000000-0000-4000-8000-014000004002', '31000000-0000-4000-8000-014000000004', 'Jogar no rio', false, 'Jogar coisas no rio polui a água.', 2),
+  ('32000000-0000-4000-8000-014000004003', '31000000-0000-4000-8000-014000000004', 'Quebrar de propósito', false, 'Quebrar gera lixo e desperdício.', 3),
+  ('32000000-0000-4000-8000-014000004004', '31000000-0000-4000-8000-014000000004', 'Deixar na calçada sem avisar ninguém', false, 'Móveis largados na rua viram lixo e atrapalham quem passa.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;

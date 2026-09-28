@@ -80,6 +80,7 @@ update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-
 update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000016';
 update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000017';
 update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000018';
+update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000019';
 
 -- Nível guardado no perfil segue a nova tabela de níveis.
 update public.profiles set level = public.level_for_xp(total_xp);

@@ -4,7 +4,7 @@
  * nuvens. Tudo gerado por código (nenhum arquivo externo).
  */
 import * as THREE from 'three';
-import { WORLD_BOUNDS, ZONES } from './layout';
+import { HOME, WORLD_BOUNDS, ZONES } from './layout';
 
 // ---------- ruído simples (determinístico) ----------
 
@@ -145,6 +145,13 @@ const PATHS: [number, number][][] = [
     [-16, -1],
     [-21, -2],
   ],
+  // porta da casa → trilha principal
+  [
+    [HOME.x - 1.05, HOME.z + 2.3],
+    [HOME.x + 1, HOME.z + 3.1],
+    [HOME.x + 6, HOME.z + 3.3],
+    [3.3, HOME.z + 3.2],
+  ],
 ];
 
 export function pathPoints(): THREE.Vector3[][] {
@@ -209,6 +216,7 @@ export function staticAvoidance(): Circle[] {
   for (const points of pathPoints()) {
     for (let i = 0; i < points.length; i += 3) out.push({ x: points[i].x, z: points[i].z, r: 1.25 });
   }
+  out.push({ x: HOME.x, z: HOME.z, r: HOME.radius });
   return out;
 }
 

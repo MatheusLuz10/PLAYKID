@@ -5,6 +5,9 @@
  *   sistema) só desenha quando algo muda → economiza bateria.
  * - Mouse: arrastar gira, roda aproxima, botão direito move. Toque: arrastar gira,
  *   pinça aproxima/move. Teclado: setas (com o foco na cena) e botões da tela.
+ * - "Andar pela casa": câmera na altura dos olhos, dentro da casa. Setas/WASD ou os
+ *   botões da tela andam e viram; arrastar olha em volta. As paredes seguram o
+ *   passo e as passagens internas levam de um cômodo a outro.
  * - Libera toda a memória da GPU ao sair da página (dispose).
  */
 import * as THREE from 'three';
@@ -16,6 +19,7 @@ import { buildGardenZones, buildHouse, buildPlaceGrass, buildTerrain, GARDEN, HO
 import { buildObject, type ObjectModel } from './objects';
 
 export type FocusTarget = 'geral' | keyof typeof ROOMS | 'jardim';
+export type RoomCode = keyof typeof ROOMS;
 
 export interface SceneObject {
   code: string;
@@ -40,7 +44,29 @@ interface Options {
   reducedMotion: boolean;
   onSelect: (code: string) => void;
   onHotspots: (spots: Hotspot[]) => void;
+  /** Andando pela casa: o cômodo onde a pessoa está. */
+  onRoom?: (room: RoomCode) => void;
 }
+
+/** Comando de andar: frente (+1) / trás (−1) e virar à direita (+1) / esquerda (−1). */
+export interface WalkInput {
+  forward: number;
+  turn: number;
+}
+
+const EYE = 1.35; // altura dos olhos de uma criança
+const WALK_SPEED = 1.7; // metros por segundo
+const TURN_SPEED = 1.9; // radianos por segundo
+const BODY = 0.22; // raio do corpo (para não atravessar paredes)
+
+/** Passagens das paredes internas (a parede em x corta a casa ao meio no sentido da profundidade e vice-versa). */
+const PASSAGES = {
+  /** parede que separa frente (sala/cozinha) e fundo (quarto/estudos): aberturas no eixo x */
+  middleX: [-2.5, 2.5],
+  /** parede que separa esquerda e direita: aberturas no eixo z (relativas ao centro) */
+  middleZ: [2, -2],
+  width: 1.0,
+};
 
 const VIEWS: Record<FocusTarget, { pos: [number, number, number]; target: [number, number, number] }> = {
   geral: { pos: [16, 13, 18], target: [0, 1, 0] },
@@ -73,6 +99,19 @@ export class PlaceScene {
   private resizeObserver: ResizeObserver;
   private downAt: { x: number; y: number } | null = null;
   private clock = new THREE.Clock();
+  // andar pela casa
+  private walking = false;
+  private yaw = 0;
+  private pitch = 0;
+  private walkPos = new THREE.Vector3();
+  private input: WalkInput = { forward: 0, turn: 0 };
+  private keys = new Set<string>();
+  private look: { x: number; y: number; yaw: number; pitch: number } | null = null;
+  private lastWalkAt = 0;
+  private room: RoomCode | null = null;
+  private indoorLights: THREE.PointLight[] = [];
+  /** Forro claro: só aparece com a pessoa dentro (de fora, a casa continua com o telhado). */
+  private ceiling: THREE.Mesh;
 
   constructor(
     private container: HTMLElement,
@@ -121,6 +160,22 @@ export class PlaceScene {
     this.scene.add(buildPlaceGrass(window.innerWidth < 700 ? 7000 : 14000, this.wind));
     this.house = buildHouse();
     this.scene.add(this.house.group);
+    this.ceiling = new THREE.Mesh(
+      new THREE.BoxGeometry(HOUSE.width, 0.06, HOUSE.depth),
+      // um pouco de brilho próprio: a luz que vem de baixo (tom de grama) não o deixa escuro
+      new THREE.MeshStandardMaterial({ color: 0xf6f1e7, emissive: 0xe8e0cf, emissiveIntensity: 0.55, roughness: 0.95 }),
+    );
+    this.ceiling.position.y = HOUSE.wallHeight + 0.03;
+    this.ceiling.visible = false;
+    this.house.group.add(this.ceiling);
+    // luz de teto em cada cômodo: acesa só quando a pessoa está lá dentro (intensidade 0 fora,
+    // assim os shaders não precisam ser refeitos ao entrar)
+    for (const room of Object.values(ROOMS)) {
+      const lamp = new THREE.PointLight(0xffe2b8, 0, 7, 1.6);
+      lamp.position.set(room.x, HOUSE.wallHeight - 0.25, room.z);
+      this.scene.add(lamp);
+      this.indoorLights.push(lamp);
+    }
 
     this.controls = new OrbitControls(this.camera, canvas);
     this.controls.target.set(...VIEWS.geral.target);
@@ -135,6 +190,10 @@ export class PlaceScene {
 
     canvas.addEventListener('pointerdown', this.onPointerDown);
     canvas.addEventListener('pointerup', this.onPointerUp);
+    canvas.addEventListener('pointermove', this.onPointerMove);
+    canvas.addEventListener('keydown', this.onKeyDown);
+    canvas.addEventListener('keyup', this.onKeyUp);
+    canvas.addEventListener('blur', this.onBlur);
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(container);
     this.resize();
@@ -243,6 +302,13 @@ export class PlaceScene {
   }
 
   focus(target: FocusTarget) {
+    if (this.walking) {
+      if (target === 'geral' || target === 'jardim') this.setWalk(false);
+      else {
+        this.walkTo(target);
+        return;
+      }
+    }
     if (target !== 'geral' && target !== 'jardim' && !this.interior) this.setInterior(true);
     const { to, tTo } = this.framed(target);
     if (this.opts.reducedMotion) {
@@ -264,11 +330,183 @@ export class PlaceScene {
   }
 
   rotate(direction: 1 | -1) {
+    if (this.walking) {
+      this.nudge(0, -direction);
+      return;
+    }
     const offset = this.camera.position.clone().sub(this.controls.target);
     offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), (direction * Math.PI) / 8);
     this.camera.position.copy(this.controls.target).add(offset);
     this.controls.update();
   }
+
+  // ---------- andar pela casa ----------
+
+  get isWalking() {
+    return this.walking;
+  }
+
+  /** Entra (ou sai) da casa em primeira pessoa. Entrando, começa na porta, olhando para a sala. */
+  setWalk(on: boolean) {
+    if (on === this.walking) return;
+    this.walking = on;
+    this.flight = null;
+    this.input = { forward: 0, turn: 0 };
+    this.keys.clear();
+    this.controls.enabled = !on;
+    if (on) {
+      if (this.interior) this.setInterior(false); // paredes inteiras e telhado: é uma casa de verdade por dentro
+      this.camera.fov = 68;
+      this.camera.near = 0.05;
+      this.walkPos.set(ROOMS.sala.x, EYE, HOUSE.center.z + HOUSE.depth / 2 - 0.6);
+      this.yaw = 0;
+      this.pitch = -0.06;
+    } else {
+      this.camera.fov = 45;
+      this.camera.near = 0.1;
+      const { to, tTo } = this.framed('geral');
+      this.camera.position.copy(to);
+      this.controls.target.copy(tTo);
+      this.room = null;
+    }
+    for (const lamp of this.indoorLights) lamp.intensity = on ? 3.2 : 0;
+    this.ceiling.visible = on;
+    this.camera.updateProjectionMatrix();
+    if (on) this.applyWalkCamera();
+    else this.controls.update();
+    this.invalidate();
+  }
+
+  /** Vai direto para um cômodo, olhando para dentro dele. */
+  walkTo(room: RoomCode) {
+    if (!this.walking) this.setWalk(true);
+    const r = ROOMS[room];
+    const c = HOUSE.center;
+    const sx = Math.sign(r.x - c.x);
+    const sz = Math.sign(r.z - c.z);
+    this.walkPos.set(r.x - sx * 1.5, EYE, r.z - sz * 1.1);
+    const dx = r.x + sx * 1.2 - this.walkPos.x;
+    const dz = r.z + sz * 1.0 - this.walkPos.z;
+    this.yaw = Math.atan2(-dx, -dz);
+    this.pitch = -0.08;
+    this.applyWalkCamera();
+    this.invalidate();
+  }
+
+  /** Botões da tela (segurar): anda e vira enquanto estiver apertado. */
+  setWalkInput(input: WalkInput) {
+    this.input = input;
+    this.lastWalkAt = performance.now();
+    this.invalidate();
+  }
+
+  /** Um passo (ou um quarto de volta pequeno), para teclado e cliques rápidos. */
+  nudge(forward: number, turn: number) {
+    if (!this.walking) return;
+    this.yaw -= turn * (Math.PI / 8);
+    if (forward) this.move(forward * 0.6);
+    this.applyWalkCamera();
+    this.invalidate();
+  }
+
+  private direction() {
+    return new THREE.Vector3(-Math.sin(this.yaw) * Math.cos(this.pitch), Math.sin(this.pitch), -Math.cos(this.yaw) * Math.cos(this.pitch));
+  }
+
+  private applyWalkCamera() {
+    this.camera.position.copy(this.walkPos);
+    this.camera.lookAt(this.walkPos.clone().add(this.direction()));
+    const c = HOUSE.center;
+    const front = this.walkPos.z > c.z;
+    const left = this.walkPos.x < c.x;
+    const room: RoomCode = front ? (left ? 'sala' : 'cozinha') : left ? 'quarto' : 'estudos';
+    if (room !== this.room) {
+      this.room = room;
+      this.opts.onRoom?.(room);
+    }
+  }
+
+  /** A posição (x, z) encosta numa parede? As passagens internas deixam passar. */
+  private blocked(x: number, z: number) {
+    const { width: W, depth: D, thickness: T, center: c } = HOUSE;
+    if (x < c.x - W / 2 + T / 2 + BODY || x > c.x + W / 2 - T / 2 - BODY) return true;
+    if (z < c.z - D / 2 + T / 2 + BODY || z > c.z + D / 2 - T / 2 - BODY) return true;
+    const half = PASSAGES.width / 2 - BODY;
+    const wall = T * 0.4 + BODY;
+    if (Math.abs(z - c.z) < wall && !PASSAGES.middleX.some((g) => Math.abs(x - (c.x + g)) < half)) return true;
+    if (Math.abs(x - c.x) < wall && !PASSAGES.middleZ.some((g) => Math.abs(z - (c.z + g)) < half)) return true;
+    return false;
+  }
+
+  /** Anda na direção do olhar, deslizando nas paredes e se alinhando à passagem mais próxima. */
+  private move(step: number) {
+    const c = HOUSE.center;
+    const nx = this.walkPos.x - Math.sin(this.yaw) * step;
+    const nz = this.walkPos.z - Math.cos(this.yaw) * step;
+    const movedX = !this.blocked(nx, this.walkPos.z);
+    if (movedX) this.walkPos.x = nx;
+    const movedZ = !this.blocked(this.walkPos.x, nz);
+    if (movedZ) this.walkPos.z = nz;
+    // parou na parede do meio perto de uma passagem: escorrega até ela (fica fácil acertar a porta)
+    const pull = Math.abs(step) * 0.8;
+    if (!movedZ && Math.abs(nz - c.z) < 0.8) {
+      const gap = PASSAGES.middleX.map((g) => c.x + g).find((gx) => Math.abs(this.walkPos.x - gx) < 0.9);
+      if (gap !== undefined) this.walkPos.x += THREE.MathUtils.clamp(gap - this.walkPos.x, -pull, pull);
+    }
+    if (!movedX && Math.abs(nx - c.x) < 0.8) {
+      const gap = PASSAGES.middleZ.map((g) => c.z + g).find((gz) => Math.abs(this.walkPos.z - gz) < 0.9);
+      if (gap !== undefined) this.walkPos.z += THREE.MathUtils.clamp(gap - this.walkPos.z, -pull, pull);
+    }
+  }
+
+  private walkFrame(now: number) {
+    const dt = Math.min(0.05, (now - this.lastWalkAt) / 1000);
+    this.lastWalkAt = now;
+    const k = this.keys;
+    const forward = THREE.MathUtils.clamp(this.input.forward + (k.has('f') ? 1 : 0) - (k.has('b') ? 1 : 0), -1, 1);
+    const turn = THREE.MathUtils.clamp(this.input.turn + (k.has('r') ? 1 : 0) - (k.has('l') ? 1 : 0), -1, 1);
+    if (!forward && !turn) return false;
+    this.yaw -= turn * TURN_SPEED * dt;
+    if (forward) this.move(forward * WALK_SPEED * dt);
+    this.applyWalkCamera();
+    return true;
+  }
+
+  private static KEYS: Record<string, string> = {
+    ArrowUp: 'f',
+    KeyW: 'f',
+    ArrowDown: 'b',
+    KeyS: 'b',
+    ArrowLeft: 'l',
+    KeyA: 'l',
+    ArrowRight: 'r',
+    KeyD: 'r',
+  };
+
+  private onKeyDown = (e: KeyboardEvent) => {
+    const key = PlaceScene.KEYS[e.code];
+    if (!this.walking || !key) return;
+    e.preventDefault(); // setas não rolam a página enquanto anda
+    if (!this.keys.has(key)) this.lastWalkAt = performance.now();
+    this.keys.add(key);
+    this.invalidate();
+  };
+
+  private onKeyUp = (e: KeyboardEvent) => {
+    const key = PlaceScene.KEYS[e.code];
+    if (key) this.keys.delete(key);
+  };
+
+  private onBlur = () => this.keys.clear();
+
+  /** Andando: arrastar olha em volta (virar e olhar para cima/baixo). */
+  private onPointerMove = (e: PointerEvent) => {
+    if (!this.walking || !this.look) return;
+    this.yaw = this.look.yaw + (e.clientX - this.look.x) * 0.006;
+    this.pitch = THREE.MathUtils.clamp(this.look.pitch + (e.clientY - this.look.y) * 0.004, -0.7, 0.5);
+    this.applyWalkCamera();
+    this.invalidate();
+  };
 
   dispose() {
     cancelAnimationFrame(this.raf);
@@ -276,6 +514,10 @@ export class PlaceScene {
     const canvas = this.renderer.domElement;
     canvas.removeEventListener('pointerdown', this.onPointerDown);
     canvas.removeEventListener('pointerup', this.onPointerUp);
+    canvas.removeEventListener('pointermove', this.onPointerMove);
+    canvas.removeEventListener('keydown', this.onKeyDown);
+    canvas.removeEventListener('keyup', this.onKeyUp);
+    canvas.removeEventListener('blur', this.onBlur);
     this.controls.dispose();
     disposeTree(this.scene, true);
     this.envTarget?.dispose();
@@ -311,7 +553,9 @@ export class PlaceScene {
       if (k >= 1) this.flight = null;
       this.needsRender = true;
     }
-    if (this.controls.update()) this.needsRender = true;
+    if (this.walking) {
+      if (this.walkFrame(now)) this.needsRender = true;
+    } else if (this.controls.update()) this.needsRender = true;
 
     // objetos novos crescem
     for (const { group, spec, born } of this.objects.values()) {
@@ -350,11 +594,16 @@ export class PlaceScene {
     const h = this.container.clientHeight;
     const v = new THREE.Vector3();
     const spots: Hotspot[] = [];
+    const { width: W, depth: D, center: c } = HOUSE;
     for (const { group, spec, anchorY } of this.objects.values()) {
       v.setFromMatrixPosition(group.matrixWorld);
+      // andando: só os objetos de dentro da casa e por perto (os do jardim ficam atrás das paredes)
+      const near =
+        !this.walking ||
+        (Math.abs(v.x - c.x) < W / 2 && Math.abs(v.z - c.z) < D / 2 && v.distanceTo(this.walkPos) < 5.5);
       v.y += Math.min(anchorY, 4) * (group.scale.x / spec.scale) + 0.15;
       v.project(this.camera);
-      const visible = v.z < 1 && Math.abs(v.x) <= 1 && Math.abs(v.y) <= 1;
+      const visible = near && v.z < 1 && Math.abs(v.x) <= 1 && Math.abs(v.y) <= 1;
       spots.push({ code: spec.code, label: spec.label, x: ((v.x + 1) / 2) * w, y: ((1 - v.y) / 2) * h, visible });
     }
     this.opts.onHotspots(spots);
@@ -362,10 +611,15 @@ export class PlaceScene {
 
   private onPointerDown = (e: PointerEvent) => {
     this.downAt = { x: e.clientX, y: e.clientY };
+    if (this.walking) {
+      this.look = { x: e.clientX, y: e.clientY, yaw: this.yaw, pitch: this.pitch };
+      this.renderer.domElement.setPointerCapture?.(e.pointerId);
+    }
   };
 
   /** Toque/clique (sem arrastar) seleciona o objeto sob o ponteiro. */
   private onPointerUp = (e: PointerEvent) => {
+    this.look = null;
     if (!this.downAt || Math.hypot(e.clientX - this.downAt.x, e.clientY - this.downAt.y) > 6) return;
     const rect = this.renderer.domElement.getBoundingClientRect();
     this.pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);

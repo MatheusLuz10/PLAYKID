@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { ProgressBar } from '../../components/ui/ProgressBar';
 import { LoadingMessage, StateMessage } from '../../components/ui/StateMessage';
@@ -34,6 +34,9 @@ const PANEL_CATEGORIES: PlaceCategory[] = ['natureza', 'agua', 'reciclagem', 'bi
 
 /** 🏡 Meu Lugar — a casa e o jardim em 3D, construídos pelo que o jogador aprende e faz. */
 export function PlacePage() {
+  // Vindo do "Meu Mundo" (tocou na casa): abre já andando lá dentro.
+  const [params] = useSearchParams();
+  const walkIn = params.get('andar') === '1';
   const { content, player } = useGame();
   const { state, error, retry } = usePlace();
   const [selected, setSelected] = useState<string | null>(null);
@@ -106,7 +109,7 @@ export function PlacePage() {
         </div>
       )}
 
-      <PlaceViewer objects={sceneObjects} onSelect={setSelected} />
+      <PlaceViewer objects={sceneObjects} onSelect={setSelected} startWalking={walkIn} />
 
       <section className="card place-panel" aria-labelledby="place-evolution-title">
         <h2 className="section-title" id="place-evolution-title">

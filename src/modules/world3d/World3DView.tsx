@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ImmersiveFrame } from '../../components/ui/ImmersiveFrame';
 import { buildAreas } from '../../logic/world';
 import type { ContentCatalog, PlayerState, WorldItem } from '../../models';
 import { prefersReducedMotion } from '../place/scene/webgl';
@@ -12,6 +13,8 @@ interface World3DViewProps {
   /** Itens que acabaram de surgir (crescem na cena). */
   highlightIds?: string[];
   onSelect: (item: WorldItem) => void;
+  /** Tocou na casa (ou no botão "Minha casa"): entrar nela. */
+  onEnterHome: () => void;
   /** O 3D não abriu: a página mostra o mapa 2D no lugar. */
   onFail: () => void;
 }
@@ -22,13 +25,15 @@ const itemLabel = (item: WorldItem, owned: boolean) =>
     : `Espaço bloqueado: ${item.name}. Ver como desbloquear`;
 
 /** 🌎 Mundo em 3D: as 5 áreas numa paisagem, com navegação por área e lista acessível. */
-export default function World3DView({ content, player, highlightIds = [], onSelect, onFail }: World3DViewProps) {
+export default function World3DView({ content, player, highlightIds = [], onSelect, onEnterHome, onFail }: World3DViewProps) {
   const areas = useMemo(() => buildAreas(content, player), [content, player]);
   const holder = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<WorldScene3D | null>(null);
   const [focus, setFocus] = useState<FocusTarget>('overview');
-  const [pins, setPins] = useState<{ items: ScreenPin[]; areas: ScreenPin[] }>({ items: [], areas: [] });
+  const [pins, setPins] = useState<{ items: ScreenPin[]; areas: ScreenPin[]; home: ScreenPin | null }>({ items: [], areas: [], home: null });
   const [reducedMotion] = useState(prefersReducedMotion);
+  // Fora do mundo a cena é só prévia: a página rola. "Entrar no mundo" abre em tela cheia.
+  const [inside, setInside] = useState(false);
 
   const allItems = useMemo(() => areas.flatMap((a) => a.items), [areas]);
   const specs = useMemo<WorldItemSpec[]>(
@@ -57,6 +62,8 @@ export default function World3DView({ content, player, highlightIds = [], onSele
   );
   const selectRef = useRef(selectById);
   selectRef.current = selectById;
+  const homeRef = useRef(onEnterHome);
+  homeRef.current = onEnterHome;
 
   useEffect(() => {
     if (!holder.current) return;
@@ -66,7 +73,8 @@ export default function World3DView({ content, player, highlightIds = [], onSele
         reducedMotion,
         lowPower: window.innerWidth < 700,
         onSelect: (id) => selectRef.current(id),
-        onPins: (items, areaPins) => setPins({ items, areas: areaPins }),
+        onPins: (items, areaPins, home) => setPins({ items, areas: areaPins, home }),
+        onHome: () => homeRef.current(),
       });
     } catch {
       onFail();
@@ -107,88 +115,113 @@ export default function World3DView({ content, player, highlightIds = [], onSele
 
   return (
     <div className="world3d">
-      <div className="world3d-toolbar" role="toolbar" aria-label="Navegar pelo mundo">
-        <button type="button" aria-pressed={focus === 'overview'} onClick={() => go('overview')}>
-          🌍 Visão geral
-        </button>
-        {AREA_CODES.map((code) => {
-          const area = areaName(code);
-          if (!area) return null;
-          return (
-            <button key={code} type="button" aria-pressed={focus === code} onClick={() => go(code)}>
-              <span aria-hidden>{area.icon}</span> {area.name}
-            </button>
-          );
-        })}
-      </div>
-
-      <div
-        className="world3d-stage"
-        data-motion={reducedMotion ? 'off' : 'on'}
-        data-focus={focus}
-        data-new-items={highlightIds.length}
+      <ImmersiveFrame
+        active={inside}
+        onEnter={() => setInside(true)}
+        onExit={() => setInside(false)}
+        enterLabel="🌍 Entrar no mundo"
+        exitLabel="Sair do mundo"
+        className="world3d-frame"
       >
-        <div ref={holder} className="world3d-holder" />
-        {/* Atalhos visuais sobre a cena (a lista abaixo tem os mesmos itens para teclado e leitores de tela) */}
-        <div className="world3d-pins" aria-hidden="true">
-          {focus === 'overview' &&
-            pins.areas
-              .filter((p) => p.visible)
-              .map((p) => {
-                const area = areaName(p.id);
-                const done = areas.find((a) => a.area.code === p.id);
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    tabIndex={-1}
-                    className="world3d-area-pin"
-                    style={{ left: p.x, top: p.y }}
-                    onClick={() => go(p.id as AreaCode)}
-                  >
-                    {area?.icon} {area?.name}
-                    <small>
-                      {done?.unlocked}/{done?.items.length}
-                    </small>
-                  </button>
-                );
-              })}
-          {itemPins.map((p) => {
-            const item = allItems.find((i) => i.id === p.id)!;
-            const owned = player.world.items.some((w) => w.worldItemId === p.id);
+        <div className="world3d-toolbar" role="toolbar" aria-label="Navegar pelo mundo">
+          <button type="button" aria-pressed={focus === 'overview'} onClick={() => go('overview')}>
+            🌍 Visão geral
+          </button>
+          {AREA_CODES.map((code) => {
+            const area = areaName(code);
+            if (!area) return null;
             return (
-              <button
-                key={p.id}
-                type="button"
-                tabIndex={-1}
-                className={owned ? 'world3d-hotspot' : 'world3d-hotspot is-locked'}
-                style={{ left: p.x, top: p.y }}
-                onClick={() => onSelect(item)}
-                title={item.name}
-              >
-                {owned ? item.icon : '🔒'}
+              <button key={code} type="button" aria-pressed={focus === code} onClick={() => go(code)}>
+                <span aria-hidden>{area.icon}</span> {area.name}
               </button>
             );
           })}
-        </div>
-        <div className="world3d-controls" role="group" aria-label="Câmera">
-          <button type="button" onClick={() => sceneRef.current?.rotate(0.35)} aria-label="Girar para a esquerda">
-            ⟲
-          </button>
-          <button type="button" onClick={() => sceneRef.current?.rotate(-0.35)} aria-label="Girar para a direita">
-            ⟳
-          </button>
-          <button type="button" onClick={() => sceneRef.current?.zoom(0.8)} aria-label="Aproximar">
-            ＋
-          </button>
-          <button type="button" onClick={() => sceneRef.current?.zoom(1.25)} aria-label="Afastar">
-            －
+          <button type="button" className="world3d-toolbar__home" onClick={onEnterHome}>
+            🏡 Entrar na minha casa
           </button>
         </div>
-      </div>
+
+        <div
+          className="world3d-stage"
+          data-motion={reducedMotion ? 'off' : 'on'}
+          data-focus={focus}
+          data-new-items={highlightIds.length}
+        >
+          <div ref={holder} className="world3d-holder" />
+          {/* Atalhos visuais sobre a cena (a lista abaixo tem os mesmos itens para teclado e leitores de tela) */}
+          <div className="world3d-pins" aria-hidden="true">
+            {focus === 'overview' &&
+              pins.areas
+                .filter((p) => p.visible)
+                .map((p) => {
+                  const area = areaName(p.id);
+                  const done = areas.find((a) => a.area.code === p.id);
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      tabIndex={-1}
+                      className="world3d-area-pin"
+                      style={{ left: p.x, top: p.y }}
+                      onClick={() => go(p.id as AreaCode)}
+                    >
+                      {area?.icon} {area?.name}
+                      <small>
+                        {done?.unlocked}/{done?.items.length}
+                      </small>
+                    </button>
+                  );
+                })}
+            {pins.home?.visible && (
+              <button
+                type="button"
+                tabIndex={-1}
+                className="world3d-area-pin world3d-home-pin"
+                style={{ left: pins.home.x, top: pins.home.y }}
+                onClick={onEnterHome}
+              >
+                🏡 Minha casa
+                <small>entrar</small>
+              </button>
+            )}
+            {itemPins.map((p) => {
+              const item = allItems.find((i) => i.id === p.id)!;
+              const owned = player.world.items.some((w) => w.worldItemId === p.id);
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  tabIndex={-1}
+                  className={owned ? 'world3d-hotspot' : 'world3d-hotspot is-locked'}
+                  style={{ left: p.x, top: p.y }}
+                  onClick={() => onSelect(item)}
+                  title={item.name}
+                >
+                  {owned ? item.icon : '🔒'}
+                </button>
+              );
+            })}
+          </div>
+          <div className="world3d-controls" role="group" aria-label="Câmera">
+            <button type="button" onClick={() => sceneRef.current?.rotate(0.35)} aria-label="Girar para a esquerda">
+              ⟲
+            </button>
+            <button type="button" onClick={() => sceneRef.current?.rotate(-0.35)} aria-label="Girar para a direita">
+              ⟳
+            </button>
+            <button type="button" onClick={() => sceneRef.current?.zoom(0.8)} aria-label="Aproximar">
+              ＋
+            </button>
+            <button type="button" onClick={() => sceneRef.current?.zoom(1.25)} aria-label="Afastar">
+              －
+            </button>
+          </div>
+        </div>
+      </ImmersiveFrame>
       <p className="muted small world3d-hint">
-        Escolha uma área acima ou toque no nome dela. Arraste para girar, use a roda ou dois dedos para aproximar, e toque num
-        elemento para saber de onde ele veio. 🔒 mostra o que ainda pode surgir.
+        Toque em "Entrar no mundo" para explorar em tela cheia (e em "Sair do mundo" para voltar). Escolha uma área acima ou toque no nome dela. Arraste para girar, use a roda ou dois dedos para aproximar, e toque num
+        elemento para saber de onde ele veio. 🔒 mostra o que ainda pode surgir. Toque na 🏡 casa para entrar e andar pelos
+        cômodos.
       </p>
 
       <div className="world3d-areas">

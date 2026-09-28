@@ -1199,6 +1199,125 @@
         { "topic": "🧀 Derivados", "question": "Qual opção apresenta apenas derivados do leite?", "explanation": "Queijo, iogurte e manteiga podem ser produzidos a partir do leite.", "options": [{ "text": "Queijo, iogurte e manteiga", "correct": true, "feedback": "Correto! Os três são derivados do leite." }, { "text": "Banana, maçã e pera", "correct": false, "feedback": "Esses alimentos são frutas." }, { "text": "Arroz, feijão e milho", "correct": false, "feedback": "Esses alimentos são grãos ou sementes." }, { "text": "Cenoura, batata e mandioca", "correct": false, "feedback": "Esses alimentos são raízes ou tubérculos." }] },
         { "topic": "💚 Cuidado", "question": "Como uma criança deve agir perto de uma vaca desconhecida?", "explanation": "A criança deve observar à distância e pedir orientação a um adulto.", "options": [{ "text": "Observar e pedir ajuda a um adulto", "correct": true, "feedback": "Isso! Segurança e respeito vêm primeiro." }, { "text": "Correr atrás dela", "correct": false, "feedback": "Correr atrás pode assustar o animal e causar acidentes." }, { "text": "Oferecer qualquer comida", "correct": false, "feedback": "Nunca alimente um animal sem autorização de um adulto responsável." }, { "text": "Entrar sozinho no cercado", "correct": false, "feedback": "Crianças não devem entrar sozinhas em cercados." }] }
       ]
+    },
+    {
+      "lesson": "os-moveis-da-nossa-casa",
+      "title": "Quiz: Os móveis da nossa casa",
+      "description": "4 perguntas sobre para que servem os móveis, do que são feitos e como cuidar deles.",
+      "passing_score": 70,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🛏️ Funções",
+          "question": "Para que serve a cama?",
+          "explanation": "A cama é o móvel do quarto onde dormimos e descansamos.",
+          "options": [
+            {
+              "text": "Para dormir e descansar",
+              "correct": true,
+              "feedback": "Isso! A cama é para dormir e descansar."
+            },
+            {
+              "text": "Para cozinhar",
+              "correct": false,
+              "feedback": "Cozinhamos no fogão, na cozinha."
+            },
+            {
+              "text": "Para guardar pratos",
+              "correct": false,
+              "feedback": "Pratos ficam no armário da cozinha."
+            },
+            {
+              "text": "Para lavar a louça",
+              "correct": false,
+              "feedback": "A louça é lavada na pia."
+            }
+          ]
+        },
+        {
+          "topic": "🌳 Materiais",
+          "question": "De onde vem a madeira usada em muitos móveis?",
+          "explanation": "A madeira vem do tronco das árvores. Por isso cuidar dos móveis também ajuda a cuidar das florestas.",
+          "options": [
+            {
+              "text": "Das árvores",
+              "correct": true,
+              "feedback": "Correto! A madeira vem do tronco das árvores."
+            },
+            {
+              "text": "Das pedras",
+              "correct": false,
+              "feedback": "Pedras não viram madeira."
+            },
+            {
+              "text": "Da água do rio",
+              "correct": false,
+              "feedback": "A água não vira madeira."
+            },
+            {
+              "text": "Das nuvens",
+              "correct": false,
+              "feedback": "As nuvens são feitas de gotinhas de água."
+            }
+          ]
+        },
+        {
+          "topic": "🧽 Cuidado",
+          "question": "Qual destas atitudes ajuda um móvel a durar mais?",
+          "explanation": "Limpar a poeira com um pano seco e não pular em cima dos móveis ajudam eles a durarem muitos anos.",
+          "options": [
+            {
+              "text": "Limpar a poeira com um pano seco",
+              "correct": true,
+              "feedback": "Isso! Móvel limpo e bem cuidado dura mais."
+            },
+            {
+              "text": "Pular em cima da cama",
+              "correct": false,
+              "feedback": "Pular pode quebrar a cama e machucar você."
+            },
+            {
+              "text": "Riscar a mesa com caneta",
+              "correct": false,
+              "feedback": "Riscos estragam a mesa."
+            },
+            {
+              "text": "Deixar o móvel na chuva",
+              "correct": false,
+              "feedback": "A água da chuva estraga a madeira."
+            }
+          ]
+        },
+        {
+          "topic": "♻️ Reaproveitar",
+          "question": "O que podemos fazer com uma cadeira velha que ainda dá para usar?",
+          "explanation": "Consertar, pintar ou doar evita que a cadeira vire lixo e que outra precise ser fabricada.",
+          "options": [
+            {
+              "text": "Consertar, pintar ou doar",
+              "correct": true,
+              "feedback": "Correto! Assim ela continua sendo útil."
+            },
+            {
+              "text": "Jogar no rio",
+              "correct": false,
+              "feedback": "Jogar coisas no rio polui a água."
+            },
+            {
+              "text": "Quebrar de propósito",
+              "correct": false,
+              "feedback": "Quebrar gera lixo e desperdício."
+            },
+            {
+              "text": "Deixar na calçada sem avisar ninguém",
+              "correct": false,
+              "feedback": "Móveis largados na rua viram lixo e atrapalham quem passa."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

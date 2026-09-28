@@ -273,3 +273,81 @@
   border-radius: 8px;
   background: var(--sun-soft);
 }
+
+/* ---------- Andar pela casa ---------- */
+.place-control--walk {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.place-control--walk[aria-pressed='true'] {
+  background: #fff7e6;
+  border-color: #e3a233;
+  color: var(--text);
+}
+
+.place-room {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+.place-pad {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(2, 52px);
+  grid-template-areas:
+    '. up .'
+    'left down right';
+  gap: 6px;
+}
+
+.place-pad__btn {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.place-pad__btn:active {
+  background: var(--primary-soft);
+}
+
+.place-pad__btn:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.place-pad__btn--up {
+  grid-area: up;
+}
+
+.place-pad__btn--left {
+  grid-area: left;
+}
+
+.place-pad__btn--right {
+  grid-area: right;
+}
+
+.place-pad__btn--down {
+  grid-area: down;
+}

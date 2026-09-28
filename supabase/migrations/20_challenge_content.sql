@@ -738,3 +738,45 @@ on conflict (id) do update set
   step_type = excluded.step_type, order_index = excluded.order_index, required = excluded.required,
   xp_reward = excluded.xp_reward, day_offset = excluded.day_offset, early_window_days = excluded.early_window_days,
   evidence_kind = excluded.evidence_kind, deadline_offset_days = excluded.deadline_offset_days, active = true;
+
+-- Detetive dos móveis
+insert into public.challenges (id, category_id, lesson_id, icon, title, slug, description, instructions, safety_notes,
+  difficulty, deadline_days, xp_reward, active, requires_evidence, requires_follow_up,
+  why_it_matters, materials, evidence_instructions, duration_label)
+values ('40000000-0000-4000-8000-000000000019', '10000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000014', '🪑', 'Detetive dos móveis', 'detetive-dos-moveis',
+  'Escolha um cômodo da sua casa, descubra 3 móveis, para que servem e do que são feitos. Depois, cuide de um deles.', 'Pode ser a sala, o quarto ou a cozinha. Se quiser, explore antes a sua casa no Meu Lugar.
+Descubra 3 móveis nesse cômodo e para que cada um serve.
+Olhe e toque com cuidado: é madeira, metal, plástico ou tecido?
+Tire a poeira com um pano seco ou guarde o que estava fora do lugar em cima dele.
+Conte quais 3 móveis você encontrou, para que servem e do que são feitos.', 'Não suba em móveis nem tente mover móveis pesados.
+Use só pano seco; produtos de limpeza apenas com um adulto.',
+  'facil', 2, 35, true, true, false,
+  'Conhecer e cuidar dos móveis faz com que durem mais. Assim menos árvores são cortadas e menos coisas viram lixo.', 'Um pano seco
+Papel e lápis (se quiser anotar)', 'Conte quais 3 móveis você encontrou, para que servem e do que são feitos.', '15 minutos')
+on conflict (id) do update set
+  category_id = excluded.category_id, lesson_id = excluded.lesson_id, icon = excluded.icon, title = excluded.title,
+  slug = excluded.slug, description = excluded.description, instructions = excluded.instructions,
+  safety_notes = excluded.safety_notes, difficulty = excluded.difficulty, deadline_days = excluded.deadline_days,
+  xp_reward = excluded.xp_reward, active = true, requires_evidence = excluded.requires_evidence,
+  requires_follow_up = excluded.requires_follow_up, why_it_matters = excluded.why_it_matters,
+  materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
+  duration_label = excluded.duration_label;
+
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000019') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000019') x
+where s.id = x.id;
+update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000019' and id not in ('41000000-0000-4000-8000-019000000001', '41000000-0000-4000-8000-019000000002', '41000000-0000-4000-8000-019000000003', '41000000-0000-4000-8000-019000000004', '41000000-0000-4000-8000-019000000005');
+insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
+  day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
+  ('41000000-0000-4000-8000-019000000001', '40000000-0000-4000-8000-000000000019', 'Escolher um cômodo', 'Pode ser a sala, o quarto ou a cozinha. Se quiser, explore antes a sua casa no Meu Lugar.', 'action', 1, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000002', '40000000-0000-4000-8000-000000000019', 'Encontrar 3 móveis', 'Descubra 3 móveis nesse cômodo e para que cada um serve.', 'action', 2, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000003', '40000000-0000-4000-8000-000000000019', 'Descobrir do que são feitos', 'Olhe e toque com cuidado: é madeira, metal, plástico ou tecido?', 'action', 3, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000004', '40000000-0000-4000-8000-000000000019', 'Cuidar de um móvel', 'Tire a poeira com um pano seco ou guarde o que estava fora do lugar em cima dele.', 'action', 4, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000005', '40000000-0000-4000-8000-000000000019', 'Registrar a investigação', 'Conte quais 3 móveis você encontrou, para que servem e do que são feitos.', 'evidence', 5, true, 5, null, 2, 'text', null, true)
+on conflict (id) do update set
+  challenge_id = excluded.challenge_id, title = excluded.title, description = excluded.description,
+  step_type = excluded.step_type, order_index = excluded.order_index, required = excluded.required,
+  xp_reward = excluded.xp_reward, day_offset = excluded.day_offset, early_window_days = excluded.early_window_days,
+  evidence_kind = excluded.evidence_kind, deadline_offset_days = excluded.deadline_offset_days, active = true;

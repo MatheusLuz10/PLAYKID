@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ReminderBanner } from '../components/challenge/ReminderBanner';
 import { WaitingList } from '../components/challenge/WaitingList';
@@ -8,6 +9,7 @@ import { findCategory, findQuizForLesson } from '../logic/catalog';
 import { latestAchievement } from '../logic/gamification';
 import { challengeStatusLabels, daysUntil, getChallengeState, isWaitingQuietly, nextAction, serverNow } from '../logic/challenges';
 import { MISSION_STEPS, getCurrentStep, isStepDone, missionPath, stepIndex, type MissionStep } from '../logic/mission';
+import { orderQueue, readSkipped, skipToEnd } from '../logic/skipQueue';
 import { worldStatusLabels } from '../logic/world';
 import { calculateUserLevel } from '../logic/xp';
 import { safeImageSrc } from '../logic/safeUrl';
@@ -67,8 +69,13 @@ export function DashboardPage() {
 
   // Depois que a primeira missão chega ao acompanhamento, o destaque passa para a próxima atividade:
   // um desafio com algo a fazer agora ou, senão, a próxima missão ainda não aceita.
-  const firstMissionOpen = mainChallenge && stepIndex(step) < stepIndex('acompanhar');
-  const nextChallenge = activeChallenges[0] ?? content.challenges.find((c) => !player.challenges[c.id]);
+  // "Pular por agora": a missão sugerida vai para o fim da fila e o painel mostra a próxima.
+  const [skipped, setSkipped] = useState(() => readSkipped(profile.userId));
+  const queue = orderQueue([...activeChallenges, ...content.challenges.filter((c) => !player.challenges[c.id])], skipped);
+  const skip = (id: string) => setSkipped((s) => skipToEnd(profile.userId, s, id));
+  const firstMissionOpen = mainChallenge && stepIndex(step) < stepIndex('acompanhar') && !skipped.includes(mainChallenge.id);
+  const nextChallenge = queue[0];
+  const canSkip = queue.length > 1;
   const nextChallengeStep = nextChallenge
     ? getCurrentStep(nextChallenge, findQuizForLesson(content, nextChallenge.lessonId), player)
     : null;
@@ -124,6 +131,7 @@ export function DashboardPage() {
           step={step}
           href={nextHref}
           cta={next.cta}
+          onSkip={canSkip ? () => skip(mainChallenge.id) : undefined}
         />
       ) : nextChallenge && nextChallengeStep ? (
         <section className="card card--accent next-step">
@@ -136,9 +144,21 @@ export function DashboardPage() {
               ? nextAction(nextChallenge, player.challenges[nextChallenge.id], player)?.text ?? 'Continue de onde parou.'
               : 'Uma nova missão para você: aprenda, faça e veja seu mundo crescer.'}
           </p>
-          <Link to={missionPath(nextChallenge.slug, nextChallengeStep)} className="btn btn--primary">
-            {nextActivityCta[nextChallengeStep]}
-          </Link>
+          <div className="next-step__actions">
+            <Link to={missionPath(nextChallenge.slug, nextChallengeStep)} className="btn btn--primary">
+              {nextActivityCta[nextChallengeStep]}
+            </Link>
+            {canSkip && (
+              <button
+                type="button"
+                className="btn btn--ghost"
+                onClick={() => skip(nextChallenge.id)}
+                aria-label={`Pular “${nextChallenge.title}” por agora (vai para o fim da fila)`}
+              >
+                ⏭️ Pular por agora
+              </button>
+            )}
+          </div>
         </section>
       ) : mainChallenge && (
         <section className="card card--accent next-step">

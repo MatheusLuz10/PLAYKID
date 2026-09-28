@@ -62,6 +62,18 @@ async function run(browser, label, viewport, extra) {
   log(label, `cena 3D desenhada (casa, terreno, jardim) — ${viewport.width}px`);
   await page.locator('.place-stage').screenshot({ path: `${OUT}/${label}-01-casa.png` });
 
+  // prévia: a roda do mouse / o dedo sobre a cena rolam a página (a cena não prende)
+  const stageBox = await page.locator('.place-stage').boundingBox();
+  await page.mouse.move(stageBox.x + stageBox.width / 2, stageBox.y + stageBox.height / 2);
+  const before = await page.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, 500);
+  await page.waitForFunction((y) => window.scrollY > y, before, { timeout: 5000 });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
+  await page.locator('.immersive.is-active').waitFor();
+  await page.getByRole('button', { name: '✕ Fechar a casa' }).waitFor();
+  log(label, 'prévia não prende a página (a roda rola a tela); "Entrar na casa" abre em tela cheia com "Fechar" sempre à vista');
+
   // controles
   const inside = page.getByRole('button', { name: '🔍 Ver por dentro' });
   await inside.click();
@@ -85,6 +97,14 @@ async function run(browser, label, viewport, extra) {
   await page.mouse.up();
   await page.mouse.wheel(0, -300);
   log(label, 'controles: ver por dentro, girar, aproximar/afastar, cômodos, jardim, arrastar e roda do mouse');
+  await page.keyboard.press('Escape');
+  await page.locator('.immersive.is-preview').waitFor();
+  await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
+  await page.getByRole('button', { name: '✕ Fechar a casa' }).click();
+  await page.locator('.immersive.is-preview').waitFor();
+  if (await page.evaluate(() => document.body.style.overflow === 'hidden')) throw new Error('página continuou travada');
+  log(label, 'Esc e "Fechar a casa" voltam para a página (que volta a rolar)');
+  await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
 
   if (STAGE >= 2 && extra) await extra(page, label, log);
 

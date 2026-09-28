@@ -46,10 +46,22 @@ async function run(browser, label, viewport) {
     page.waitForFunction((v) => document.querySelector('.world3d-stage')?.getAttribute('data-focus') === v, f, { timeout: 20000 });
 
   await page.locator('canvas.world3d-canvas').waitFor({ timeout: 60000 });
+  // prévia: a roda do mouse sobre a cena rola a página; "Entrar no mundo" abre em tela cheia
+  await page.evaluate(() => document.querySelector('.world3d-stage').scrollIntoView({ block: 'center' }));
+  const sb = await stage.boundingBox();
+  await page.mouse.move(sb.x + sb.width / 2, sb.y + sb.height / 2);
+  const y0 = await page.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, 400);
+  await page.waitForFunction((y) => window.scrollY > y, y0, { timeout: 5000 });
+  await page.getByRole('button', { name: '🌍 Entrar no mundo' }).click();
+  await page.getByRole('button', { name: '✕ Sair do mundo' }).waitFor();
+  const full = await stage.boundingBox();
+  if (full.height < viewport.height * 0.6) throw new Error('tela cheia pequena: ' + full.height);
+  log('prévia não prende a página; "Entrar no mundo" abre em tela cheia com "Sair do mundo" sempre à vista');
   await bar.getByRole('button', { name: /Visão geral/ }).click();
   await focusIs('overview');
   await page.waitForTimeout(1500);
-  const areaPins = await page.locator('.world3d-area-pin').count();
+  const areaPins = await page.locator('.world3d-area-pin:not(.world3d-home-pin)').count();
   if (areaPins !== 5) throw new Error('nomes das áreas na visão geral: ' + areaPins);
   await snap('01-visao-geral');
   log('visão geral: as 5 áreas numa paisagem, com o nome e o progresso de cada uma');
@@ -96,10 +108,58 @@ async function run(browser, label, viewport) {
   await page.getByRole('dialog').getByText('Composteira').first().waitFor();
   await page.keyboard.press('Escape');
   log('teclado: focar um item da lista leva a câmera até a área dele; Enter abre os detalhes');
+  await page.getByRole('button', { name: '✕ Sair do mundo' }).click();
+  await page.locator('.world3d-frame.is-preview').waitFor();
+  await page.getByRole('button', { name: '🌍 Entrar no mundo' }).click();
+  await page.getByRole('button', { name: '✕ Sair do mundo' }).waitFor();
+  log('"Sair do mundo" volta para a página; dá para entrar de novo');
 
   const extra = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   if (extra > 0) throw new Error('rolagem horizontal +' + extra);
   log('sem rolagem horizontal');
+
+  // A casa no mundo: tocar nela entra, andando pelos cômodos
+  await bar.getByRole('button', { name: /Visão geral/ }).click();
+  await focusIs('overview');
+  await page.waitForTimeout(1500);
+  await snap('03-casa-no-mundo');
+  await page.locator('.world3d-home-pin').click();
+  await page.waitForURL('**/meu-lugar?andar=1');
+  const where = (text) => page.locator('.place-room', { hasText: text }).waitFor({ timeout: 30000 });
+  await where('Sala');
+  await page.getByRole('button', { name: '✕ Fechar a casa' }).waitFor();
+  log('casa no mundo: tocar em "Minha casa" entra nela, já andando (começa na sala)');
+  const hold = async (name, ms) => {
+    const b = await page.getByRole('button', { name }).boundingBox();
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+    await page.mouse.down();
+    await page.waitForTimeout(ms);
+    await page.mouse.up();
+  };
+  await page.waitForTimeout(1500);
+  await hold('Andar para frente', 2600);
+  await where('Quarto');
+  log('segurar ▲ anda pela sala e passa pela porta até o quarto');
+  for (let i = 0; i < 4; i++) {
+    await page.getByRole('button', { name: 'Virar para a direita' }).focus();
+    await page.keyboard.press('Enter'); // teclado: cada Enter vira um pouco
+  }
+  await hold('Andar para frente', 2500);
+  await page.waitForTimeout(300);
+  if (!(await page.locator('.place-room', { hasText: 'Quarto' }).count())) throw new Error('atravessou a parede do quarto');
+  log('a parede segura o passo: virado para ela, continua no quarto');
+  await page.locator('canvas.place-canvas').focus();
+  await page.keyboard.down('ArrowLeft');
+  await page.waitForTimeout(300);
+  await page.keyboard.up('ArrowLeft');
+  await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: /Cozinha/ }).click();
+  await where('Cozinha');
+  await page.screenshot({ path: `${OUT}/${label}-04-dentro-da-casa.png`, clip: await page.locator('.place-stage').boundingBox() });
+  await page.getByRole('button', { name: '🔭 Ver de fora' }).click();
+  await page.getByRole('button', { name: '🚶 Andar pela casa' }).waitFor();
+  await page.getByRole('button', { name: '✕ Fechar a casa' }).click();
+  await page.getByRole('button', { name: '🏡 Entrar na casa' }).waitFor();
+  log('setas do teclado viram; botões dos cômodos levam até eles; "Ver de fora" e "Fechar a casa" funcionam');
 
   console.log(`  [${label}] erros no console: ${JSON.stringify(errors)}`);
   if (errors.length) results.failed++;

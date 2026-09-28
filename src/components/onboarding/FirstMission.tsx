@@ -20,10 +20,12 @@ interface FirstMissionProps {
   step: MissionStep;
   href: string;
   cta: string;
+  /** "Pular por agora": manda a missão para o fim da fila. */
+  onSkip?: () => void;
 }
 
 /** 🌱 Sua primeira missão: mostra o caminho inteiro e onde o jogador está. */
-export function FirstMission({ lesson, challenge, step, href, cta }: FirstMissionProps) {
+export function FirstMission({ lesson, challenge, step, href, cta, onSkip }: FirstMissionProps) {
   const done = MISSION_STEPS.filter((s) => isStepDone(s.id, step)).length;
   return (
     <section className="card card--accent first-mission" aria-labelledby="first-mission-title">
@@ -66,9 +68,21 @@ export function FirstMission({ lesson, challenge, step, href, cta }: FirstMissio
       <p className="small muted">
         {done} de {MISSION_STEPS.length} passos concluídos
       </p>
-      <Link to={href} className="btn btn--primary">
-        {cta}
-      </Link>
+      <div className="next-step__actions">
+        <Link to={href} className="btn btn--primary">
+          {cta}
+        </Link>
+        {onSkip && (
+          <button
+            type="button"
+            className="btn btn--ghost"
+            onClick={onSkip}
+            aria-label={`Pular “${challenge.title}” por agora (vai para o fim da fila)`}
+          >
+            ⏭️ Pular por agora
+          </button>
+        )}
+      </div>
     </section>
   );
 }

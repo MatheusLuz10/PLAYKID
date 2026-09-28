@@ -2519,6 +2519,13 @@ on conflict (id) do update set
   description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
   xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
   active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000014', '10000000-0000-4000-8000-000000000006', 'Móveis da casa', 'Os móveis da nossa casa', 'os-moveis-da-nossa-casa', 'Descubra para que servem os móveis, do que eles são feitos e como cuidar deles para durarem muito tempo.', 'beginner', 4, 20, 2, '[{"icon":"🛋️","text":"Cada móvel tem uma função: sentar, dormir, guardar ou apoiar."},{"icon":"🌳","text":"Muitos móveis são feitos de madeira, que vem das árvores."},{"icon":"🧽","text":"Cuidar dos móveis faz com que eles durem mais e evita desperdício."},{"icon":"♻️","text":"Um móvel velho pode ser consertado, reaproveitado ou doado."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
 
 -- Pré-requisitos (depois que todas as aulas existem)
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000001';
@@ -2534,9 +2541,10 @@ update public.lessons set prerequisite_lesson_id = null where id = '20000000-000
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000011';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000012';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000013';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000014';
 
 -- Seções (recriadas)
-delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013');
+delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
 insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
   ('21000000-0000-4000-8000-000000001001', '20000000-0000-4000-8000-000000000001', 'content', '🌳', 'Muito mais do que paisagem', 'Uma árvore é muito mais do que um elemento da paisagem.
 Árvores são plantas com tronco lenhoso que podem viver por muitos anos. Pela fotossíntese, elas usam a luz do sol para absorver gás carbônico (CO₂) do ar e liberar oxigênio.
@@ -2681,9 +2689,20 @@ insert into public.lesson_sections (id, lesson_id, section_type, icon, title, co
 - Leite pode virar iogurte
 - Leite pode virar manteiga', null, null, '[{"type":"choice","prompt":"Qual destes é um derivado do leite?","options":[{"id":"arroz","icon":"🍚","label":"Arroz","is_best":false,"feedback":"Arroz é um grão, não um derivado do leite."},{"id":"queijo","icon":"🧀","label":"Queijo","is_best":true,"feedback":"Isso! O queijo pode ser produzido a partir do leite."},{"id":"maca","icon":"🍎","label":"Maçã","is_best":false,"feedback":"A maçã é uma fruta, não um derivado do leite."}]}]'::jsonb, 2),
   ('21000000-0000-4000-8000-000000013003', '20000000-0000-4000-8000-000000000013', 'content', '💚', 'Cuidar e não desperdiçar', 'Conhecer a origem dos alimentos ajuda a agradecer o trabalho das pessoas e a respeitar os animais. Podemos servir apenas o que vamos comer, guardar corretamente o que sobrar e conversar com um adulto sobre escolhas alimentares.', null, null, '[{"type":"tip","text":"Nunca entre em uma fazenda, toque ou alimente um animal sem a autorização e a presença de um adulto responsável."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000014001', '20000000-0000-4000-8000-000000000014', 'content', '🏠', 'Para que servem os móveis?', 'Móveis são os objetos grandes que deixam a casa confortável. Cada cômodo tem os seus: na sala tem sofá, no quarto tem cama e guarda-roupa, na cozinha tem mesa e cadeiras.
+- Sofá e cadeira: para sentar
+- Cama: para dormir e descansar
+- Guarda-roupa e estante: para guardar coisas
+- Mesa: para apoiar, comer e estudar', null, null, '[{"type":"choice","prompt":"Qual móvel serve para guardar roupas?","options":[{"id":"guarda-roupa","icon":"🚪","label":"Guarda-roupa","is_best":true,"feedback":"Isso! O guarda-roupa guarda roupas, sapatos e cobertores."},{"id":"sofa","icon":"🛋️","label":"Sofá","is_best":false,"feedback":"O sofá serve para sentar e descansar na sala."},{"id":"mesa","icon":"🍽️","label":"Mesa","is_best":false,"feedback":"A mesa serve para apoiar pratos, livros e cadernos."}]}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000014002', '20000000-0000-4000-8000-000000000014', 'content', '🌳', 'Do que os móveis são feitos?', 'Muitos móveis são feitos de madeira, que vem das árvores. Outros usam metal, plástico, vidro ou tecido. Olhar com atenção ajuda a descobrir: a madeira tem desenhos de linhas, o metal é frio e brilhante, o tecido é macio.
+- Madeira: vem das árvores
+- Metal: frio e resistente
+- Tecido: macio, como no sofá', null, null, '[{"type":"think","prompt":"Qual é o móvel de madeira mais perto de você agora?"}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000014003', '20000000-0000-4000-8000-000000000014', 'content', '🧽', 'Cuidar para durar', 'Quando cuidamos dos móveis, eles duram muitos anos e menos árvores precisam ser cortadas para fazer móveis novos. Não pular em cima da cama, não riscar a mesa e limpar a poeira são jeitos de cuidar. Um móvel velho pode ser consertado, pintado ou doado para outra família.', null, null, '[{"type":"tip","text":"Nunca suba em móveis nem tente mover um móvel pesado sozinho: peça ajuda a um adulto."}]'::jsonb, 3);
 
 -- Conteúdos relacionados (recriados)
-delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013');
+delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
 insert into public.lesson_related (lesson_id, related_lesson_id, order_index) values
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', 1),
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000011', 2),
@@ -2723,7 +2742,9 @@ insert into public.lesson_related (lesson_id, related_lesson_id, order_index) va
   ('20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000003', 2),
   ('20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000001', 3),
   ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000012', 1),
-  ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', 2);
+  ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', 2),
+  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000012', 1),
+  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000007', 2);
 
 -- >>> 16_quiz_improvements.sql
 -- =====================================================================
@@ -3605,6 +3626,49 @@ insert into public.quiz_options (id, question_id, option_text, is_correct, expla
   ('32000000-0000-4000-8000-013000004002', '31000000-0000-4000-8000-013000000004', 'Correr atrás dela', false, 'Correr atrás pode assustar o animal e causar acidentes.', 2),
   ('32000000-0000-4000-8000-013000004003', '31000000-0000-4000-8000-013000000004', 'Oferecer qualquer comida', false, 'Nunca alimente um animal sem autorização de um adulto responsável.', 3),
   ('32000000-0000-4000-8000-013000004004', '31000000-0000-4000-8000-013000000004', 'Entrar sozinho no cercado', false, 'Crianças não devem entrar sozinhas em cercados.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Os móveis da nossa casa
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000014', 'Quiz: Os móveis da nossa casa', '4 perguntas sobre para que servem os móveis, do que são feitos e como cuidar deles.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000014' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000014' and id not in ('31000000-0000-4000-8000-014000000001', '31000000-0000-4000-8000-014000000002', '31000000-0000-4000-8000-014000000003', '31000000-0000-4000-8000-014000000004');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-014000000001', '30000000-0000-4000-8000-000000000014', 'Para que serve a cama?', 'A cama é o móvel do quarto onde dormimos e descansamos.', '🛏️ Funções', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-014000000002', '30000000-0000-4000-8000-000000000014', 'De onde vem a madeira usada em muitos móveis?', 'A madeira vem do tronco das árvores. Por isso cuidar dos móveis também ajuda a cuidar das florestas.', '🌳 Materiais', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-014000000003', '30000000-0000-4000-8000-000000000014', 'Qual destas atitudes ajuda um móvel a durar mais?', 'Limpar a poeira com um pano seco e não pular em cima dos móveis ajudam eles a durarem muitos anos.', '🧽 Cuidado', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-014000000004', '30000000-0000-4000-8000-000000000014', 'O que podemos fazer com uma cadeira velha que ainda dá para usar?', 'Consertar, pintar ou doar evita que a cadeira vire lixo e que outra precise ser fabricada.', '♻️ Reaproveitar', 'single_choice', 4, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-014000000001', '31000000-0000-4000-8000-014000000002', '31000000-0000-4000-8000-014000000003', '31000000-0000-4000-8000-014000000004') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-014000001001', '31000000-0000-4000-8000-014000000001', 'Para dormir e descansar', true, 'Isso! A cama é para dormir e descansar.', 1),
+  ('32000000-0000-4000-8000-014000001002', '31000000-0000-4000-8000-014000000001', 'Para cozinhar', false, 'Cozinhamos no fogão, na cozinha.', 2),
+  ('32000000-0000-4000-8000-014000001003', '31000000-0000-4000-8000-014000000001', 'Para guardar pratos', false, 'Pratos ficam no armário da cozinha.', 3),
+  ('32000000-0000-4000-8000-014000001004', '31000000-0000-4000-8000-014000000001', 'Para lavar a louça', false, 'A louça é lavada na pia.', 4),
+  ('32000000-0000-4000-8000-014000002001', '31000000-0000-4000-8000-014000000002', 'Das árvores', true, 'Correto! A madeira vem do tronco das árvores.', 1),
+  ('32000000-0000-4000-8000-014000002002', '31000000-0000-4000-8000-014000000002', 'Das pedras', false, 'Pedras não viram madeira.', 2),
+  ('32000000-0000-4000-8000-014000002003', '31000000-0000-4000-8000-014000000002', 'Da água do rio', false, 'A água não vira madeira.', 3),
+  ('32000000-0000-4000-8000-014000002004', '31000000-0000-4000-8000-014000000002', 'Das nuvens', false, 'As nuvens são feitas de gotinhas de água.', 4),
+  ('32000000-0000-4000-8000-014000003001', '31000000-0000-4000-8000-014000000003', 'Limpar a poeira com um pano seco', true, 'Isso! Móvel limpo e bem cuidado dura mais.', 1),
+  ('32000000-0000-4000-8000-014000003002', '31000000-0000-4000-8000-014000000003', 'Pular em cima da cama', false, 'Pular pode quebrar a cama e machucar você.', 2),
+  ('32000000-0000-4000-8000-014000003003', '31000000-0000-4000-8000-014000000003', 'Riscar a mesa com caneta', false, 'Riscos estragam a mesa.', 3),
+  ('32000000-0000-4000-8000-014000003004', '31000000-0000-4000-8000-014000000003', 'Deixar o móvel na chuva', false, 'A água da chuva estraga a madeira.', 4),
+  ('32000000-0000-4000-8000-014000004001', '31000000-0000-4000-8000-014000000004', 'Consertar, pintar ou doar', true, 'Correto! Assim ela continua sendo útil.', 1),
+  ('32000000-0000-4000-8000-014000004002', '31000000-0000-4000-8000-014000000004', 'Jogar no rio', false, 'Jogar coisas no rio polui a água.', 2),
+  ('32000000-0000-4000-8000-014000004003', '31000000-0000-4000-8000-014000000004', 'Quebrar de propósito', false, 'Quebrar gera lixo e desperdício.', 3),
+  ('32000000-0000-4000-8000-014000004004', '31000000-0000-4000-8000-014000000004', 'Deixar na calçada sem avisar ninguém', false, 'Móveis largados na rua viram lixo e atrapalham quem passa.', 4)
 on conflict (id) do update set
   question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
   explanation = excluded.explanation, order_index = excluded.order_index;
@@ -5295,6 +5359,48 @@ on conflict (id) do update set
   xp_reward = excluded.xp_reward, day_offset = excluded.day_offset, early_window_days = excluded.early_window_days,
   evidence_kind = excluded.evidence_kind, deadline_offset_days = excluded.deadline_offset_days, active = true;
 
+-- Detetive dos móveis
+insert into public.challenges (id, category_id, lesson_id, icon, title, slug, description, instructions, safety_notes,
+  difficulty, deadline_days, xp_reward, active, requires_evidence, requires_follow_up,
+  why_it_matters, materials, evidence_instructions, duration_label)
+values ('40000000-0000-4000-8000-000000000019', '10000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000014', '🪑', 'Detetive dos móveis', 'detetive-dos-moveis',
+  'Escolha um cômodo da sua casa, descubra 3 móveis, para que servem e do que são feitos. Depois, cuide de um deles.', 'Pode ser a sala, o quarto ou a cozinha. Se quiser, explore antes a sua casa no Meu Lugar.
+Descubra 3 móveis nesse cômodo e para que cada um serve.
+Olhe e toque com cuidado: é madeira, metal, plástico ou tecido?
+Tire a poeira com um pano seco ou guarde o que estava fora do lugar em cima dele.
+Conte quais 3 móveis você encontrou, para que servem e do que são feitos.', 'Não suba em móveis nem tente mover móveis pesados.
+Use só pano seco; produtos de limpeza apenas com um adulto.',
+  'facil', 2, 35, true, true, false,
+  'Conhecer e cuidar dos móveis faz com que durem mais. Assim menos árvores são cortadas e menos coisas viram lixo.', 'Um pano seco
+Papel e lápis (se quiser anotar)', 'Conte quais 3 móveis você encontrou, para que servem e do que são feitos.', '15 minutos')
+on conflict (id) do update set
+  category_id = excluded.category_id, lesson_id = excluded.lesson_id, icon = excluded.icon, title = excluded.title,
+  slug = excluded.slug, description = excluded.description, instructions = excluded.instructions,
+  safety_notes = excluded.safety_notes, difficulty = excluded.difficulty, deadline_days = excluded.deadline_days,
+  xp_reward = excluded.xp_reward, active = true, requires_evidence = excluded.requires_evidence,
+  requires_follow_up = excluded.requires_follow_up, why_it_matters = excluded.why_it_matters,
+  materials = excluded.materials, evidence_instructions = excluded.evidence_instructions,
+  duration_label = excluded.duration_label;
+
+update public.challenge_steps s set order_index = x.base - x.rn
+from (select id, row_number() over (order by order_index, id) as rn,
+        (select least(min(order_index), 0) - 1000 from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000019') as base
+      from public.challenge_steps where challenge_id = '40000000-0000-4000-8000-000000000019') x
+where s.id = x.id;
+update public.challenge_steps set active = false where challenge_id = '40000000-0000-4000-8000-000000000019' and id not in ('41000000-0000-4000-8000-019000000001', '41000000-0000-4000-8000-019000000002', '41000000-0000-4000-8000-019000000003', '41000000-0000-4000-8000-019000000004', '41000000-0000-4000-8000-019000000005');
+insert into public.challenge_steps (id, challenge_id, title, description, step_type, order_index, required, xp_reward,
+  day_offset, early_window_days, evidence_kind, deadline_offset_days, active) values
+  ('41000000-0000-4000-8000-019000000001', '40000000-0000-4000-8000-000000000019', 'Escolher um cômodo', 'Pode ser a sala, o quarto ou a cozinha. Se quiser, explore antes a sua casa no Meu Lugar.', 'action', 1, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000002', '40000000-0000-4000-8000-000000000019', 'Encontrar 3 móveis', 'Descubra 3 móveis nesse cômodo e para que cada um serve.', 'action', 2, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000003', '40000000-0000-4000-8000-000000000019', 'Descobrir do que são feitos', 'Olhe e toque com cuidado: é madeira, metal, plástico ou tecido?', 'action', 3, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000004', '40000000-0000-4000-8000-000000000019', 'Cuidar de um móvel', 'Tire a poeira com um pano seco ou guarde o que estava fora do lugar em cima dele.', 'action', 4, true, 0, null, 2, 'none', null, true),
+  ('41000000-0000-4000-8000-019000000005', '40000000-0000-4000-8000-000000000019', 'Registrar a investigação', 'Conte quais 3 móveis você encontrou, para que servem e do que são feitos.', 'evidence', 5, true, 5, null, 2, 'text', null, true)
+on conflict (id) do update set
+  challenge_id = excluded.challenge_id, title = excluded.title, description = excluded.description,
+  step_type = excluded.step_type, order_index = excluded.order_index, required = excluded.required,
+  xp_reward = excluded.xp_reward, day_offset = excluded.day_offset, early_window_days = excluded.early_window_days,
+  evidence_kind = excluded.evidence_kind, deadline_offset_days = excluded.deadline_offset_days, active = true;
+
 -- >>> 21_gamification.sql
 -- =====================================================================
 -- 21 · Gamificação: XP, níveis, conquistas e eventos (Etapa 6)
@@ -6430,6 +6536,7 @@ update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-
 update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000016';
 update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000017';
 update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000018';
+update public.challenges set start_xp_reward = 3 where id = '40000000-0000-4000-8000-000000000019';
 
 -- Nível guardado no perfil segue a nova tabela de níveis.
 update public.profiles set level = public.level_for_xp(total_xp);
@@ -8171,14 +8278,16 @@ insert into public.place_items (id, code, name, icon, description, meaning, cate
   ('80000000-0000-4000-8000-000000000041', 'desk_lamp', 'Luminária de LED', '💡', 'Uma luminária de LED que ilumina bem e gasta pouca energia.', 'Você aprendeu sobre fontes de energia renováveis.', 'energia', 'estudos', 'desk_lamp',
    3.5, 0.79, -6.15, 0, 1.2, 'lesson', 'o-que-sao-fontes-renovaveis', 41, true),
   ('80000000-0000-4000-8000-000000000042', 'corkboard', 'Mural de recados', '📌', 'Um mural com recados e descobertas sobre a natureza.', 'Dez lições concluídas: você é um estudante da natureza.', 'educacao', 'estudos', 'corkboard',
-   4.86, 1.5, -6, 270, 1, 'achievement', 'estudante-da-natureza', 42, true)
+   4.86, 1.5, -6, 270, 1, 'achievement', 'estudante-da-natureza', 42, true),
+  ('80000000-0000-4000-8000-000000000043', 'wooden_chair', 'Cadeirinha de madeira', '🪑', 'Uma cadeirinha de madeira bem cuidada, perto da porta.', 'Você investigou os móveis da sua casa e cuidou de um deles.', 'casa', 'sala', 'chair',
+   -3.6, 0, -0.6, 200, 0.75, 'challenge', 'detetive-dos-moveis', 43, true)
 on conflict (id) do update set
   code = excluded.code, name = excluded.name, icon = excluded.icon, description = excluded.description,
   meaning = excluded.meaning, category = excluded.category, location = excluded.location, model = excluded.model,
   position_x = excluded.position_x, position_y = excluded.position_y, position_z = excluded.position_z,
   rotation = excluded.rotation, scale = excluded.scale, unlock_type = excluded.unlock_type,
   unlock_reference = excluded.unlock_reference, sort_order = excluded.sort_order, active = true;
-update public.place_items set active = false where id not in ('80000000-0000-4000-8000-000000000001', '80000000-0000-4000-8000-000000000002', '80000000-0000-4000-8000-000000000003', '80000000-0000-4000-8000-000000000004', '80000000-0000-4000-8000-000000000005', '80000000-0000-4000-8000-000000000006', '80000000-0000-4000-8000-000000000007', '80000000-0000-4000-8000-000000000008', '80000000-0000-4000-8000-000000000009', '80000000-0000-4000-8000-000000000010', '80000000-0000-4000-8000-000000000011', '80000000-0000-4000-8000-000000000012', '80000000-0000-4000-8000-000000000013', '80000000-0000-4000-8000-000000000014', '80000000-0000-4000-8000-000000000015', '80000000-0000-4000-8000-000000000016', '80000000-0000-4000-8000-000000000017', '80000000-0000-4000-8000-000000000018', '80000000-0000-4000-8000-000000000019', '80000000-0000-4000-8000-000000000020', '80000000-0000-4000-8000-000000000021', '80000000-0000-4000-8000-000000000022', '80000000-0000-4000-8000-000000000023', '80000000-0000-4000-8000-000000000024', '80000000-0000-4000-8000-000000000025', '80000000-0000-4000-8000-000000000026', '80000000-0000-4000-8000-000000000027', '80000000-0000-4000-8000-000000000028', '80000000-0000-4000-8000-000000000029', '80000000-0000-4000-8000-000000000030', '80000000-0000-4000-8000-000000000031', '80000000-0000-4000-8000-000000000032', '80000000-0000-4000-8000-000000000033', '80000000-0000-4000-8000-000000000034', '80000000-0000-4000-8000-000000000035', '80000000-0000-4000-8000-000000000036', '80000000-0000-4000-8000-000000000037', '80000000-0000-4000-8000-000000000038', '80000000-0000-4000-8000-000000000039', '80000000-0000-4000-8000-000000000040', '80000000-0000-4000-8000-000000000041', '80000000-0000-4000-8000-000000000042');
+update public.place_items set active = false where id not in ('80000000-0000-4000-8000-000000000001', '80000000-0000-4000-8000-000000000002', '80000000-0000-4000-8000-000000000003', '80000000-0000-4000-8000-000000000004', '80000000-0000-4000-8000-000000000005', '80000000-0000-4000-8000-000000000006', '80000000-0000-4000-8000-000000000007', '80000000-0000-4000-8000-000000000008', '80000000-0000-4000-8000-000000000009', '80000000-0000-4000-8000-000000000010', '80000000-0000-4000-8000-000000000011', '80000000-0000-4000-8000-000000000012', '80000000-0000-4000-8000-000000000013', '80000000-0000-4000-8000-000000000014', '80000000-0000-4000-8000-000000000015', '80000000-0000-4000-8000-000000000016', '80000000-0000-4000-8000-000000000017', '80000000-0000-4000-8000-000000000018', '80000000-0000-4000-8000-000000000019', '80000000-0000-4000-8000-000000000020', '80000000-0000-4000-8000-000000000021', '80000000-0000-4000-8000-000000000022', '80000000-0000-4000-8000-000000000023', '80000000-0000-4000-8000-000000000024', '80000000-0000-4000-8000-000000000025', '80000000-0000-4000-8000-000000000026', '80000000-0000-4000-8000-000000000027', '80000000-0000-4000-8000-000000000028', '80000000-0000-4000-8000-000000000029', '80000000-0000-4000-8000-000000000030', '80000000-0000-4000-8000-000000000031', '80000000-0000-4000-8000-000000000032', '80000000-0000-4000-8000-000000000033', '80000000-0000-4000-8000-000000000034', '80000000-0000-4000-8000-000000000035', '80000000-0000-4000-8000-000000000036', '80000000-0000-4000-8000-000000000037', '80000000-0000-4000-8000-000000000038', '80000000-0000-4000-8000-000000000039', '80000000-0000-4000-8000-000000000040', '80000000-0000-4000-8000-000000000041', '80000000-0000-4000-8000-000000000042', '80000000-0000-4000-8000-000000000043');
 
 -- Aplica as regras a todos os jogadores (casa inicial + objetos já merecidos).
 select public.sync_place(user_id) from public.profiles;

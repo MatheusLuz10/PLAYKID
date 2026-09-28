@@ -12,9 +12,10 @@ O banco é testado à parte por `npm run test:db`.
 | `07-mundo.cjs` | mundo inicial (3D), desbloqueios, árvore nova crescendo na cena, detalhes, história, teclado, redução de movimento |
 | `08-integracao-final.cjs` | páginas públicas, boas-vindas, primeira missão, admin, exclusão de conta, offline, 9 larguras (320–1920), acessibilidade (axe) e CSP de produção |
 | `12-online-neon.cjs` | site publicado com Neon: conta, perfil, aula, quiz, desafio, foto no Object Storage, sair/entrar, excluir conta |
-| `11-mundo-3d.cjs` | mundo em 3D: visão geral das 5 áreas, voo até cada área, marcadores de todos os itens, detalhes, câmera, teclado e o mapa 2D sem WebGL |
+| `11-mundo-3d.cjs` | mundo em 3D: prévia que não prende a página, entrar/sair em tela cheia, 5 áreas, voo até cada área, marcadores, detalhes, câmera, teclado, a casa no mundo (entrar, andar pelos cômodos, paredes) e o mapa 2D sem WebGL |
+| `13-detetive-dos-moveis.cjs` | desafio infantil sobre os móveis da casa: aula, quiz, 5 etapas sem foto, conclusão e a cadeirinha que aparece na sala |
 | `10-jogadores.cjs` | login de cada usuário (demonstração): criar conta, senha errada, sair/entrar, evolução separada, pausa após 5 tentativas, conta de demonstração, excluir só uma conta |
-| `09-meu-lugar.cjs` | casa 3D: cena desenhada, controles, cômodos, objetos liberados por aula/foto/desafio, origem e registro, evolução, sem duplicar, versão sem WebGL |
+| `09-meu-lugar.cjs` | casa 3D: cena desenhada, prévia que não prende a página, entrar/fechar em tela cheia, controles, cômodos, objetos liberados por aula/foto/desafio, origem e registro, evolução, sem duplicar, versão sem WebGL |
 
 ## Como rodar
 

@@ -1069,6 +1069,64 @@
         { "title": "Desenhar ou registrar", "description": "Desenhe uma vaca ou escreva uma coisa que aprendeu.", "type": "action", "evidence_kind": "none" },
         { "title": "Registrar a descoberta", "description": "Conte uma coisa que aprendeu sobre a vaca e cite dois derivados do leite.", "type": "evidence", "evidence_kind": "text", "xp_reward": 5 }
       ]
+    },
+    {
+      "slug": "detetive-dos-moveis",
+      "lesson": "os-moveis-da-nossa-casa",
+      "category": "comunidade",
+      "icon": "🪑",
+      "title": "Detetive dos móveis",
+      "description": "Escolha um cômodo da sua casa, descubra 3 móveis, para que servem e do que são feitos. Depois, cuide de um deles.",
+      "why_it_matters": "Conhecer e cuidar dos móveis faz com que durem mais. Assim menos árvores são cortadas e menos coisas viram lixo.",
+      "materials": [
+        "Um pano seco",
+        "Papel e lápis (se quiser anotar)"
+      ],
+      "evidence_instructions": "Conte quais 3 móveis você encontrou, para que servem e do que são feitos.",
+      "safety_notes": [
+        "Não suba em móveis nem tente mover móveis pesados.",
+        "Use só pano seco; produtos de limpeza apenas com um adulto."
+      ],
+      "difficulty": "facil",
+      "deadline_days": 2,
+      "duration_label": "15 minutos",
+      "xp_reward": 35,
+      "start_xp_reward": 3,
+      "requires_evidence": true,
+      "requires_follow_up": false,
+      "steps": [
+        {
+          "title": "Escolher um cômodo",
+          "description": "Pode ser a sala, o quarto ou a cozinha. Se quiser, explore antes a sua casa no Meu Lugar.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Encontrar 3 móveis",
+          "description": "Descubra 3 móveis nesse cômodo e para que cada um serve.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Descobrir do que são feitos",
+          "description": "Olhe e toque com cuidado: é madeira, metal, plástico ou tecido?",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Cuidar de um móvel",
+          "description": "Tire a poeira com um pano seco ou guarde o que estava fora do lugar em cima dele.",
+          "type": "action",
+          "evidence_kind": "none"
+        },
+        {
+          "title": "Registrar a investigação",
+          "description": "Conte quais 3 móveis você encontrou, para que servem e do que são feitos.",
+          "type": "evidence",
+          "evidence_kind": "text",
+          "xp_reward": 5
+        }
+      ]
     }
   ]
 }

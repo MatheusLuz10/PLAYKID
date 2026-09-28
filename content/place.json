@@ -872,6 +872,26 @@
       "unlock_reference": "estudante-da-natureza",
       "description": "Um mural com recados e descobertas sobre a natureza.",
       "meaning": "Dez lições concluídas: você é um estudante da natureza."
+    },
+    {
+      "id": "80000000-0000-4000-8000-000000000043",
+      "code": "wooden_chair",
+      "name": "Cadeirinha de madeira",
+      "icon": "🪑",
+      "model": "chair",
+      "category": "casa",
+      "location": "sala",
+      "position": [
+        -3.6,
+        0,
+        -0.6
+      ],
+      "rotation": 200,
+      "scale": 0.75,
+      "unlock_type": "challenge",
+      "unlock_reference": "detetive-dos-moveis",
+      "description": "Uma cadeirinha de madeira bem cuidada, perto da porta.",
+      "meaning": "Você investigou os móveis da sua casa e cuidou de um deles."
     }
   ]
 }

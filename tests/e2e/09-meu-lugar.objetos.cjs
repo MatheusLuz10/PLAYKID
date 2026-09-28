@@ -78,6 +78,7 @@ module.exports = async function objetos(page, label, log) {
   await page.goto(BASE + '/meu-lugar');
   await see('Sua casa ganhou');
   await see('Minha Árvore');
+  await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
   await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: '🌳 Jardim' }).click();
   await page.waitForTimeout(1000);
   await page.locator('.place-stage').screenshot({ path: `${OUT}/${label}-05-arvore.png` });
@@ -88,6 +89,7 @@ module.exports = async function objetos(page, label, log) {
   await dialog.getByText('Desbloqueado em').waitFor();
   await page.screenshot({ path: `${OUT}/${label}-06-origem.png` });
   await dialog.getByRole('button', { name: 'Fechar' }).click();
+  await page.getByRole('button', { name: '✕ Fechar a casa' }).click();
   log(label, 'desafio concluído → Minha Árvore no jardim; toque mostra origem, data e o registro do jogador (diário)');
 
   // Painel com números reais (conferidos com o que ficou salvo)

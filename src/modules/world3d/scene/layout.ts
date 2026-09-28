@@ -24,6 +24,12 @@ export const ZONES: Record<AreaCode, Zone> = {
 
 export const AREA_CODES = Object.keys(ZONES) as AreaCode[];
 
+/**
+ * A casa do jogador (a mesma de "Meu Lugar", em miniatura): na frente, à esquerda da
+ * trilha principal, com a porta virada para a câmera. Tocar nela leva para dentro.
+ */
+export const HOME = { x: -8, z: 14, scale: 0.42, radius: 3.2 };
+
 /** Retângulo que contém todas as áreas (fora dele o terreno vira colina). */
 export const WORLD_BOUNDS = { minX: -43, maxX: 43, minZ: -35, maxZ: 12 };
 

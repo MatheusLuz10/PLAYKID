@@ -1149,6 +1149,105 @@
           ]
         }
       ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000014",
+      "category": "comunidade",
+      "slug": "os-moveis-da-nossa-casa",
+      "topic": "Móveis da casa",
+      "title": "Os móveis da nossa casa",
+      "description": "Descubra para que servem os móveis, do que eles são feitos e como cuidar deles para durarem muito tempo.",
+      "difficulty": "beginner",
+      "estimated_minutes": 4,
+      "xp_reward": 20,
+      "order_index": 2,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🛋️",
+          "text": "Cada móvel tem uma função: sentar, dormir, guardar ou apoiar."
+        },
+        {
+          "icon": "🌳",
+          "text": "Muitos móveis são feitos de madeira, que vem das árvores."
+        },
+        {
+          "icon": "🧽",
+          "text": "Cuidar dos móveis faz com que eles durem mais e evita desperdício."
+        },
+        {
+          "icon": "♻️",
+          "text": "Um móvel velho pode ser consertado, reaproveitado ou doado."
+        }
+      ],
+      "related": [
+        "o-que-e-uma-acao-ambiental-comunitaria",
+        "o-que-significa-reutilizar"
+      ],
+      "sections": [
+        {
+          "icon": "🏠",
+          "title": "Para que servem os móveis?",
+          "content": "Móveis são os objetos grandes que deixam a casa confortável. Cada cômodo tem os seus: na sala tem sofá, no quarto tem cama e guarda-roupa, na cozinha tem mesa e cadeiras.\n- Sofá e cadeira: para sentar\n- Cama: para dormir e descansar\n- Guarda-roupa e estante: para guardar coisas\n- Mesa: para apoiar, comer e estudar",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Qual móvel serve para guardar roupas?",
+              "options": [
+                {
+                  "id": "guarda-roupa",
+                  "icon": "🚪",
+                  "label": "Guarda-roupa",
+                  "is_best": true,
+                  "feedback": "Isso! O guarda-roupa guarda roupas, sapatos e cobertores."
+                },
+                {
+                  "id": "sofa",
+                  "icon": "🛋️",
+                  "label": "Sofá",
+                  "is_best": false,
+                  "feedback": "O sofá serve para sentar e descansar na sala."
+                },
+                {
+                  "id": "mesa",
+                  "icon": "🍽️",
+                  "label": "Mesa",
+                  "is_best": false,
+                  "feedback": "A mesa serve para apoiar pratos, livros e cadernos."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "🌳",
+          "title": "Do que os móveis são feitos?",
+          "content": "Muitos móveis são feitos de madeira, que vem das árvores. Outros usam metal, plástico, vidro ou tecido. Olhar com atenção ajuda a descobrir: a madeira tem desenhos de linhas, o metal é frio e brilhante, o tecido é macio.\n- Madeira: vem das árvores\n- Metal: frio e resistente\n- Tecido: macio, como no sofá",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Qual é o móvel de madeira mais perto de você agora?"
+            }
+          ]
+        },
+        {
+          "icon": "🧽",
+          "title": "Cuidar para durar",
+          "content": "Quando cuidamos dos móveis, eles duram muitos anos e menos árvores precisam ser cortadas para fazer móveis novos. Não pular em cima da cama, não riscar a mesa e limpar a poeira são jeitos de cuidar. Um móvel velho pode ser consertado, pintado ou doado para outra família.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Nunca suba em móveis nem tente mover um móvel pesado sozinho: peça ajuda a um adulto."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

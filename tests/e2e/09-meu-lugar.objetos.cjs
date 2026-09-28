@@ -3,6 +3,7 @@ const BASE = process.env.BASE_URL || 'http://localhost:4318';
 const PHOTO = __dirname + '/fixtures/foto.png';
 const TREE = '/missao/plante-uma-arvore';
 const C = require('./conteudo.cjs');
+const LAST_STAGE = require('../../content/place.json').stages.at(-1).name;
 
 const editDemo = (page, src) =>
   page.evaluate((code) => {
@@ -17,14 +18,15 @@ module.exports = async function objetos(page, label, log) {
   const see = (t) => page.getByText(t, { exact: false }).locator('visible=true').first().waitFor({ timeout: 8000 });
   const spots = () => page.locator('.place-hotspot');
 
-  // Usuário novo: só a casa inicial
+  // Usuário novo: casa completa (todos os objetos da casa e do quintal)
   await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: '🏡 Visão geral' }).click();
   await page.waitForTimeout(900);
   const initial = await spots().count();
-  if (initial !== C.placeInitial) throw new Error(`casa inicial deveria ter ${C.placeInitial} objetos: ` + initial);
-  await see('Pequena casa');
-  await see(`Objetos da casa (${C.placeInitial}/${C.placeItems})`);
-  log(label, 'usuário novo: casa inicial (mesa e cadeira), estágio 1 "Pequena casa"');
+  if (initial !== C.placeItems) throw new Error(`casa completa deveria ter ${C.placeItems} objetos: ` + initial);
+  await see(LAST_STAGE);
+  await see(`Objetos da casa (${C.placeItems}/${C.placeItems})`);
+  if (await page.getByText('Sua casa ganhou').count()) throw new Error('novidade para a casa completa');
+  log(label, `usuário novo: casa completa (${C.placeItems} objetos, casa e quintal), estágio "${LAST_STAGE}"`);
 
   // Desafio real: aula → quiz → aceitar → etapas com foto e observação → acompanhamentos → concluir
   await page.goto(BASE + '/aula/por-que-as-arvores-sao-importantes');
@@ -56,11 +58,12 @@ module.exports = async function objetos(page, label, log) {
   await page.getByRole('button', { name: 'Enviar registro' }).click();
   await see('🌱 Aguardando acompanhamento');
 
-  // Antes de concluir: livro (primeira lição) e quadro (primeira foto) já apareceram; a árvore não.
+  // Antes de concluir: a árvore já está no quintal, como parte da casa completa
   await page.goto(BASE + '/meu-lugar');
-  await see(`Objetos da casa (${C.placeInitial + 2}/${C.placeItems})`);
-  if (await page.getByRole('button', { name: 'Minha Árvore: ver detalhes' }).count()) throw new Error('árvore antes da conclusão');
-  log(label, 'lição → livro; primeira foto → quadro; a árvore ainda não (desafio não concluído)');
+  await see(`Objetos da casa (${C.placeItems}/${C.placeItems})`);
+  await page.locator('.place-history__item', { hasText: 'Minha Árvore' }).getByText('Faz parte da sua casa completa.').waitFor();
+  await page.locator('.place-history__item', { hasText: 'Quadro da primeira ação' }).getByText('Desbloqueado ao enviar a primeira foto').waitFor();
+  log(label, 'casa completa: a árvore já está no quintal; a primeira foto já registra a origem real do quadro');
 
   await editDemo(page, `for (const uc of Object.values(db.player.challenges)) for (const f of uc.followups) f.scheduledFor = new Date(Date.now() - 86400000).toISOString();`);
   await page.goto(BASE + TREE + '/acompanhar');
@@ -76,7 +79,6 @@ module.exports = async function objetos(page, label, log) {
 
   // Casa depois do desafio
   await page.goto(BASE + '/meu-lugar');
-  await see('Sua casa ganhou');
   await see('Minha Árvore');
   await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
   await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: '🌳 Jardim' }).click();
@@ -91,7 +93,7 @@ module.exports = async function objetos(page, label, log) {
   await dialog.getByRole('button', { name: 'Fechar' }).click();
   await page.getByRole('button', { name: '✕ Sair da casa' }).click();
   await page.goto(BASE + '/meu-lugar');
-  log(label, 'desafio concluído → Minha Árvore no jardim; toque mostra origem, data e o registro do jogador (diário)');
+  log(label, 'desafio concluído → Minha Árvore passa a mostrar a origem real, a data e o registro do jogador (diário)');
 
   // Painel com números reais (conferidos com o que ficou salvo)
   const savedCodes = await page.evaluate((ids) => {
@@ -100,15 +102,16 @@ module.exports = async function objetos(page, label, log) {
   }, C.placeIds);
   for (const code of ['book', 'picture', 'my_tree', 'dining_table'])
     if (!savedCodes.includes(code)) throw new Error('faltou na casa: ' + code);
+  if (savedCodes.length !== C.placeItems) throw new Error('casa incompleta: ' + savedCodes.length);
   const earned = savedCodes.length - C.placeInitial;
   const panel = page.locator('.place-panel');
-  await panel.getByText('Casa em evolução').waitFor();
+  await panel.getByText(LAST_STAGE).first().waitFor();
   await panel.locator('.stats div', { hasText: 'Objetos desbloqueados' }).getByText(`${earned}/${C.placeEarnable}`).waitFor();
   await panel.locator('.stats div', { hasText: 'Missões realizadas' }).getByText('2', { exact: true }).waitFor();
   await panel.locator('.stats div', { hasText: 'Desafios realizados' }).getByText('1', { exact: true }).waitFor();
   await panel.getByText(`${C.placeProgress(earned)}%`).first().waitFor();
   await page.locator('.place-history').getByText('Plantei').first().waitFor({ state: 'attached' }).catch(() => {});
-  log(label, `painel: estágio 2 "Casa em evolução", ${C.placeProgress(earned)}%, ${earned}/${C.placeEarnable} objetos (${savedCodes.filter((c) => !['desk', 'chair'].includes(c)).join(', ')}), 2 missões, 1 desafio`);
+  log(label, `painel: estágio "${LAST_STAGE}", ${C.placeProgress(earned)}%, ${earned}/${C.placeEarnable} objetos, 2 missões, 1 desafio`);
   await page.screenshot({ path: `${OUT}/${label}-07-painel.png`, fullPage: true });
 
   // Persistência e duplicação

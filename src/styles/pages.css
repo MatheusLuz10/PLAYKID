@@ -526,3 +526,36 @@
   object-fit: cover;
   max-height: 240px;
 }
+
+/* ---------- Visitas ---------- */
+.visit-card__form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.visit-card__form .input {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.visit__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.visit__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.visit__picked {
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  font-weight: 800;
+  align-self: flex-start;
+}

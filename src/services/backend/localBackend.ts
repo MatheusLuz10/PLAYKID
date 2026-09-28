@@ -29,6 +29,7 @@ import {
   currentDemoPlayerId,
   demoDataKey,
   demoLoginUsername,
+  findDemoPlayerByUsername,
   LEGACY_PLAYER_ID,
   listDemoPlayers,
   removeDemoPlayer,
@@ -51,6 +52,7 @@ import type {
   PlaceStateDTO,
   ProfileInput,
   QuizAttemptResult,
+  VisitDTO,
 } from './types';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -434,15 +436,18 @@ export class LocalBackend implements GameBackend {
   }
 
   /**
-   * Mesmas regras de public.sync_place: a casa só representa o que já
-   * aconteceu (lições, desafios, conquistas, nível, primeira foto). Não dá XP.
+   * Mesmas regras de public.sync_place (migration 29, casa completa): todo objeto é
+   * entregue; quem já fez a atividade guarda a origem real (lição, desafio, conquista,
+   * nível, primeira foto), os demais entram como parte da casa. Não dá XP.
    */
   private syncPlace() {
     const player = this.view();
     const owned = (this.db.place ??= []);
     const ucs = Object.values(player.challenges);
     for (const def of PLACE_ITEMS) {
-      if (owned.some((o) => o.itemId === def.id)) continue;
+      const existing = owned.find((o) => o.itemId === def.id);
+      // já tem: só revisita o que veio com a casa completa, para registrar a origem real depois
+      if (existing && !(existing.sourceType === 'initial' && def.unlockType !== 'initial')) continue;
       const ref = def.unlockReference ?? '';
       let ok = false;
       let sourceId: string | null = null;
@@ -493,19 +498,52 @@ export class LocalBackend implements GameBackend {
           break;
         }
       }
-      if (!ok) continue;
+      if (existing) {
+        if (ok) Object.assign(existing, { sourceType: def.unlockType, sourceId, challengeId, evidenceId, originNote: note?.trim().slice(0, 500) || null });
+        continue;
+      }
       owned.push({
         itemId: def.id,
         unlockedAt: now(),
-        sourceType: def.unlockType,
-        sourceId,
-        challengeId,
-        evidenceId,
-        originNote: note?.trim().slice(0, 500) || null,
-        revealed: def.unlockType === 'initial',
+        sourceType: ok ? def.unlockType : 'initial',
+        sourceId: ok ? sourceId : null,
+        challengeId: ok ? challengeId : null,
+        evidenceId: ok ? evidenceId : null,
+        originNote: ok ? note?.trim().slice(0, 500) || null : null,
+        revealed: def.unlockType === 'initial' || !ok, // o que já faz parte da casa nasce visto
         state: 'visible',
       });
     }
+  }
+
+  /** Visita outra conta deste aparelho pelo @usuário (mesmas regras de public.visit_player). */
+  async visitPlayer(username: string): Promise<VisitDTO> {
+    const found = findDemoPlayerByUsername(username);
+    if (!found) throw new AppError('player_not_found');
+    let other: Partial<DemoDb> | null = null;
+    try {
+      other = JSON.parse(localStorage.getItem(demoDataKey(found.id)) ?? 'null');
+    } catch {
+      other = null;
+    }
+    const world = other?.player?.world;
+    return {
+      player: {
+        username: found.username!,
+        displayName: found.displayName,
+        avatar: found.avatar,
+        level: found.level,
+        isMe: found.id === currentDemoPlayerId(),
+      },
+      world: {
+        name: world?.name ?? demoWorldInfo.name,
+        stage: world?.stage ?? 1,
+        progress: world?.progress ?? 0,
+        itemIds: (world?.items ?? []).map((i) => i.worldItemId),
+      },
+      // casa completa (migration 29): toda casa tem todos os objetos
+      place: { itemIds: PLACE_ITEMS.map((d) => d.id) },
+    };
   }
 
   async loadPlace(): Promise<PlaceStateDTO> {

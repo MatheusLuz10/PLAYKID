@@ -8,6 +8,7 @@ const MESSAGES: Record<string, string> = {
   not_authenticated: 'Sua sessão expirou. Entre novamente para continuar.',
   forbidden: 'Você não possui permissão para realizar esta ação.',
   not_found: 'Não encontramos o que você procurava. Atualize a página e tente de novo.',
+  player_not_found: 'Não encontramos ninguém com esse @usuário. Confira com o seu amigo e tente de novo.',
   lesson_not_completed: 'Conclua a aula antes de continuar.',
   lesson_locked: 'Este conteúdo ainda está bloqueado. Conclua o conteúdo anterior para liberá-lo.',
   lesson_not_finished: 'Chegue até a última parte da aula para concluí-la.',

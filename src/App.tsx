@@ -38,6 +38,7 @@ const TermsPage = lazy(() => import('./pages/public/TermsPage').then((m) => ({ d
 const PrivacyPage = lazy(() => import('./pages/public/PrivacyPage').then((m) => ({ default: m.PrivacyPage })));
 const RecoverPasswordPage = lazy(() => import('./pages/public/PasswordPages').then((m) => ({ default: m.RecoverPasswordPage })));
 const ResetPasswordPage = lazy(() => import('./pages/public/PasswordPages').then((m) => ({ default: m.ResetPasswordPage })));
+const VisitPage = lazy(() => import('./pages/VisitPage').then((m) => ({ default: m.VisitPage })));
 const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
 
 /** Endereço antigo da casa: abre a casa dentro do Meu Mundo (mantendo o "já andando"). */
@@ -90,6 +91,8 @@ export function App() {
               <Route path="/meu-lugar" element={<HouseRedirect />} />
               {/* A prévia 3D virou o próprio mundo */}
               <Route path="/mundo/previa-3d" element={<Navigate to="/mundo" replace />} />
+              {/* Visitar o mundo e a casa de outro jogador pelo @usuário */}
+              <Route path="/mundo/visitar/:username" element={<VisitPage />} />
               {/* Administração: a tela confere o papel; o servidor confere de novo em cada chamada */}
               <Route path="/admin" element={<RequireAdmin />}>
                 <Route index element={<AdminPage />} />

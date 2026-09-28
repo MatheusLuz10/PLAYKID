@@ -213,6 +213,12 @@ export function listDemoPlayers(): DemoPlayerSummary[] {
   });
 }
 
+/** Conta deste aparelho com esse @usuário (para visitas). */
+export function findDemoPlayerByUsername(username: string): DemoPlayerSummary | null {
+  const wanted = normalize(username.replace(/^@/, ''));
+  return listDemoPlayers().find((p) => p.username && normalize(p.username) === wanted) ?? null;
+}
+
 /** Nomes de usuário já usados pelas outras contas deste aparelho. */
 export function usernamesOfOtherDemoPlayers(playerId: string): string[] {
   const reg = readRegistry();

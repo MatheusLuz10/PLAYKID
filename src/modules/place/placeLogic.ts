@@ -21,8 +21,10 @@ export interface OwnedPlaceItem {
 }
 
 /** "Desbloqueado através de …" — a atividade real que fez o objeto aparecer. */
-export function unlockSourceText(def: PlaceItemDef, content: ContentCatalog): string {
+export function unlockSourceText(def: PlaceItemDef, content: ContentCatalog, owned?: OwnedPlaceItem): string {
   const ref = def.unlockReference ?? '';
+  // casa completa: o objeto veio com a casa, antes da atividade que o liberava
+  if (owned?.sourceType === 'initial' && def.unlockType !== 'initial') return 'Faz parte da sua casa completa.';
   switch (def.unlockType) {
     case 'initial':
       return 'Faz parte da casa inicial.';

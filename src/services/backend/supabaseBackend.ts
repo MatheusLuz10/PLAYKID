@@ -37,8 +37,8 @@ import type {
   EvidenceInput,
   GameBackend,
   PlaceStateDTO,
+  VisitDTO,
 } from './types';
-
 
 /**
  * Dados reais no Supabase.
@@ -412,6 +412,26 @@ export class SupabaseBackend implements GameBackend {
 
   async revealPlaceItems() {
     await this.rpc('reveal_place_items');
+  }
+
+  async visitPlayer(username: string): Promise<VisitDTO> {
+    const r = await this.rpc('visit_player', { p_username: username });
+    return {
+      player: {
+        username: r.player.username,
+        displayName: r.player.display_name ?? null,
+        avatar: r.player.avatar ?? '🦊',
+        level: r.player.level ?? 1,
+        isMe: Boolean(r.player.is_me),
+      },
+      world: {
+        name: r.world?.name ?? 'Meu Primeiro Ecossistema',
+        stage: r.world?.stage ?? 1,
+        progress: Number(r.world?.progress ?? 0),
+        itemIds: r.world?.item_ids ?? [],
+      },
+      place: { itemIds: r.place?.item_ids ?? [] },
+    };
   }
 
   async deleteAccount() {

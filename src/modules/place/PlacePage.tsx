@@ -194,7 +194,7 @@ export function PlacePage({ walkIn = false, onLeave }: PlacePageProps) {
                 </span>
                 <span>
                   <strong className="block">{d.name}</strong>
-                  <span className="small block">{unlockSourceText(d, content)}</span>
+                  <span className="small block">{unlockSourceText(d, content, o)}</span>
                   {o.originNote && <span className="small block place-history__note">📝 “{o.originNote}”</span>}
                   <span className="small muted block">
                     {formatDate(o.unlockedAt)} · {d.meaning}

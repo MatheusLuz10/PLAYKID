@@ -192,6 +192,16 @@ export interface PlaceStateDTO {
 }
 
 /**
+ * Visita ao mundo e à casa de outro jogador (pelo @usuário). Só o que é seguro mostrar:
+ * nada de fotos, diário, e-mail, foto de perfil ou XP.
+ */
+export interface VisitDTO {
+  player: { username: string; displayName: string | null; avatar: string; level: number; isMe: boolean };
+  world: { name: string; stage: number; progress: number; itemIds: string[] };
+  place: { itemIds: string[] };
+}
+
+/**
  * Contrato único entre as telas e a fonte de dados.
  * - SupabaseBackend: dados reais (Postgres + Auth + Storage).
  * - LocalBackend: modo demonstração no navegador, com as mesmas regras.
@@ -237,6 +247,8 @@ export interface GameBackend {
   loadPlace(): Promise<PlaceStateDTO>;
   /** Marca como vistos os objetos novos da casa. */
   revealPlaceItems(): Promise<void>;
+  /** Visita o mundo e a casa de outro jogador pelo @usuário (só leitura). */
+  visitPlayer(username: string): Promise<VisitDTO>;
 
   /** Exclui a conta do jogador e tudo o que é dele (fotos, progresso, XP, mundo). */
   deleteAccount(): Promise<void>;

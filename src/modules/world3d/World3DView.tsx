@@ -15,6 +15,8 @@ interface World3DViewProps {
   onSelect: (item: WorldItem) => void;
   /** Tocou na casa (ou no botão "Minha casa"): entrar nela. */
   onEnterHome: () => void;
+  /** Nome da casa no mapa (visitando outro jogador: "Casa de Ana"). */
+  homeLabel?: string;
   /** Abrir já em tela cheia (voltando da casa pelo "Sair da casa"). */
   startInside?: boolean;
   /** O 3D não abriu: a página mostra o mapa 2D no lugar. */
@@ -27,7 +29,16 @@ const itemLabel = (item: WorldItem, owned: boolean) =>
     : `Espaço bloqueado: ${item.name}. Ver como desbloquear`;
 
 /** 🌎 Mundo em 3D: as 5 áreas numa paisagem, com navegação por área e lista acessível. */
-export default function World3DView({ content, player, highlightIds = [], onSelect, onEnterHome, startInside = false, onFail }: World3DViewProps) {
+export default function World3DView({
+  content,
+  player,
+  highlightIds = [],
+  onSelect,
+  onEnterHome,
+  homeLabel = 'Minha casa',
+  startInside = false,
+  onFail,
+}: World3DViewProps) {
   const areas = useMemo(() => buildAreas(content, player), [content, player]);
   const holder = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<WorldScene3D | null>(null);
@@ -139,7 +150,7 @@ export default function World3DView({ content, player, highlightIds = [], onSele
             );
           })}
           <button type="button" className="world3d-toolbar__home" onClick={onEnterHome}>
-            🏡 Entrar na minha casa
+            🏡 {homeLabel === 'Minha casa' ? 'Entrar na minha casa' : `Entrar: ${homeLabel}`}
           </button>
         </div>
 
@@ -182,7 +193,7 @@ export default function World3DView({ content, player, highlightIds = [], onSele
                 style={{ left: pins.home.x, top: pins.home.y }}
                 onClick={onEnterHome}
               >
-                🏡 Minha casa
+                🏡 {homeLabel}
                 <small>entrar</small>
               </button>
             )}

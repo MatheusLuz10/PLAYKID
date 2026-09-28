@@ -1099,11 +1099,12 @@ await db.exec(`insert into auth.users (id, email) values ('${P}', 'p@x.com')`);
 const placeOf = async (user) => (await as(user, `select pi.code, u.source_type, u.challenge_id, u.evidence_id, u.origin_note, u.revealed, u.state
   from public.user_place_items u join public.place_items pi on pi.id = u.place_item_id order by pi.sort_order`));
 let pl = await placeOf(P);
-ok(pl.map((x) => x.code).join() === CT.place.items.filter((x) => x.unlock_type === 'initial').map((x) => x.code).join() && pl.every((x) => x.source_type === 'initial' && x.revealed && x.state === 'visible'),
-   'usuário novo recebe a casa inicial (mesa e cadeira), já vista');
+ok(pl.length === EXP.placeItems && pl.every((x) => x.source_type === 'initial' && x.revealed && x.state === 'visible'),
+   `casa completa (29): usuário novo recebe todos os ${EXP.placeItems} objetos da casa e do quintal, já vistos`);
 let ps = (await one(P, 'select public.get_place_state() s')).s;
-ok(ps.items.length === CT.place.items.filter((x) => x.unlock_type === 'initial').length && ps.progress.stage === 1 && ps.progress.progress === 0 && ps.progress.items_total === EXP.placeEarnable,
-   `estado da casa: estágio 1 (Pequena casa), 0%, ${EXP.placeEarnable} objetos a conquistar`);
+const lastPlaceStage = Math.max(...CT.place.stages.map((s) => s.stage));
+ok(ps.items.length === EXP.placeItems && ps.progress.stage === lastPlaceStage && ps.progress.progress === 100 && ps.progress.items_total === EXP.placeEarnable,
+   `estado da casa completa: estágio ${lastPlaceStage}, 100%, ${EXP.placeEarnable}/${EXP.placeEarnable} objetos`);
 
 console.log('\n# Meu Lugar · integração com as atividades existentes');
 const xpBeforeP = (await one(P, 'select total_xp from public.profiles')).total_xp;
@@ -1122,9 +1123,10 @@ ok(treeA && typeof treeA.origin_note === 'string' && treeA.origin_note.length > 
 const picA = plA.find((x) => x.code === 'picture');
 const firstPhotoA = (await one(A, `select id from public.challenge_evidence where evidence_type = 'photo' order by created_at limit 1`)).id;
 ok(picA && picA.source_type === 'evidence' && picA.evidence_id === firstPhotoA, 'primeira foto de evidência → quadro, ligado à evidência');
-ok(!plA.some((x) => x.code === 'bee') && (await placeOf(W)).some((x) => x.code === 'bee') && (await placeOf(W)).some((x) => x.code === 'butterfly'),
-   'abelha e borboleta só para quem concluiu o desafio dos polinizadores (W sim, A não)');
-ok(!plA.some((x) => x.code === 'vegetable_garden'), 'horta não aparece sem o desafio da horta');
+const plW = await placeOf(W);
+ok(plA.find((x) => x.code === 'bee')?.source_type === 'initial' && ['bee', 'butterfly'].every((c) => plW.find((x) => x.code === c)?.source_type === 'challenge'),
+   'abelha e borboleta: todos têm; quem concluiu os polinizadores (W) guarda a origem do desafio, A recebeu com a casa');
+ok(plA.find((x) => x.code === 'vegetable_garden')?.source_type === 'initial', 'horta já está no quintal mesmo sem o desafio da horta (casa completa)');
 
 console.log('\n# Meu Lugar · idempotência e sincronização');
 const beforeA = plA.length;
@@ -1140,7 +1142,8 @@ try {
 const sPlace1 = (await one(A, 'select public.get_place_state() s')).s;
 const sPlace2 = (await one(A, 'select public.get_place_state() s')).s;
 ok(JSON.stringify(sPlace1) === JSON.stringify(sPlace2) && sPlace1.items.length === beforeA, 'mesma casa em qualquer acesso (o servidor é a fonte oficial)');
-ok((await one(A, 'select public.reveal_place_items() n')).n >= 1 && (await one(A, 'select public.reveal_place_items() n')).n === 0, 'marcar como visto funciona uma vez');
+const rv1 = (await one(A, 'select public.reveal_place_items() n')).n;
+ok(rv1 >= 0 && (await one(A, 'select public.reveal_place_items() n')).n === 0, 'marcar como visto: na segunda vez não sobra nada novo');
 
 console.log('\n# Meu Lugar · evolução');
 const prA = sPlace1.progress;
@@ -1159,6 +1162,23 @@ await expectError(P, `select public.sync_place('${P}')`, 'permission denied', 'j
 ok((await as(P, `update public.place_items set unlock_type = 'initial', unlock_reference = null returning id`)).length === 0, 'jogador não edita as regras dos objetos');
 await expectError('anon', 'select public.get_place_state()', 'permission denied|not_authenticated', 'anônimo não lê casa nenhuma');
 ok((await db.query(`select count(*)::int n from public.user_place_items where user_id = $1`, [F])).rows[0].n === 0, 'conta excluída: a casa também foi apagada (cascata)');
+
+console.log('\n# Visitas · mundo e casa de outro jogador pelo @usuário');
+await as(W, `update public.profiles set username = 'wal_eco', display_name = 'Wal' where user_id = '${W}'`);
+const visit = (await one(A, `select public.visit_player('@Wal_Eco') v`)).v;
+const worldIdsW = (await db.query(`select u.world_item_id from public.user_world_items u join public.worlds w on w.id = u.world_id where w.user_id = $1`, [W])).rows.map((r) => r.world_item_id);
+const placeIdsW = (await db.query(`select place_item_id from public.user_place_items where user_id = $1 and state = 'visible'`, [W])).rows.map((r) => r.place_item_id);
+ok(visit.player.username === 'wal_eco' && visit.player.display_name === 'Wal' && visit.player.is_me === false && typeof visit.player.level === 'number',
+   'visita pelo @usuário (com @ e maiúsculas): nome, avatar e nível do jogador visitado');
+ok(visit.world.item_ids.length === worldIdsW.length && worldIdsW.every((id) => visit.world.item_ids.includes(id)) && visit.place.item_ids.length === placeIdsW.length,
+   `visita mostra o mundo (${worldIdsW.length} itens) e a casa (${placeIdsW.length} objetos) de verdade`);
+const visitText = JSON.stringify(visit);
+ok(!/email|avatar_url|origin_note|evidence|photo|total_xp|x\.com/.test(visitText), 'visita não expõe e-mail, foto de perfil, fotos, diário nem XP');
+ok((await one(W, `select public.visit_player('wal_eco') v`)).v.player.is_me === true, 'visitar o próprio @usuário é reconhecido');
+await expectError(A, `select public.visit_player('ninguem_aqui')`, 'player_not_found', '@usuário inexistente → jogador não encontrado');
+await expectError('anon', `select public.visit_player('wal_eco')`, 'permission denied|not_authenticated', 'sem login não visita ninguém');
+ok((await as(A, `select id from public.user_world_items u where u.world_id in (select id from public.worlds where user_id = '${W}')`)).length === 0,
+   'visitar não abre acesso direto aos dados do outro (RLS continua valendo)');
 
 console.log(`\n${passed} passaram, ${failed} falharam`);
 process.exit(failed ? 1 : 0);

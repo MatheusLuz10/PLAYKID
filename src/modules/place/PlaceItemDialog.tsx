@@ -40,7 +40,7 @@ export function PlaceItemDialog({ def, owned, content, onClose }: Props) {
             <>
               <div>
                 <dt>Origem</dt>
-                <dd>{unlockSourceText(def, content)}</dd>
+                <dd>{unlockSourceText(def, content, owned)}</dd>
               </div>
               <div>
                 <dt>Desbloqueado em</dt>

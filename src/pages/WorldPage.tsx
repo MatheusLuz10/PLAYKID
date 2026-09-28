@@ -1,5 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../components/layout/PageHeader';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { LoadingMessage } from '../components/ui/StateMessage';
@@ -54,6 +54,51 @@ export function WorldPage() {
     );
   }
   return <WorldMapPage onEnterHouse={enterHouse} fullscreen={params.get('tela') === 'cheia'} cameBack={cameBack} />;
+}
+
+/** 👀 Visitar o mundo e a casa de um amigo: só pelo @usuário (não existe lista pública). */
+function VisitFriendCard() {
+  const { player } = useGame();
+  const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const mine = player.profile.username;
+  const go = (e: FormEvent) => {
+    e.preventDefault();
+    const clean = name.trim().replace(/^@/, '').toLowerCase();
+    if (clean) navigate(`/mundo/visitar/${encodeURIComponent(clean)}`);
+  };
+  return (
+    <section className="card visit-card" aria-labelledby="visit-title">
+      <h2 className="section-title" id="visit-title">
+        👀 Visitar um amigo
+      </h2>
+      <p className="small muted">Digite o @usuário de um amigo para conhecer o mundo e a casa dele. Visita é só para olhar.</p>
+      <form className="visit-card__form" onSubmit={go}>
+        <label className="sr-only" htmlFor="visit-username">
+          @usuário do amigo
+        </label>
+        <input
+          id="visit-username"
+          className="input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="@usuario_do_amigo"
+          autoComplete="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          maxLength={25}
+        />
+        <button type="submit" className="btn btn--primary" disabled={!name.trim()}>
+          Visitar
+        </button>
+      </form>
+      {mine && (
+        <p className="small">
+          Seu @usuário para os amigos visitarem você: <strong>@{mine}</strong>
+        </p>
+      )}
+    </section>
+  );
 }
 
 function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (walk: boolean) => void; fullscreen: boolean; cameBack: boolean }) {
@@ -163,6 +208,8 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (w
         </span>
         <span aria-hidden>→</span>
       </button>
+
+      <VisitFriendCard />
 
       {use3d ? (
         <Suspense fallback={<div className="world3d-loading" role="status">🌍 Carregando o mundo em 3D…</div>}>

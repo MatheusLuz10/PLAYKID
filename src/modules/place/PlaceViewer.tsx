@@ -3,6 +3,7 @@ import { ImmersiveFrame } from '../../components/ui/ImmersiveFrame';
 import { Joystick } from './Joystick';
 import { PlaceScene, ROOMS, type FocusTarget, type Hotspot, type RoomCode, type SceneObject } from './scene/PlaceScene';
 import { hasWebGL, prefersReducedMotion } from './scene/webgl';
+import './place.css';
 
 interface PlaceViewerProps {
   objects: SceneObject[];

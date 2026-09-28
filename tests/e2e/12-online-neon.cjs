@@ -53,6 +53,16 @@ const log = (m) => {
     await see('Olá, Teste Online!');
     log('perfil salvo no banco do Neon (RLS: cada um só vê o seu)');
 
+    // Casa completa (migration 29) e visita pelo @usuário (migration 30)
+    await page.goto(BASE + '/mundo?casa=1');
+    await page.getByText(/Objetos da casa \((\d+)\/\1\)/).waitFor({ timeout: 30000 });
+    await page.goto(BASE + '/mundo/visitar/' + user);
+    await see('Este é o seu próprio mundo');
+    await page.getByRole('heading', { name: '🌎 Mundo de Teste Online' }).waitFor();
+    await page.goto(BASE + '/mundo/visitar/ninguem_existe_aqui');
+    await see('Não encontramos ninguém com esse @usuário');
+    log('casa completa desde a conta nova; visita pelo @usuário no servidor (e @usuário inexistente recusado)');
+
     // Missões abertas (migration 28): aceita outro desafio sem aula e sem quiz; aula sem pré-requisito abre
     await page.goto(BASE + '/missao/reduza-o-desperdicio-de-agua/desafio');
     await see('🔓 Disponível');

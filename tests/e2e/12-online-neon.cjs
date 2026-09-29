@@ -55,13 +55,16 @@ const log = (m) => {
 
     // Casa completa (migration 29) e visita pelo @usuário (migration 30)
     await page.goto(BASE + '/mundo?casa=1');
-    await page.getByText(/Objetos da casa \((\d+)\/\1\)/).waitFor({ timeout: 30000 });
+    await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
+    await page.waitForTimeout(800);
+    if ((await page.locator('.place-stage .place-hotspot').count()) < 1) throw new Error('casa vazia');
+    await page.getByRole('button', { name: '✕ Sair da casa' }).click();
     await page.goto(BASE + '/mundo/visitar/' + user);
     await see('Este é o seu próprio mundo');
     await page.getByRole('heading', { name: '🌎 Mundo de Teste Online' }).waitFor();
     await page.goto(BASE + '/mundo/visitar/ninguem_existe_aqui');
     await see('Não encontramos ninguém com esse @usuário');
-    log('casa completa desde a conta nova; visita pelo @usuário no servidor (e @usuário inexistente recusado)');
+    log('casa completa (mobiliada, por dentro) desde a conta nova; visita pelo @usuário no servidor (e @usuário inexistente recusado)');
 
     // Missões abertas (migration 28): aceita outro desafio sem aula e sem quiz; aula sem pré-requisito abre
     await page.goto(BASE + '/missao/reduza-o-desperdicio-de-agua/desafio');

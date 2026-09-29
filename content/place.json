@@ -82,9 +82,9 @@
       "category": "educacao",
       "location": "estudos",
       "position": [
-        2.3,
+        2.2,
         0.79,
-        -5.9
+        -5.95
       ],
       "rotation": 20,
       "scale": 1.3,
@@ -522,9 +522,9 @@
       "category": "educacao",
       "location": "estudos",
       "position": [
-        0.2,
+        1,
         0,
-        -6.7
+        -7.2
       ],
       "rotation": 0,
       "scale": 0.9,
@@ -542,12 +542,12 @@
       "category": "natureza",
       "location": "estudos",
       "position": [
-        1.2,
-        0.8,
-        -5.9
+        1.4,
+        0.68,
+        -7.05
       ],
       "rotation": 20,
-      "scale": 0.8,
+      "scale": 0.6,
       "unlock_type": "challenge",
       "unlock_reference": "analise-uma-paisagem",
       "description": "Uma lupa para olhar o mundo com atenção.",
@@ -562,12 +562,12 @@
       "category": "educacao",
       "location": "estudos",
       "position": [
-        3.1,
-        0.8,
-        -5.9
+        2.85,
+        0.79,
+        -5.8
       ],
       "rotation": 340,
-      "scale": 1,
+      "scale": 0.8,
       "unlock_type": "challenge",
       "unlock_reference": "escreva-no-diario",
       "description": "Um caderno para registrar pensamentos e aprendizados.",
@@ -842,7 +842,7 @@
       "category": "energia",
       "location": "estudos",
       "position": [
-        3.5,
+        3,
         0.79,
         -6.15
       ],

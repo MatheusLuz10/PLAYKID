@@ -1,22 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useRef, useState } from 'react';
 import { ImmersiveFrame } from '../../components/ui/ImmersiveFrame';
 import { Joystick } from './Joystick';
-import { PlaceScene, ROOMS, type FocusTarget, type Hotspot, type RoomCode, type SceneObject } from './scene/PlaceScene';
+import { PlaceScene, ROOMS, type Hotspot, type RoomCode, type SceneObject } from './scene/PlaceScene';
 import { hasWebGL, prefersReducedMotion } from './scene/webgl';
 import './place.css';
 
 interface PlaceViewerProps {
   objects: SceneObject[];
   onSelect: (code: string) => void;
-  /** Abrir já andando dentro da casa (tocou na casa do mapa). */
-  startWalking?: boolean;
-  /** "Sair da casa" na tela cheia: volta para o mapa do mundo. */
+  /** "Sair da casa": volta para o mapa do mundo. */
   onLeave: (fullscreen: boolean) => void;
 }
 
-const FOCUS: { id: FocusTarget; label: string }[] = [
-  { id: 'geral', label: '🏡 Visão geral' },
-  { id: 'jardim', label: '🌳 Jardim' },
+const ROOM_BUTTONS: { id: RoomCode; label: string }[] = [
   { id: 'sala', label: '🛋️ Sala' },
   { id: 'quarto', label: '🛏️ Quarto' },
   { id: 'cozinha', label: '🍳 Cozinha' },
@@ -32,18 +28,15 @@ const ROOM_PLACE: Record<RoomCode, string> = {
 };
 
 /**
- * Cena 3D + controles. Sem WebGL (ou se a cena falhar), mostra um aviso — a
- * lista de objetos da página continua funcionando como alternativa.
+ * A casa por dentro, em tela cheia: a pessoa entra pela porta da sala e anda pelos
+ * cômodos (joystick, teclado ou arrastando para olhar). Não há vista de fora: a casa
+ * e o quintal, por fora, estão no Meu Mundo. "Sair da casa" volta para ele.
  */
-export function PlaceViewer({ objects, onSelect, startWalking = false, onLeave }: PlaceViewerProps) {
+export function PlaceViewer({ objects, onSelect, onLeave }: PlaceViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<PlaceScene | null>(null);
   const [supported] = useState(hasWebGL);
   const [failed, setFailed] = useState(false);
-  const [interior, setInterior] = useState(false);
-  const [walking, setWalking] = useState(false);
-  // Fora da casa a cena é só prévia (a página rola); vindo do mundo, já abre em tela cheia.
-  const [inside, setInside] = useState(startWalking);
   const [room, setRoom] = useState<RoomCode | null>(null);
   const [spots, setSpots] = useState<Hotspot[]>([]);
   const selectRef = useRef(onSelect);
@@ -55,13 +48,11 @@ export function PlaceViewer({ objects, onSelect, startWalking = false, onLeave }
       sceneRef.current = new PlaceScene(containerRef.current, {
         reducedMotion: prefersReducedMotion(),
         onSelect: (code) => selectRef.current(code),
-        onHotspots: setSpots,
+        // baixa prioridade: os botões sobre os objetos mudam a cada quadro e não podem atrasar a troca de página
+        onHotspots: (s) => startTransition(() => setSpots(s)),
         onRoom: setRoom,
       });
-      if (startWalking) {
-        sceneRef.current.setWalk(true);
-        setWalking(true);
-      }
+      sceneRef.current.setWalk(true);
     } catch (err) {
       console.warn('[ECO QUEST] cena 3D indisponível', err);
       setFailed(true);
@@ -70,7 +61,7 @@ export function PlaceViewer({ objects, onSelect, startWalking = false, onLeave }
       sceneRef.current?.dispose();
       sceneRef.current = null;
     };
-  }, [supported, startWalking]);
+  }, [supported]);
 
   useEffect(() => {
     sceneRef.current?.setObjects(objects);
@@ -83,55 +74,33 @@ export function PlaceViewer({ objects, onSelect, startWalking = false, onLeave }
           🏡
         </span>
         <p>
-          <strong>Seu aparelho não conseguiu abrir a visualização em 3D.</strong>
+          <strong>Seu aparelho não conseguiu abrir a casa em 3D.</strong>
         </p>
-        <p className="small muted">Tudo o que existe na sua casa está na lista logo abaixo.</p>
+        <button type="button" className="btn btn--primary" onClick={() => onLeave(false)}>
+          🚪 Voltar para o mundo
+        </button>
       </div>
     );
   }
 
-  const toggleInterior = () => {
-    const next = !interior;
-    setInterior(next);
-    sceneRef.current?.setInterior(next);
-  };
-  const toggleWalk = () => {
-    const next = !walking;
-    setWalking(next);
-    if (next) setInterior(false);
-    sceneRef.current?.setWalk(next);
-    if (!next) setRoom(null);
-  };
-  const focus = (f: FocusTarget) => {
-    sceneRef.current?.focus(f);
-    if (walking && (f === 'geral' || f === 'jardim')) {
-      setWalking(false);
-      setRoom(null);
-    }
-    if (!walking && f !== 'geral' && f !== 'jardim') setInterior(true);
-  };
-
-  // "Sair da casa" na tela cheia: volta direto para o mapa do mundo (visão geral)
-  const close = () => onLeave(true);
-
   return (
     <div className="place-viewer">
       <ImmersiveFrame
-        active={inside}
-        onEnter={() => setInside(true)}
-        onExit={close}
+        active
+        onEnter={() => {}}
+        onExit={() => onLeave(true)}
         enterLabel="🏡 Entrar na casa"
         exitLabel="Sair da casa"
         className="place-frame"
       >
         <div className="place-toolbar" role="toolbar" aria-label="Navegar pela casa">
-          {FOCUS.map((f) => (
-            <button key={f.id} type="button" className="filter-chip" onClick={() => focus(f.id)}>
-              {f.label}
+          {ROOM_BUTTONS.map((r) => (
+            <button key={r.id} type="button" className="filter-chip" aria-pressed={room === r.id} onClick={() => sceneRef.current?.walkTo(r.id)}>
+              {r.label}
             </button>
           ))}
         </div>
-        <div className={walking ? 'place-stage is-walking' : 'place-stage'} data-walking={walking ? 'on' : 'off'}>
+        <div className="place-stage is-walking" data-walking="on">
           <div ref={containerRef} className="place-stage__canvas" />
           {/* Botões invisíveis sobre cada objeto: toque fácil e navegação por teclado */}
           <div className="place-hotspots">
@@ -149,44 +118,18 @@ export function PlaceViewer({ objects, onSelect, startWalking = false, onLeave }
               ) : null,
             )}
           </div>
-          {walking && room && (
+          {room && (
             <p className="place-room" role="status" aria-live="polite">
               📍 Você está {ROOM_PLACE[room]}
             </p>
           )}
-          {walking && <Joystick onChange={(input) => sceneRef.current?.setWalkInput(input)} />}
-          <div className="place-controls">
-            <button type="button" className="place-control place-control--walk" onClick={toggleWalk} aria-pressed={walking}>
-              {walking ? '🔭 Ver de fora' : '🚶 Andar pela casa'}
-            </button>
-            {!walking && (
-              <button type="button" className="place-control" onClick={toggleInterior} aria-pressed={interior}>
-                {interior ? '🏠 Ver telhado' : '🔍 Ver por dentro'}
-              </button>
-            )}
-            {!walking && (
-              <span className="place-controls__group">
-                <button type="button" className="place-control place-control--icon" onClick={() => sceneRef.current?.rotate(-1)} aria-label="Girar para a esquerda">
-                  ⟲
-                </button>
-                <button type="button" className="place-control place-control--icon" onClick={() => sceneRef.current?.rotate(1)} aria-label="Girar para a direita">
-                  ⟳
-                </button>
-                <button type="button" className="place-control place-control--icon" onClick={() => sceneRef.current?.zoom(1)} aria-label="Aproximar">
-                  ＋
-                </button>
-                <button type="button" className="place-control place-control--icon" onClick={() => sceneRef.current?.zoom(-1)} aria-label="Afastar">
-                  －
-                </button>
-              </span>
-            )}
-          </div>
+          <Joystick onChange={(input) => sceneRef.current?.setWalkInput(input)} />
         </div>
       </ImmersiveFrame>
       <p className="small muted place-help">
-        {walking
-          ? 'Arraste a bolinha do controle para andar: para cima anda, para os lados vira (no teclado: setas ou W A S D). Arraste a cena para olhar em volta. Passe pelas portas para ir de um cômodo a outro e toque em um objeto para ver a origem.'
-          : 'Toque em "Entrar na casa" para explorar em tela cheia. Lá dentro: arraste para girar · pinça ou roda do mouse para aproximar · toque em um objeto para ver a origem · "Andar pela casa" para passear pelos cômodos.'}
+        Arraste a bolinha do controle para andar: para cima anda, para os lados vira (no teclado: setas ou W A S D).
+        Arraste a cena para olhar em volta, passe pelas portas para ir de um cômodo a outro e toque em um objeto para
+        ver a origem.
       </p>
     </div>
   );

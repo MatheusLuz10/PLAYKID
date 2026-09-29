@@ -11,8 +11,10 @@
  */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { PLACE_ITEMS } from '../../place/catalog';
 import { buildHouse, HOUSE } from '../../place/scene/house';
-import { AREA_CODES, HOME, ITEM_OFFSETS, OVERVIEW, OVERVIEW_PORTRAIT, slotToWorld, ZONES, zoneView, type AreaCode } from './layout';
+import { buildObject } from '../../place/scene/objects';
+import { AREA_CODES, HOME, HOME_YARD, HOME_YARD_SCALE, ITEM_OFFSETS, OVERVIEW, OVERVIEW_PORTRAIT, slotToWorld, ZONES, zoneView, type AreaCode } from './layout';
 import { animateModel } from './models/animate';
 import { waterClock, waterMaterial } from './models/common';
 import { buildWorldModel, lockedSlot } from './models';
@@ -31,7 +33,8 @@ import {
   type Wind,
 } from './terrain';
 
-export type FocusTarget = 'overview' | AreaCode;
+/** 'home' = a casa e o quintal dela, na frente do mundo. */
+export type FocusTarget = 'overview' | 'home' | AreaCode;
 
 export interface WorldItemSpec {
   id: string;
@@ -59,6 +62,8 @@ interface Options {
   onPins: (items: ScreenPin[], areas: ScreenPin[], home: ScreenPin) => void;
   /** Tocou na casa. */
   onHome: () => void;
+  /** Tocou num objeto do quintal da casa (código do objeto). */
+  onYard?: (code: string) => void;
 }
 
 interface ItemEntry {
@@ -83,6 +88,8 @@ export class WorldScene3D {
   private grass: THREE.InstancedMesh | null = null;
   private clouds: THREE.Group;
   private home: THREE.Group;
+  /** Quintal da casa (árvores, bichos, horta, água, banco), no próprio mundo. */
+  private yard: THREE.Group;
   private envTarget: THREE.WebGLRenderTarget | null = null;
   /** Os shaders são preparados em segundo plano; só então a cena é desenhada. */
   private ready = false;
@@ -156,6 +163,8 @@ export class WorldScene3D {
     this.scene.add(this.clouds);
     this.home = buildHome();
     this.scene.add(this.home);
+    this.yard = buildYard();
+    this.scene.add(this.yard);
 
     // Câmera
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.3, 700);
@@ -282,7 +291,14 @@ export class WorldScene3D {
   focusOn(target: FocusTarget, animate = true) {
     this.focusTarget = target;
     const portrait = this.aspect < 0.8;
-    const view = target === 'overview' ? (portrait ? OVERVIEW_PORTRAIT : OVERVIEW) : zoneView(target);
+    const view =
+      target === 'overview'
+        ? portrait
+          ? OVERVIEW_PORTRAIT
+          : OVERVIEW
+        : target === 'home'
+          ? { pos: [HOME.x + 1.5, 10, HOME.z + 13] as [number, number, number], target: [HOME.x + 0.5, 0.6, HOME.z + 1.8] as [number, number, number] }
+          : zoneView(target);
     const to = new THREE.Vector3(...view.pos);
     const tTo = new THREE.Vector3(...view.target);
     // tela estreita (celular em pé, tela cheia): afasta a câmera para caber a área inteira
@@ -321,6 +337,7 @@ export class WorldScene3D {
     disposeTree(this.scene);
     this.envTarget?.dispose();
     this.renderer.dispose();
+    this.renderer.forceContextLoss(); // devolve o contexto WebGL já (celulares aceitam poucos)
     canvas.remove();
   }
 
@@ -350,10 +367,11 @@ export class WorldScene3D {
     this.pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
     this.raycaster.setFromCamera(this.pointer, this.camera);
     const groups = [...this.items.values()].map((i) => i.group);
-    const hit = this.raycaster.intersectObjects([...groups, this.home], true)[0];
+    const hit = this.raycaster.intersectObjects([...groups, this.home, this.yard], true)[0];
     let node: THREE.Object3D | null = hit?.object ?? null;
-    while (node && !node.userData.itemId && !node.userData.home) node = node.parent;
+    while (node && !node.userData.itemId && !node.userData.home && !node.userData.placeCode) node = node.parent;
     if (node?.userData.home) this.opts.onHome();
+    else if (node?.userData.placeCode) this.opts.onYard?.(node.userData.placeCode as string);
     else if (node) this.opts.onSelect(node.userData.itemId as string);
   };
 
@@ -406,6 +424,7 @@ export class WorldScene3D {
       }
       animateModel(group, t, phase);
     }
+    this.yard.children.forEach((g, i) => animateModel(g as THREE.Group, t, 40 + i * 1.3));
     for (const cloud of this.clouds.children) {
       cloud.position.x += cloud.userData.speed * dt;
       if (cloud.position.x > 130) cloud.position.x = -130;
@@ -497,6 +516,28 @@ function buildHome(): THREE.Group {
   wrapper.userData.home = true;
   wrapper.name = 'minha-casa';
   return wrapper;
+}
+
+/** Quintal da casa no mundo: os mesmos modelos da casa, em escala de miniatura, ao lado dela. */
+function buildYard(): THREE.Group {
+  const yard = new THREE.Group();
+  for (const def of PLACE_ITEMS) {
+    const spot = HOME_YARD[def.code];
+    if (!spot) continue;
+    const g = buildObject(def.model);
+    g.scale.setScalar(def.scale * HOME_YARD_SCALE);
+    g.rotation.y = ((spot.rot ?? def.rotation) * Math.PI) / 180;
+    g.position.set(spot.x, heightAt(spot.x, spot.z) + (spot.y ?? 0), spot.z);
+    g.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (m.isMesh) m.castShadow = m.receiveShadow = true;
+    });
+    g.name = `quintal-${def.code}`;
+    g.userData.placeCode = def.code;
+    yard.add(g);
+  }
+  yard.name = 'quintal-da-casa';
+  return yard;
 }
 
 /** Libera geometrias e materiais (os compartilhados são liberados de novo sem problema). */

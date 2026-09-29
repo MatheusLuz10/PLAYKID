@@ -77,7 +77,9 @@ async function run(label, viewport) {
   await page.waitForTimeout(1200);
   const pixels = await page.locator('.world3d-stage').screenshot({ timeout: 90000 });
   if (new Set(pixels.subarray(200, 60000)).size < 60) throw new Error('cena 3D vazia');
-  const itemsBtn = page.getByRole('button', { name: /Ver detalhes$/ });
+  // (a lista também tem o "Quintal da casa": aqui contam só os itens das 5 áreas do mundo)
+  const worldAreas = page.locator('.world3d-area').filter({ hasNot: page.locator('#world3d-area-yard') });
+  const itemsBtn = worldAreas.getByRole('button', { name: /Ver detalhes$/ });
   const slots = page.getByRole('button', { name: /^Espaço bloqueado/ });
   if ((await itemsBtn.count()) !== 1 || (await slots.count()) !== C.worldItems - 1) throw new Error(`mundo inicial: ${await itemsBtn.count()} itens, ${await slots.count()} bloqueados`);
   log(`Testes 1-3 · "Meu Primeiro Ecossistema": estágio 1 (Terreno), 0%, 5 áreas, 1 planta e ${C.worldItems - 1} espaços bloqueados`);
@@ -185,7 +187,7 @@ async function run(label, viewport) {
   await tree.waitFor();
   if (await page.getByText('Seu mundo cresceu!').count()) throw new Error('mensagem repetida após atualizar');
   if (await page.locator('.world3d-item.is-new').count()) throw new Error('itens ainda marcados como novos');
-  if ((await page.getByRole('button', { name: /Ver detalhes$/ }).count()) !== 5) throw new Error('quantidade de itens mudou');
+  if ((await worldAreas.getByRole('button', { name: /Ver detalhes$/ }).count()) !== 5) throw new Error('quantidade de itens mudou');
   log('Teste 7 · atualizar a página mantém os 5 itens, sem repetir a novidade');
 
   // Teclado: foco chega ao item e Enter abre

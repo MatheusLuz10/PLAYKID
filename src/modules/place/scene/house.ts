@@ -89,7 +89,8 @@ const PATH_STONES: [number, number][] = [
   [-2.4, 12.4],
 ];
 
-export function buildTerrain(): THREE.Group {
+/** yard = false: só o gramado em volta da casa (o quintal fica no Meu Mundo). */
+export function buildTerrain(yard = true): THREE.Group {
   const g = new THREE.Group();
   const size = 90;
   const seg = 90;
@@ -127,6 +128,8 @@ export function buildTerrain(): THREE.Group {
     g.add(s);
   });
 
+  if (!yard) return g;
+
   // cerca de madeira em volta do terreno, com portão aberto na trilha
   const wood = new THREE.MeshStandardMaterial({ map: woodGrain(), color: 0xc4a27c, roughness: 0.8 });
   const n = 48;
@@ -160,13 +163,13 @@ export function buildTerrain(): THREE.Group {
 }
 
 /** Grama ao vento: fora da casa, da trilha e dos canteiros. */
-export function buildPlaceGrass(count: number, wind: Wind): THREE.InstancedMesh {
+export function buildPlaceGrass(count: number, wind: Wind, yard = true): THREE.InstancedMesh {
   const W = HOUSE.width / 2 + 0.7;
   const inHouse = (x: number, z: number) => Math.abs(x) < W && z > -8.8 && z < 0.8;
   const inBed = (x: number, z: number) =>
-    [GARDEN.flores, GARDEN.horta].some((b) => Math.abs(x - b.x) < b.w / 2 + 0.2 && Math.abs(z - b.z) < b.d / 2 + 0.2);
+    yard && [GARDEN.flores, GARDEN.horta].some((b) => Math.abs(x - b.x) < b.w / 2 + 0.2 && Math.abs(z - b.z) < b.d / 2 + 0.2);
   const onPath = (x: number, z: number) => Math.abs(x + 2.45) < 0.75 && z > 0 && z < 13;
-  const inPond = (x: number, z: number) => Math.hypot(x - 7.4, z - 3.2) < 2.6 || Math.hypot(x - 9.3, z - 5.8) < 1.1;
+  const inPond = (x: number, z: number) => yard && Math.hypot(x - 7.4, z - 3.2) < 2.6 || Math.hypot(x - 9.3, z - 5.8) < 1.1;
   return buildGrassField(
     count,
     (rand) => {

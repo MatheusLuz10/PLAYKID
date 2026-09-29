@@ -39,8 +39,11 @@ async function run(browser, label, viewport) {
   await criarConta(page, bia);
   await profile('Bia', bia);
   await page.goto(BASE + '/mundo?casa=1');
-  await see(`Objetos da casa (${C.placeItems}/${C.placeItems})`);
-  log(`casa completa: conta nova já tem os ${C.placeItems} objetos da casa e do quintal`);
+  await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
+  await page.waitForTimeout(800);
+  if ((await page.locator('.place-stage .place-hotspot').count()) < 1) throw new Error('casa vazia');
+  await page.getByRole('button', { name: '✕ Sair da casa' }).click();
+  log('casa completa: conta nova já entra numa casa mobiliada');
   await page.goto(BASE + '/mundo');
   await see(`Seu @usuário para os amigos visitarem você: @${bia}`);
   log('Meu Mundo mostra o próprio @usuário para os amigos visitarem');

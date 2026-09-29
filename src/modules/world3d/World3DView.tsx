@@ -1,9 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { startTransition, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ImmersiveFrame } from '../../components/ui/ImmersiveFrame';
 import { buildAreas } from '../../logic/world';
 import type { ContentCatalog, PlayerState, WorldItem } from '../../models';
 import { prefersReducedMotion } from '../place/scene/webgl';
-import { AREA_CODES, type AreaCode } from './scene/layout';
+import { PLACE_ITEMS } from '../place/catalog';
+import { AREA_CODES, HOME_YARD, type AreaCode } from './scene/layout';
+
+/** Objetos do quintal da casa, que ficam no próprio mundo (lista acessível). */
+const YARD_ITEMS = PLACE_ITEMS.filter((d) => d.code in HOME_YARD);
 import { WorldScene3D, type FocusTarget, type ScreenPin, type WorldItemSpec } from './scene/WorldScene3D';
 import './world3d.css';
 
@@ -13,8 +17,10 @@ interface World3DViewProps {
   /** Itens que acabaram de surgir (crescem na cena). */
   highlightIds?: string[];
   onSelect: (item: WorldItem) => void;
-  /** Tocou na casa (ou no botão "Minha casa"): entrar nela. */
+  /** Tocou na casa (ou no botão "Entrar na casa"): entrar nela. */
   onEnterHome: () => void;
+  /** Tocou num objeto do quintal da casa (no próprio mundo). */
+  onSelectYard?: (code: string) => void;
   /** Nome da casa no mapa (visitando outro jogador: "Casa de Ana"). */
   homeLabel?: string;
   /** Abrir já em tela cheia (voltando da casa pelo "Sair da casa"). */
@@ -35,7 +41,8 @@ export default function World3DView({
   highlightIds = [],
   onSelect,
   onEnterHome,
-  homeLabel = 'Minha casa',
+  onSelectYard,
+  homeLabel = 'Casa',
   startInside = false,
   onFail,
 }: World3DViewProps) {
@@ -77,25 +84,38 @@ export default function World3DView({
   selectRef.current = selectById;
   const homeRef = useRef(onEnterHome);
   homeRef.current = onEnterHome;
+  const yardRef = useRef(onSelectYard);
+  yardRef.current = onSelectYard;
+
+  const specsRef = useRef(specs);
+  specsRef.current = specs;
 
   useEffect(() => {
-    if (!holder.current) return;
-    let scene: WorldScene3D;
-    try {
-      scene = new WorldScene3D(holder.current, {
-        reducedMotion,
-        lowPower: window.innerWidth < 700,
-        onSelect: (id) => selectRef.current(id),
-        onPins: (items, areaPins, home) => setPins({ items, areas: areaPins, home }),
-        onHome: () => homeRef.current(),
-      });
-    } catch {
-      onFail();
-      return;
-    }
-    sceneRef.current = scene;
+    const el = holder.current;
+    if (!el) return;
+    let scene = null as WorldScene3D | null;
+    // a cena é montada logo depois que a página aparece: a troca de página não espera o 3D
+    const timer = window.setTimeout(() => {
+      try {
+        scene = new WorldScene3D(el, {
+          reducedMotion,
+          lowPower: window.innerWidth < 700,
+          onSelect: (id) => selectRef.current(id),
+          // baixa prioridade: as etiquetas mudam a cada quadro e não podem atrasar a troca de página
+          onPins: (items, areaPins, home) => startTransition(() => setPins({ items, areas: areaPins, home })),
+          onHome: () => homeRef.current(),
+          onYard: (code) => yardRef.current?.(code),
+        });
+      } catch {
+        onFail();
+        return;
+      }
+      sceneRef.current = scene;
+      scene.setItems(specsRef.current);
+    }, 60);
     return () => {
-      scene.dispose();
+      window.clearTimeout(timer);
+      scene?.dispose();
       sceneRef.current = null;
     };
   }, [reducedMotion, onFail]);
@@ -149,8 +169,11 @@ export default function World3DView({
               </button>
             );
           })}
-          <button type="button" className="world3d-toolbar__home" onClick={onEnterHome}>
-            🏡 {homeLabel === 'Minha casa' ? 'Entrar na minha casa' : `Entrar: ${homeLabel}`}
+          <button type="button" aria-pressed={focus === 'home'} onClick={() => go('home')}>
+          🏡 Casa e quintal
+        </button>
+        <button type="button" className="world3d-toolbar__home" onClick={onEnterHome}>
+            🚪 {homeLabel === 'Casa' ? 'Entrar na casa' : `Entrar: ${homeLabel}`}
           </button>
         </div>
 
@@ -268,6 +291,29 @@ export default function World3DView({
             </ul>
           </section>
         ))}
+        {onSelectYard && (
+          <section className="world3d-area" aria-labelledby="world3d-area-yard">
+            <h3 id="world3d-area-yard" className="world3d-area__title">
+              <span aria-hidden>🏡</span> Quintal da casa
+            </h3>
+            <span className="world3d-area__count">{YARD_ITEMS.length}</span>
+            <ul className="world3d-list">
+              {YARD_ITEMS.map((d) => (
+                <li key={d.code}>
+                  <button
+                    type="button"
+                    className="world3d-item"
+                    onClick={() => onSelectYard(d.code)}
+                    onFocus={() => focus !== 'home' && go('home')}
+                    aria-label={`${d.name}. Ver detalhes`}
+                  >
+                    <span aria-hidden>{d.icon}</span> {d.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </div>
   );

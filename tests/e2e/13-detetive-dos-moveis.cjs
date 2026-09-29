@@ -95,15 +95,13 @@ async function run(browser, label, viewport) {
   log('desafio com 5 etapas (sem foto, sem acompanhamento) concluído: +35 XP');
 
   // Recompensa na casa: a cadeirinha de madeira aparece na sala
-  await page.goto(BASE + '/meu-lugar');
-  await see('Cadeirinha de madeira');
-  await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
+  await page.goto(BASE + '/mundo?casa=1');
+  await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
+  await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: '🛋️ Sala' }).click();
+  await page.waitForTimeout(1000);
   await page.locator('.place-stage').getByRole('button', { name: 'Cadeirinha de madeira: ver detalhes' }).click({ timeout: 15000 });
   await page.getByRole('dialog').getByText('Desbloqueado através do desafio “Detetive dos móveis”.').waitFor();
   await page.keyboard.press('Escape');
-  await page.getByRole('button', { name: '🚶 Andar pela casa' }).click();
-  await page.locator('.place-room', { hasText: 'Sala' }).waitFor();
-  await page.waitForTimeout(1200);
   await page.screenshot({ path: `${OUT}/${label}-cadeirinha.png`, clip: await page.locator('.place-stage').boundingBox() });
   log('recompensa: "Cadeirinha de madeira" na sala da casa, com a origem do desafio');
 

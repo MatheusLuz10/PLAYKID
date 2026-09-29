@@ -5,6 +5,10 @@ import { ProgressBar } from '../components/ui/ProgressBar';
 import { LoadingMessage } from '../components/ui/StateMessage';
 import { WorldItemDialog } from '../components/world/WorldItemDialog';
 import { WorldMap } from '../components/world/WorldMap';
+import { PLACE_ITEMS } from '../modules/place/catalog';
+import { PlaceItemDialog } from '../modules/place/PlaceItemDialog';
+import type { OwnedPlaceItem } from '../modules/place/placeLogic';
+import { backend } from '../services';
 import { hasWebGL } from '../modules/place/scene/webgl';
 import { serverNow } from '../logic/challenges';
 import {
@@ -25,19 +29,16 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 const World3DView = lazy(() => import('../modules/world3d/World3DView'));
 const PlacePage = lazy(() => import('../modules/place/PlacePage').then((m) => ({ default: m.PlacePage })));
 
-/** Meu Mundo: o mapa do mundo ou, ao entrar nela, a casa (?casa=1, ou ?casa=andar já andando). */
+/** Meu Mundo: o mapa do mundo ou, ao entrar nela, a casa por dentro (?casa=1). */
 export function WorldPage() {
   const [params, setParams] = useSearchParams();
   const house = params.get('casa');
   // Saindo da casa, o mapa volta na visão geral (sem voar de novo até os itens novos).
   const [cameBack, setCameBack] = useState(false);
-  const enterHouse = useCallback(
-    (walk: boolean) => {
-      window.scrollTo(0, 0);
-      setParams({ casa: walk ? 'andar' : '1' });
-    },
-    [setParams],
-  );
+  const enterHouse = useCallback(() => {
+    window.scrollTo(0, 0);
+    setParams({ casa: '1' });
+  }, [setParams]);
   const leaveHouse = useCallback(
     (fullscreen: boolean) => {
       setCameBack(true);
@@ -49,11 +50,30 @@ export function WorldPage() {
   if (house) {
     return (
       <Suspense fallback={<LoadingMessage text="Abrindo a sua casa…" />}>
-        <PlacePage key={house} walkIn={house === 'andar'} onLeave={leaveHouse} />
+        <PlacePage onLeave={leaveHouse} />
       </Suspense>
     );
   }
   return <WorldMapPage onEnterHouse={enterHouse} fullscreen={params.get('tela') === 'cheia'} cameBack={cameBack} />;
+}
+
+/** Detalhes de um objeto do quintal (árvores, bichos, horta, água, banco), tocado no mapa do mundo. */
+function YardItemDialog({ code, onClose }: { code: string; onClose: () => void }) {
+  const { content } = useGame();
+  const [owned, setOwned] = useState<OwnedPlaceItem | null | undefined>(undefined);
+  const def = PLACE_ITEMS.find((d) => d.code === code);
+  useEffect(() => {
+    let alive = true;
+    backend
+      .loadPlace()
+      .then((s) => alive && setOwned(s.items.find((i) => i.itemId === def?.id) ?? null))
+      .catch(() => alive && setOwned(null));
+    return () => {
+      alive = false;
+    };
+  }, [def?.id]);
+  if (!def || owned === undefined) return null;
+  return <PlaceItemDialog def={def} owned={owned} content={content} onClose={onClose} />;
 }
 
 /** 👀 Visitar o mundo e a casa de um amigo: só pelo @usuário (não existe lista pública). */
@@ -101,7 +121,7 @@ function VisitFriendCard() {
   );
 }
 
-function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (walk: boolean) => void; fullscreen: boolean; cameBack: boolean }) {
+function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: () => void; fullscreen: boolean; cameBack: boolean }) {
   const { content, player, actions } = useGame();
   const [selected, setSelected] = useState<WorldItem | null>(null);
   const closeDialog = useCallback(() => setSelected(null), []);
@@ -109,7 +129,9 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (w
   const [use3d, setUse3d] = useState(hasWebGL);
   const fallbackTo2d = useCallback(() => setUse3d(false), []);
   // Tocar na casa do mundo: entra nela, já andando pelos cômodos.
-  const enterHome = useCallback(() => onEnterHouse(true), [onEnterHouse]);
+  const enterHome = useCallback(() => onEnterHouse(), [onEnterHouse]);
+  // Objeto do quintal (no mundo) tocado: mostra origem, data e o diário, como na casa
+  const [yardCode, setYardCode] = useState<string | null>(null);
 
   // Itens que o jogador ainda não viu surgir: animam agora e fecham o ciclo (EVOLUIR).
   const [newlyRevealed] = useState(() =>
@@ -198,17 +220,6 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (w
         </div>
       )}
 
-      <button type="button" className="card library-link" onClick={() => onEnterHouse(false)}>
-        <span className="big-icon big-icon--sm" aria-hidden>
-          🏡
-        </span>
-        <span>
-          <strong>Minha casa</strong>
-          <span className="block muted small">Entre na sua casa e ande pelos cômodos: ela cresce com o que você aprende e faz</span>
-        </span>
-        <span aria-hidden>→</span>
-      </button>
-
       <VisitFriendCard />
 
       {use3d ? (
@@ -220,6 +231,7 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (w
             startInside={fullscreen}
             onSelect={setSelected}
             onEnterHome={enterHome}
+            onSelectYard={setYardCode}
             onFail={fallbackTo2d}
           />
         </Suspense>
@@ -354,6 +366,7 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: (w
       {selected && (
         <WorldItemDialog content={content} item={selected} owned={owned.get(selected.id)} onClose={closeDialog} />
       )}
+      {yardCode && <YardItemDialog code={yardCode} onClose={() => setYardCode(null)} />}
     </div>
   );
 }

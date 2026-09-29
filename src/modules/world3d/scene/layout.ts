@@ -30,6 +30,27 @@ export const AREA_CODES = Object.keys(ZONES) as AreaCode[];
  */
 export const HOME = { x: -8, z: 14, scale: 0.42, radius: 3.2 };
 
+/**
+ * Quintal da casa, no próprio mundo (não existe um quintal separado na casa):
+ * árvores e passarinho à esquerda, flores e horta na frente-esquerda, a vaca,
+ * o lago, a fonte e o banco à direita — fora da trilha da porta.
+ * y = altura acima do chão (bichos que voam); rot em graus.
+ */
+export const HOME_YARD_SCALE = 0.55;
+export const HOME_YARD: Record<string, { x: number; z: number; y?: number; rot?: number; r: number }> = {
+  my_tree: { x: -12.0, z: 12.6, r: 1.1 },
+  big_tree: { x: -13.9, z: 14.7, rot: 30, r: 1.5 },
+  bird: { x: -12.3, z: 12.9, y: 1.9, r: 0 },
+  flower: { x: -11.6, z: 16.9, r: 0.9 },
+  bee: { x: -11.4, z: 17.1, y: 0.66, r: 0 },
+  butterfly: { x: -12.7, z: 17.9, y: 0.72, r: 0 },
+  vegetable_garden: { x: -13.8, z: 17.4, r: 1.2 },
+  cow: { x: -3.9, z: 12.8, rot: 200, r: 1.0 },
+  pond: { x: -3.6, z: 15.3, r: 1.4 },
+  fountain: { x: -1.5, z: 14.2, r: 0.8 },
+  community_bench: { x: -5.4, z: 18.5, rot: 180, r: 0.8 },
+};
+
 /** Retângulo que contém todas as áreas (fora dele o terreno vira colina). */
 export const WORLD_BOUNDS = { minX: -43, maxX: 43, minZ: -35, maxZ: 12 };
 

@@ -306,9 +306,6 @@ export function DashboardPage() {
             </span>
           ))}
         </Link>
-        <Link to="/mundo?casa=1" className="text-link">
-          🏡 Visitar sua casa em 3D →
-        </Link>
       </section>
     </div>
   );

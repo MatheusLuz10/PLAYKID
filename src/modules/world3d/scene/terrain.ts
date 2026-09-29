@@ -4,7 +4,7 @@
  * nuvens. Tudo gerado por código (nenhum arquivo externo).
  */
 import * as THREE from 'three';
-import { HOME, WORLD_BOUNDS, ZONES } from './layout';
+import { HOME, HOME_YARD, WORLD_BOUNDS, ZONES } from './layout';
 
 // ---------- ruído simples (determinístico) ----------
 
@@ -217,6 +217,7 @@ export function staticAvoidance(): Circle[] {
     for (let i = 0; i < points.length; i += 3) out.push({ x: points[i].x, z: points[i].z, r: 1.25 });
   }
   out.push({ x: HOME.x, z: HOME.z, r: HOME.radius });
+  for (const spot of Object.values(HOME_YARD)) if (spot.r > 0) out.push({ x: spot.x, z: spot.z, r: spot.r });
   return out;
 }
 

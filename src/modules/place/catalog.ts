@@ -86,14 +86,19 @@ export const PLACE_CATEGORY_LABELS: Record<PlaceCategory, { icon: string; label:
   comunidade: { icon: '🤝', label: 'Comunidade' },
 };
 
+/** Objetos de fora da casa (árvores, bichos, horta, água, banco): ficam no quintal, dentro do Meu Mundo. */
+export function isOutdoorItem(def: Pick<PlaceItemDef, 'location'>): boolean {
+  return def.location === 'horta' || def.location.startsWith('jardim');
+}
+
 export const PLACE_LOCATION_LABELS: Record<string, string> = {
   sala: 'Sala',
   quarto: 'Quarto',
   cozinha: 'Cozinha',
   estudos: 'Área de estudos',
-  'jardim-arvores': 'Jardim · árvores',
-  'jardim-flores': 'Jardim · flores',
-  horta: 'Horta',
-  'jardim-agua': 'Jardim · água',
-  'jardim-biodiversidade': 'Jardim · biodiversidade',
+  'jardim-arvores': 'Quintal no Meu Mundo · árvores',
+  'jardim-flores': 'Quintal no Meu Mundo · flores',
+  horta: 'Quintal no Meu Mundo · horta',
+  'jardim-agua': 'Quintal no Meu Mundo · água',
+  'jardim-biodiversidade': 'Quintal no Meu Mundo · biodiversidade',
 };

@@ -3,7 +3,9 @@ const BASE = process.env.BASE_URL || 'http://localhost:4318';
 const PHOTO = __dirname + '/fixtures/foto.png';
 const TREE = '/missao/plante-uma-arvore';
 const C = require('./conteudo.cjs');
-const LAST_STAGE = require('../../content/place.json').stages.at(-1).name;
+const PLACE = require('../../content/place.json');
+// dentro da cena da casa ficam só os objetos da casa; o quintal fica no Meu Mundo
+const INDOOR = PLACE.items.filter((i) => ['sala', 'quarto', 'cozinha', 'estudos'].includes(i.location)).length;
 
 const editDemo = (page, src) =>
   page.evaluate((code) => {
@@ -16,17 +18,31 @@ const editDemo = (page, src) =>
 module.exports = async function objetos(page, label, log) {
   const OUT = `${__dirname}/.saida/09-meu-lugar`;
   const see = (t) => page.getByText(t, { exact: false }).locator('visible=true').first().waitFor({ timeout: 8000 });
-  const spots = () => page.locator('.place-hotspot');
+  const enterHouse = async () => {
+    await page.goto(BASE + '/mundo?casa=1');
+    await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
+  };
+  // quintal: fica no próprio mundo; a lista acessível do mapa abre os detalhes
+  const yardDetails = async (name) => {
+    await page.goto(BASE + '/mundo');
+    await page.getByRole('button', { name: `${name}. Ver detalhes` }).click();
+    return page.getByRole('dialog', { name: new RegExp(name) });
+  };
 
-  // Usuário novo: casa completa (todos os objetos da casa e do quintal)
-  await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: '🏡 Visão geral' }).click();
-  await page.waitForTimeout(900);
-  const initial = await spots().count();
-  if (initial !== C.placeItems) throw new Error(`casa completa deveria ter ${C.placeItems} objetos: ` + initial);
-  await see(LAST_STAGE);
-  await see(`Objetos da casa (${C.placeItems}/${C.placeItems})`);
-  if (await page.getByText('Sua casa ganhou').count()) throw new Error('novidade para a casa completa');
-  log(label, `usuário novo: casa completa (${C.placeItems} objetos, casa e quintal), estágio "${LAST_STAGE}"`);
+  // Usuário novo: casa completa — dentro da casa, os objetos da casa
+  await enterHouse();
+  const houseBar = page.getByRole('toolbar', { name: 'Navegar pela casa' });
+  // andando, só aparecem os objetos por perto e à vista: conta os diferentes vistos em cada cômodo
+  const names = new Set();
+  for (const room of ['🛋️ Sala', '🛏️ Quarto', '🍳 Cozinha', '📚 Estudos']) {
+    await houseBar.getByRole('button', { name: room }).click();
+    await page.waitForTimeout(700);
+    for (const n of await page.locator('.place-stage .place-hotspot').evaluateAll((els) => els.map((e) => e.title))) names.add(n);
+  }
+  const seen = names.size;
+  if (seen < 8) throw new Error(`poucos objetos vistos dentro da casa: ${seen} de ${INDOOR}`);
+  if (await page.locator('.place-stage').getByRole('button', { name: 'Minha Árvore: ver detalhes' }).count()) throw new Error('árvore dentro da casa');
+  log(label, `usuário novo: casa completa — ${INDOOR} objetos dentro da casa (${seen} vistos andando pelos cômodos); o quintal fica no Meu Mundo`);
 
   // Desafio real: aula → quiz → aceitar → etapas com foto e observação → acompanhamentos → concluir
   await page.goto(BASE + '/aula/por-que-as-arvores-sao-importantes');
@@ -58,12 +74,19 @@ module.exports = async function objetos(page, label, log) {
   await page.getByRole('button', { name: 'Enviar registro' }).click();
   await see('🌱 Aguardando acompanhamento');
 
-  // Antes de concluir: a árvore já está no quintal, como parte da casa completa
-  await page.goto(BASE + '/meu-lugar');
-  await see(`Objetos da casa (${C.placeItems}/${C.placeItems})`);
-  await page.locator('.place-history__item', { hasText: 'Minha Árvore' }).getByText('Faz parte da sua casa completa.').waitFor();
-  await page.locator('.place-history__item', { hasText: 'Quadro da primeira ação' }).getByText('Desbloqueado ao enviar a primeira foto').waitFor();
-  log(label, 'casa completa: a árvore já está no quintal; a primeira foto já registra a origem real do quadro');
+  // Antes de concluir: a árvore já está no quintal (no mundo), como parte da casa completa
+  let dialog = await yardDetails('Minha Árvore');
+  await dialog.getByText('Faz parte da sua casa completa.').waitFor();
+  await dialog.getByRole('button', { name: 'Fechar' }).click();
+  await dialog.waitFor({ state: 'detached' });
+  // o quadro (dentro da casa) já guarda a origem real: a primeira foto
+  const quadro = await page.evaluate((id) => {
+    const r = JSON.parse(localStorage.getItem('eco-quest:demo:jogadores') || '{}');
+    const k = !r.session || r.session === 'demo-user' ? 'eco-quest:demo:v2' : 'eco-quest:demo:v2:' + r.session;
+    return JSON.parse(localStorage.getItem(k)).place.find((o) => o.itemId === id);
+  }, C.placeIds.picture);
+  if (!quadro || quadro.sourceType !== 'evidence' || !quadro.evidenceId) throw new Error('quadro sem a origem da foto: ' + JSON.stringify(quadro));
+  log(label, 'casa completa: a árvore já está no quintal do mundo; a primeira foto já registra a origem real do quadro');
 
   await editDemo(page, `for (const uc of Object.values(db.player.challenges)) for (const f of uc.followups) f.scheduledFor = new Date(Date.now() - 86400000).toISOString();`);
   await page.goto(BASE + TREE + '/acompanhar');
@@ -77,48 +100,30 @@ module.exports = async function objetos(page, label, log) {
   await page.waitForURL('**' + TREE + '/recompensa');
   await page.reload(); // clique repetido / atualização não pode duplicar nada
 
-  // Casa depois do desafio
-  await page.goto(BASE + '/meu-lugar');
-  await see('Minha Árvore');
-  await page.getByRole('button', { name: '🏡 Entrar na casa' }).click();
-  await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: '🌳 Jardim' }).click();
-  await page.waitForTimeout(1000);
-  await page.locator('.place-stage').screenshot({ path: `${OUT}/${label}-05-arvore.png` });
-  await page.getByRole('button', { name: 'Minha Árvore: ver detalhes' }).click();
-  const dialog = page.getByRole('dialog', { name: /Minha Árvore/ });
+  // Depois do desafio: a árvore do quintal mostra a origem real e o diário
+  dialog = await yardDetails('Minha Árvore');
   await dialog.getByText('Desbloqueado através do desafio “Plante uma árvore”.').waitFor();
   await dialog.getByText('Muda de ipê-amarelo no quintal').waitFor();
   await dialog.getByText('Desbloqueado em').waitFor();
   await page.screenshot({ path: `${OUT}/${label}-06-origem.png` });
   await dialog.getByRole('button', { name: 'Fechar' }).click();
-  await page.getByRole('button', { name: '✕ Sair da casa' }).click();
-  await page.goto(BASE + '/meu-lugar');
-  log(label, 'desafio concluído → Minha Árvore passa a mostrar a origem real, a data e o registro do jogador (diário)');
+  await dialog.waitFor({ state: 'detached' });
+  log(label, 'desafio concluído → a árvore do quintal (no mundo) mostra a origem real, a data e o registro do jogador (diário)');
 
-  // Painel com números reais (conferidos com o que ficou salvo)
-  const savedCodes = await page.evaluate((ids) => {
-    const owned = new Set(JSON.parse(localStorage.getItem((() => { const r = JSON.parse(localStorage.getItem('eco-quest:demo:jogadores') || '{}'); return !r.session || r.session === 'demo-user' ? 'eco-quest:demo:v2' : 'eco-quest:demo:v2:' + r.session; })())).place.map((o) => o.itemId));
-    return Object.entries(ids).filter(([, id]) => owned.has(id)).map(([code]) => code);
-  }, C.placeIds);
-  for (const code of ['book', 'picture', 'my_tree', 'dining_table'])
-    if (!savedCodes.includes(code)) throw new Error('faltou na casa: ' + code);
-  if (savedCodes.length !== C.placeItems) throw new Error('casa incompleta: ' + savedCodes.length);
-  const earned = savedCodes.length - C.placeInitial;
-  const panel = page.locator('.place-panel');
-  await panel.getByText(LAST_STAGE).first().waitFor();
-  await panel.locator('.stats div', { hasText: 'Objetos desbloqueados' }).getByText(`${earned}/${C.placeEarnable}`).waitFor();
-  await panel.locator('.stats div', { hasText: 'Missões realizadas' }).getByText('2', { exact: true }).waitFor();
-  await panel.locator('.stats div', { hasText: 'Desafios realizados' }).getByText('1', { exact: true }).waitFor();
-  await panel.getByText(`${C.placeProgress(earned)}%`).first().waitFor();
-  await page.locator('.place-history').getByText('Plantei').first().waitFor({ state: 'attached' }).catch(() => {});
-  log(label, `painel: estágio "${LAST_STAGE}", ${C.placeProgress(earned)}%, ${earned}/${C.placeEarnable} objetos, 2 missões, 1 desafio`);
-  await page.screenshot({ path: `${OUT}/${label}-07-painel.png`, fullPage: true });
-
-  // Persistência e duplicação
+  // O que ficou salvo: casa completa, sem duplicar
+  const storedCodes = () =>
+    page.evaluate((ids) => {
+      const owned = JSON.parse(localStorage.getItem((() => { const r = JSON.parse(localStorage.getItem('eco-quest:demo:jogadores') || '{}'); return !r.session || r.session === 'demo-user' ? 'eco-quest:demo:v2' : 'eco-quest:demo:v2:' + r.session; })())).place.map((o) => o.itemId);
+      return { total: owned.length, codes: Object.entries(ids).filter(([, id]) => owned.includes(id)).map(([code]) => code) };
+    }, C.placeIds);
+  const saved = await storedCodes();
+  for (const code of ['book', 'picture', 'my_tree', 'dining_table']) if (!saved.codes.includes(code)) throw new Error('faltou na casa: ' + code);
+  if (saved.codes.length !== C.placeItems) throw new Error('casa incompleta: ' + saved.codes.length);
+  await enterHouse();
   await page.reload();
-  await see(`Objetos da casa (${savedCodes.length}/${C.placeItems})`);
-  if (await page.getByText('Sua casa ganhou').count()) throw new Error('novidade repetida');
-  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem((() => { const r = JSON.parse(localStorage.getItem('eco-quest:demo:jogadores') || '{}'); return !r.session || r.session === 'demo-user' ? 'eco-quest:demo:v2' : 'eco-quest:demo:v2:' + r.session; })())).place.length);
-  if (stored !== savedCodes.length) throw new Error('objetos guardados: ' + stored);
-  log(label, `recarregar mantém a casa (${stored} objetos), sem duplicar e sem repetir a novidade`);
+  await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
+  const again = await storedCodes();
+  if (again.total !== C.placeItems) throw new Error('objetos guardados: ' + again.total);
+  log(label, `casa completa guardada (${again.total} objetos); recarregar não duplica nada`);
+  await page.getByRole('button', { name: '✕ Sair da casa' }).click();
 };

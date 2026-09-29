@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { PageHeader } from '../components/layout/PageHeader';
 import { LoadingMessage, StateMessage } from '../components/ui/StateMessage';
 import type { PlayerState } from '../models';
-import { PLACE_ITEMS } from '../modules/place/catalog';
+import { isOutdoorItem, PLACE_ITEMS } from '../modules/place/catalog';
 import { toSceneObject } from '../modules/place/placeLogic';
 import { hasWebGL } from '../modules/place/scene/webgl';
 import { backend, toAppError, type VisitDTO } from '../services';
@@ -69,7 +69,7 @@ export function VisitPage() {
     };
   }, [visit, player]);
   const objects = useMemo(
-    () => (visit ? PLACE_ITEMS.filter((d) => visit.place.itemIds.includes(d.id)).map((d) => toSceneObject(d)) : []),
+    () => (visit ? PLACE_ITEMS.filter((d) => visit.place.itemIds.includes(d.id) && !isOutdoorItem(d)).map((d) => toSceneObject(d)) : []),
     [visit],
   );
 
@@ -145,7 +145,7 @@ export function VisitPage() {
 
       <Suspense fallback={<LoadingMessage text="Abrindo…" />}>
         {inHouse ? (
-          <PlaceViewer key="casa" objects={objects} onSelect={setPicked} startWalking onLeave={() => setInHouse(false)} />
+          <PlaceViewer key="casa" objects={objects} onSelect={setPicked} onLeave={() => setInHouse(false)} />
         ) : use3d ? (
           <World3DView
             key="mundo"

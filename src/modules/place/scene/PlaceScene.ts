@@ -15,7 +15,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { animateModel } from '../../world3d/scene/models/animate';
 import { waterClock, waterMaterial } from '../../world3d/scene/models/common';
 import { buildClouds, buildSky, type Wind } from '../../world3d/scene/terrain';
-import { buildGardenZones, buildHouse, buildPlaceGrass, buildTerrain, GARDEN, HOUSE, ROOMS, type HouseParts } from './house';
+import { buildHouse, buildPlaceGrass, buildTerrain, GARDEN, HOUSE, ROOMS, type HouseParts } from './house';
 import { buildObject, type ObjectModel } from './objects';
 
 export type FocusTarget = 'geral' | keyof typeof ROOMS | 'jardim';
@@ -69,8 +69,8 @@ const PASSAGES = {
 };
 
 const VIEWS: Record<FocusTarget, { pos: [number, number, number]; target: [number, number, number] }> = {
-  geral: { pos: [16, 13, 18], target: [0, 1, 0] },
-  jardim: { pos: [0, 11, 20], target: [0, 0, 5] },
+  geral: { pos: [11, 9, 9], target: [0, 1, -4] },
+  jardim: { pos: [0, 5, 9], target: [0, 1.4, -4] },
   sala: { pos: [ROOMS.sala.x + 4, 9, ROOMS.sala.z + 7], target: [ROOMS.sala.x, 0.6, ROOMS.sala.z] },
   cozinha: { pos: [ROOMS.cozinha.x + 4, 9, ROOMS.cozinha.z + 7], target: [ROOMS.cozinha.x, 0.6, ROOMS.cozinha.z] },
   quarto: { pos: [ROOMS.quarto.x - 4, 9, ROOMS.quarto.z + 7], target: [ROOMS.quarto.x, 0.6, ROOMS.quarto.z] },
@@ -155,9 +155,9 @@ export class PlaceScene {
     sun.shadow.radius = 3;
     this.scene.add(sun);
 
-    this.scene.add(buildTerrain());
-    this.scene.add(buildGardenZones());
-    this.scene.add(buildPlaceGrass(window.innerWidth < 700 ? 7000 : 14000, this.wind));
+    // só a casa e o gramado: o quintal (árvores, bichos, horta, água) fica no Meu Mundo
+    this.scene.add(buildTerrain(false));
+    this.scene.add(buildPlaceGrass(window.innerWidth < 700 ? 7000 : 14000, this.wind, false));
     this.house = buildHouse();
     this.scene.add(this.house.group);
     this.ceiling = new THREE.Mesh(
@@ -524,6 +524,7 @@ export class PlaceScene {
     disposeTree(this.scene, true);
     this.envTarget?.dispose();
     this.renderer.dispose();
+    this.renderer.forceContextLoss(); // devolve o contexto WebGL já (celulares aceitam poucos)
     canvas.remove();
   }
 

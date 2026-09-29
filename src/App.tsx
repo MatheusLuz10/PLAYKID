@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useSearchParams } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ErrorBoundary } from './components/layout/ErrorBoundary';
 import { RequireAdmin } from './components/layout/RequireAdmin';
 import { LoadingMessage } from './components/ui/StateMessage';
@@ -41,12 +41,6 @@ const ResetPasswordPage = lazy(() => import('./pages/public/PasswordPages').then
 const VisitPage = lazy(() => import('./pages/VisitPage').then((m) => ({ default: m.VisitPage })));
 const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
 
-/** Endereço antigo da casa: abre a casa dentro do Meu Mundo (mantendo o "já andando"). */
-function HouseRedirect() {
-  const [params] = useSearchParams();
-  return <Navigate to={`/mundo?casa=${params.get('andar') === '1' ? 'andar' : '1'}`} replace />;
-}
-
 export function App() {
   return (
     <ErrorBoundary>
@@ -87,8 +81,8 @@ export function App() {
               {/* Nomes alternativos */}
               <Route path="/dashboard" element={<Navigate to="/inicio" replace />} />
               <Route path="/meu-mundo" element={<Navigate to="/mundo" replace />} />
-              {/* Meu Lugar agora fica dentro do Meu Mundo */}
-              <Route path="/meu-lugar" element={<HouseRedirect />} />
+              {/* A casa fica dentro do Meu Mundo (toque nela no mapa para entrar) */}
+              <Route path="/meu-lugar" element={<Navigate to="/mundo" replace />} />
               {/* A prévia 3D virou o próprio mundo */}
               <Route path="/mundo/previa-3d" element={<Navigate to="/mundo" replace />} />
               {/* Visitar o mundo e a casa de outro jogador pelo @usuário */}

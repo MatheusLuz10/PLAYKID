@@ -118,13 +118,20 @@ async function run(browser, label, viewport) {
   if (extra > 0) throw new Error('rolagem horizontal +' + extra);
   log('sem rolagem horizontal');
 
+  // O quintal da casa fica no próprio mundo
+  await bar.getByRole('button', { name: '🏡 Casa e quintal' }).click();
+  await focusIs('home');
+  await page.waitForTimeout(1500);
+  await snap('03-casa-e-quintal');
+  log('"Casa e quintal": a câmera vai até a casa, com árvores, bichos, horta e água em volta dela, no mundo');
+
   // A casa no mundo: tocar nela entra, andando pelos cômodos
   await bar.getByRole('button', { name: /Visão geral/ }).click();
   await focusIs('overview');
   await page.waitForTimeout(1500);
   await snap('03-casa-no-mundo');
   await page.locator('.world3d-home-pin').click();
-  await page.waitForURL('**/mundo?casa=andar');
+  await page.waitForURL('**/mundo?casa=1');
   const where = (text) => page.locator('.place-room', { hasText: text }).waitFor({ timeout: 30000 });
   await where('Sala');
   await page.getByRole('button', { name: '✕ Sair da casa' }).waitFor();
@@ -156,13 +163,11 @@ async function run(browser, label, viewport) {
   await page.getByRole('toolbar', { name: 'Navegar pela casa' }).getByRole('button', { name: /Cozinha/ }).click();
   await where('Cozinha');
   await page.screenshot({ path: `${OUT}/${label}-04-dentro-da-casa.png`, clip: await page.locator('.place-stage').boundingBox() });
-  await page.getByRole('button', { name: '🔭 Ver de fora' }).click();
-  await page.getByRole('button', { name: '🚶 Andar pela casa' }).waitFor();
   await page.getByRole('button', { name: '✕ Sair da casa' }).click();
   await page.waitForURL('**/mundo?tela=cheia');
   await focusIs('overview');
   await page.getByRole('button', { name: '✕ Sair do mundo' }).waitFor();
-  log('setas do teclado viram; botões dos cômodos levam até eles; "Ver de fora" funciona; "Sair da casa" volta ao mapa na visão geral');
+  log('setas do teclado viram; botões dos cômodos levam até eles; "Sair da casa" volta ao mapa na visão geral');
 
   console.log(`  [${label}] erros no console: ${JSON.stringify(errors)}`);
   if (errors.length) results.failed++;
@@ -207,7 +212,8 @@ async function run(browser, label, viewport) {
     await page.addInitScript(() => localStorage.setItem('eco-quest:onboarding-visto:demo-user', '1'));
     await entrarNaDemonstracao(page, BASE);
     const cdp = await context.newCDPSession(page);
-    for (const [path, sel] of [['/mundo', '.world3d-stage'], ['/mundo?casa=1', '.place-stage']]) {
+    // (a casa sempre abre em tela cheia, então só o mapa do mundo tem prévia sobre a página)
+    for (const [path, sel] of [['/mundo', '.world3d-stage']]) {
       await page.goto(BASE + path);
       await page.locator(`${sel} canvas`).waitFor({ timeout: 60000 });
       await page.evaluate((s) => document.querySelector(s).scrollIntoView({ block: 'center' }), sel);
@@ -225,7 +231,7 @@ async function run(browser, label, viewport) {
       if (y1 <= y0 + 50) throw new Error(`${path}: deslizar o dedo na cena não rolou a página (${y0} → ${y1})`);
     }
     results.passed++;
-    console.log('  [toque] ✓ deslizar o dedo por cima da cena 3D (mundo e casa, sem entrar) rola a página');
+    console.log('  [toque] ✓ deslizar o dedo por cima do mapa 3D (sem entrar) rola a página');
     await context.close();
   } catch (e) {
     results.failed++;

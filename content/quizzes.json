@@ -1318,6 +1318,390 @@
           ]
         }
       ]
+    },
+    {
+      "lesson": "por-que-preservar-a-floresta",
+      "title": "Quiz: Por que preservar a floresta?",
+      "description": "4 perguntas sobre reservas florestais e como proteger a floresta.",
+      "passing_score": 70,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🏞️ Reserva",
+          "question": "O que é uma reserva florestal?",
+          "explanation": "É uma área de floresta protegida, onde não se pode derrubar árvores nem caçar.",
+          "options": [
+            {
+              "text": "Uma floresta protegida, onde animais e plantas vivem em paz",
+              "correct": true,
+              "feedback": "Isso! A reserva protege a floresta e os bichos."
+            },
+            {
+              "text": "Um lugar para jogar lixo",
+              "correct": false,
+              "feedback": "Lixo nunca deve ir para a floresta."
+            },
+            {
+              "text": "Uma fazenda de gado",
+              "correct": false,
+              "feedback": "Na reserva a floresta fica em pé, sem pasto."
+            },
+            {
+              "text": "Um shopping no meio da mata",
+              "correct": false,
+              "feedback": "Na reserva não se constrói: a floresta é protegida."
+            }
+          ]
+        },
+        {
+          "topic": "💨 Benefícios",
+          "question": "Qual destas coisas as árvores fazem pelo planeta?",
+          "explanation": "As árvores limpam o ar, guardam água e ajudam a formar chuva.",
+          "options": [
+            {
+              "text": "Limpam o ar e ajudam a chover",
+              "correct": true,
+              "feedback": "Correto! Árvores cuidam do ar e da água."
+            },
+            {
+              "text": "Deixam o ar mais sujo",
+              "correct": false,
+              "feedback": "É o contrário: elas deixam o ar mais limpo."
+            },
+            {
+              "text": "Secam os rios",
+              "correct": false,
+              "feedback": "As árvores ajudam a manter os rios com água."
+            },
+            {
+              "text": "Esquentam o planeta",
+              "correct": false,
+              "feedback": "A floresta deixa o lugar mais fresco."
+            }
+          ]
+        },
+        {
+          "topic": "🔥 Perigos",
+          "question": "O que destrói a casa dos animais da floresta?",
+          "explanation": "Queimadas e desmatamento acabam com o lugar onde os animais vivem e se alimentam.",
+          "options": [
+            {
+              "text": "Queimadas e desmatamento",
+              "correct": true,
+              "feedback": "Isso! Fogo e derrubada de árvores destroem a floresta."
+            },
+            {
+              "text": "Plantar mudas",
+              "correct": false,
+              "feedback": "Plantar mudas ajuda a floresta a voltar."
+            },
+            {
+              "text": "Visitar a trilha com cuidado",
+              "correct": false,
+              "feedback": "Visitar com cuidado e respeito não destrói a floresta."
+            },
+            {
+              "text": "A chuva",
+              "correct": false,
+              "feedback": "A chuva é importante para a floresta viver."
+            }
+          ]
+        },
+        {
+          "topic": "🤝 Atitudes",
+          "question": "Qual atitude ajuda a preservar a floresta?",
+          "explanation": "Não jogar lixo, não fazer fogo e cuidar das árvores são atitudes de quem preserva.",
+          "options": [
+            {
+              "text": "Não jogar lixo e não fazer fogo na mata",
+              "correct": true,
+              "feedback": "Correto! Pequenas atitudes protegem a floresta."
+            },
+            {
+              "text": "Levar um filhote de animal para casa",
+              "correct": false,
+              "feedback": "Animais silvestres devem ficar na natureza."
+            },
+            {
+              "text": "Arrancar plantas para enfeitar a casa",
+              "correct": false,
+              "feedback": "Plantas da floresta devem ficar na floresta."
+            },
+            {
+              "text": "Fazer uma fogueira perto das árvores",
+              "correct": false,
+              "feedback": "Fogo na mata pode virar um grande incêndio."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "area-de-reflorestamento",
+      "title": "Quiz: Área de reflorestamento",
+      "description": "4 perguntas sobre reflorestar, mudas nativas e o cuidado com as mudas.",
+      "passing_score": 70,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🌱 Reflorestar",
+          "question": "O que é reflorestar?",
+          "explanation": "Reflorestar é plantar árvores onde a floresta foi derrubada ou queimada.",
+          "options": [
+            {
+              "text": "Plantar árvores onde a floresta foi derrubada",
+              "correct": true,
+              "feedback": "Isso! É ajudar a floresta a voltar."
+            },
+            {
+              "text": "Cortar mais árvores",
+              "correct": false,
+              "feedback": "Cortar árvores é o contrário de reflorestar."
+            },
+            {
+              "text": "Pintar as árvores de verde",
+              "correct": false,
+              "feedback": "Reflorestar é plantar árvores de verdade."
+            },
+            {
+              "text": "Construir prédios na mata",
+              "correct": false,
+              "feedback": "Prédios não trazem a floresta de volta."
+            }
+          ]
+        },
+        {
+          "topic": "🌳 Mudas",
+          "question": "Por que é melhor plantar árvores nativas?",
+          "explanation": "Árvores nativas já nasciam na região: combinam com o clima e alimentam os animais do lugar.",
+          "options": [
+            {
+              "text": "Porque combinam com o lugar e alimentam os animais de lá",
+              "correct": true,
+              "feedback": "Correto! Nativas fazem parte daquela floresta."
+            },
+            {
+              "text": "Porque são de plástico",
+              "correct": false,
+              "feedback": "Árvores nativas são plantas de verdade."
+            },
+            {
+              "text": "Porque não precisam de água nunca",
+              "correct": false,
+              "feedback": "Toda muda precisa de água para crescer."
+            },
+            {
+              "text": "Porque crescem num dia só",
+              "correct": false,
+              "feedback": "Árvores levam muitos anos para crescer."
+            }
+          ]
+        },
+        {
+          "topic": "🏡 Viveiro",
+          "question": "Para que serve um viveiro de mudas?",
+          "explanation": "No viveiro as mudas crescem protegidas, com água e sombra, até ficarem fortes para irem para a terra.",
+          "options": [
+            {
+              "text": "Para as mudas crescerem protegidas até irem para a terra",
+              "correct": true,
+              "feedback": "Isso! O viveiro é o berçário das árvores."
+            },
+            {
+              "text": "Para guardar lixo",
+              "correct": false,
+              "feedback": "Viveiro é lugar de cuidar de mudas."
+            },
+            {
+              "text": "Para prender animais",
+              "correct": false,
+              "feedback": "Viveiro de mudas cuida de plantas."
+            },
+            {
+              "text": "Para queimar folhas",
+              "correct": false,
+              "feedback": "Fogo não combina com mudas."
+            }
+          ]
+        },
+        {
+          "topic": "⏳ Tempo",
+          "question": "Uma floresta reflorestada fica grande em quanto tempo?",
+          "explanation": "Uma floresta leva muitos anos para crescer. Por isso cuidar da floresta que já existe é tão importante.",
+          "options": [
+            {
+              "text": "Muitos anos",
+              "correct": true,
+              "feedback": "Correto! As árvores crescem devagar."
+            },
+            {
+              "text": "Um dia",
+              "correct": false,
+              "feedback": "Uma árvore não cresce em um dia."
+            },
+            {
+              "text": "Uma semana",
+              "correct": false,
+              "feedback": "Uma semana é pouco tempo para uma árvore."
+            },
+            {
+              "text": "Uma hora",
+              "correct": false,
+              "feedback": "Árvores levam anos, não horas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson": "fauna-e-flora-da-amazonia",
+      "title": "Quiz: Fauna e flora da Amazônia",
+      "description": "5 perguntas sobre os animais e as plantas da Amazônia.",
+      "passing_score": 70,
+      "xp_reward": 30,
+      "improvement_xp_reward": 0,
+      "attempts_allowed": null,
+      "questions": [
+        {
+          "topic": "🌎 Amazônia",
+          "question": "O que significa \"flora\"?",
+          "explanation": "Flora é o conjunto de plantas de um lugar; fauna é o conjunto de animais.",
+          "options": [
+            {
+              "text": "O conjunto de plantas de um lugar",
+              "correct": true,
+              "feedback": "Isso! Flora são as plantas."
+            },
+            {
+              "text": "O conjunto de animais",
+              "correct": false,
+              "feedback": "Os animais formam a fauna."
+            },
+            {
+              "text": "Um tipo de chuva",
+              "correct": false,
+              "feedback": "Flora não tem a ver com chuva."
+            },
+            {
+              "text": "Um rio da Amazônia",
+              "correct": false,
+              "feedback": "Flora são as plantas de um lugar."
+            }
+          ]
+        },
+        {
+          "topic": "🐆 Fauna",
+          "question": "Qual destes animais vive na Amazônia?",
+          "explanation": "A onça-pintada vive na Amazônia e é o maior felino das Américas.",
+          "options": [
+            {
+              "text": "Onça-pintada",
+              "correct": true,
+              "feedback": "Correto! A onça-pintada é um símbolo da Amazônia."
+            },
+            {
+              "text": "Pinguim",
+              "correct": false,
+              "feedback": "O pinguim vive em lugares frios."
+            },
+            {
+              "text": "Urso-polar",
+              "correct": false,
+              "feedback": "O urso-polar vive no gelo do Ártico."
+            },
+            {
+              "text": "Canguru",
+              "correct": false,
+              "feedback": "O canguru vive na Austrália."
+            }
+          ]
+        },
+        {
+          "topic": "🦥 Fauna",
+          "question": "Qual animal vive pendurado nas árvores e se move bem devagar?",
+          "explanation": "A preguiça passa quase a vida toda nas árvores e se move devagar para gastar pouca energia.",
+          "options": [
+            {
+              "text": "A preguiça",
+              "correct": true,
+              "feedback": "Isso! A preguiça é a campeã da calma."
+            },
+            {
+              "text": "O boto-cor-de-rosa",
+              "correct": false,
+              "feedback": "O boto vive nos rios."
+            },
+            {
+              "text": "A onça-pintada",
+              "correct": false,
+              "feedback": "A onça anda no chão e nada muito bem."
+            },
+            {
+              "text": "O tucano",
+              "correct": false,
+              "feedback": "O tucano voa e tem um bico colorido."
+            }
+          ]
+        },
+        {
+          "topic": "🌳 Flora",
+          "question": "Qual árvore é chamada de \"rainha da floresta\"?",
+          "explanation": "A samaúma é uma das maiores árvores da Amazônia e é chamada de rainha da floresta.",
+          "options": [
+            {
+              "text": "A samaúma",
+              "correct": true,
+              "feedback": "Correto! A samaúma é gigante."
+            },
+            {
+              "text": "O pinheiro-de-natal",
+              "correct": false,
+              "feedback": "O pinheiro-de-natal não é da Amazônia."
+            },
+            {
+              "text": "A macieira",
+              "correct": false,
+              "feedback": "A macieira gosta de lugares frios."
+            },
+            {
+              "text": "O cacto",
+              "correct": false,
+              "feedback": "O cacto vive em lugares secos."
+            }
+          ]
+        },
+        {
+          "topic": "🛡️ Cuidado",
+          "question": "O que fazer ao ver um animal silvestre na natureza?",
+          "explanation": "Animais silvestres devem ficar livres na natureza: observe de longe, com um adulto, sem tocar nem alimentar.",
+          "options": [
+            {
+              "text": "Observar de longe, com um adulto, sem tocar",
+              "correct": true,
+              "feedback": "Isso! Assim o animal e você ficam seguros."
+            },
+            {
+              "text": "Levar para casa como bicho de estimação",
+              "correct": false,
+              "feedback": "Animais silvestres não são bichos de estimação."
+            },
+            {
+              "text": "Dar comida de gente para ele",
+              "correct": false,
+              "feedback": "Comida de gente pode fazer mal ao animal."
+            },
+            {
+              "text": "Correr atrás para pegar",
+              "correct": false,
+              "feedback": "Correr atrás assusta o animal e pode ser perigoso."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

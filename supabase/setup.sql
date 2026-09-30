@@ -2526,6 +2526,27 @@ on conflict (id) do update set
   description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
   xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
   active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000015', '10000000-0000-4000-8000-000000000001', 'Reserva florestal', 'Por que preservar a floresta?', 'por-que-preservar-a-floresta', 'Descubra o que é uma reserva florestal, como a floresta ajuda o planeta e o que cada pessoa pode fazer para protegê-la.', 'beginner', 4, 20, 14, '[{"icon":"🌳","text":"Uma reserva florestal é uma área protegida onde a floresta e os animais podem viver em paz."},{"icon":"💨","text":"As árvores limpam o ar, guardam água, ajudam a chover e deixam o clima mais fresco."},{"icon":"🔥","text":"Queimadas e desmatamento destroem a casa de muitos animais e plantas."},{"icon":"🤝","text":"Não jogar lixo, não fazer fogo e cuidar das árvores são jeitos de preservar."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000016', '10000000-0000-4000-8000-000000000001', 'Reflorestamento', 'Área de reflorestamento', 'area-de-reflorestamento', 'Entenda como uma floresta derrubada pode voltar a crescer com mudas de árvores nativas e muito cuidado.', 'beginner', 4, 20, 15, '[{"icon":"🌱","text":"Reflorestar é plantar árvores onde a floresta foi derrubada."},{"icon":"🌳","text":"O melhor é plantar árvores nativas, que já nasciam naquele lugar."},{"icon":"🏡","text":"No viveiro, as mudas crescem protegidas até irem para a terra."},{"icon":"⏳","text":"Uma floresta leva muitos anos para crescer: por isso é tão importante cuidar da que existe."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000017', '10000000-0000-4000-8000-000000000005', 'Amazônia', 'Fauna e flora da Amazônia', 'fauna-e-flora-da-amazonia', 'Conheça os animais e as plantas da maior floresta tropical do mundo: onça, arara, boto, preguiça, samaúma, castanheira e muito mais.', 'beginner', 5, 20, 3, '[{"icon":"🌎","text":"A Amazônia é a maior floresta tropical do mundo e tem muitos rios."},{"icon":"🐆","text":"Fauna são os animais: onça-pintada, arara, tucano, preguiça, boto-cor-de-rosa."},{"icon":"🌳","text":"Flora são as plantas: samaúma, castanheira, açaí, vitória-régia, seringueira."},{"icon":"🛡️","text":"Animais silvestres vivem na natureza: não devem ser presos nem vendidos."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
 
 -- Pré-requisitos (depois que todas as aulas existem)
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000001';
@@ -2542,9 +2563,12 @@ update public.lessons set prerequisite_lesson_id = null where id = '20000000-000
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000012';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000013';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000014';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000015';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000016';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000017';
 
 -- Seções (recriadas)
-delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
+delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000017');
 insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
   ('21000000-0000-4000-8000-000000001001', '20000000-0000-4000-8000-000000000001', 'content', '🌳', 'Muito mais do que paisagem', 'Uma árvore é muito mais do que um elemento da paisagem.
 Árvores são plantas com tronco lenhoso que podem viver por muitos anos. Pela fotossíntese, elas usam a luz do sol para absorver gás carbônico (CO₂) do ar e liberar oxigênio.
@@ -2700,9 +2724,37 @@ insert into public.lesson_sections (id, lesson_id, section_type, icon, title, co
 - Metal: frio e resistente
 - Tecido: macio, como no sofá', null, null, '[{"type":"think","prompt":"Qual é o móvel de madeira mais perto de você agora?"}]'::jsonb, 2),
   ('21000000-0000-4000-8000-000000014003', '20000000-0000-4000-8000-000000000014', 'content', '🧽', 'Cuidar para durar', 'Quando cuidamos dos móveis, eles duram muitos anos e menos árvores precisam ser cortadas para fazer móveis novos. Não pular em cima da cama, não riscar a mesa e limpar a poeira são jeitos de cuidar. Um móvel velho pode ser consertado, pintado ou doado para outra família.', null, null, '[{"type":"tip","text":"Nunca suba em móveis nem tente mover um móvel pesado sozinho: peça ajuda a um adulto."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000015001', '20000000-0000-4000-8000-000000000015', 'content', '🏞️', 'O que é uma reserva florestal?', 'Uma reserva florestal é um pedaço de floresta protegido por lei. Ali não se pode derrubar árvores, caçar animais ou fazer fogo. Assim a floresta continua em pé e os bichos têm onde morar.
+- Área protegida
+- Casa de muitos animais e plantas
+- Pode ser visitada com cuidado e respeito', null, null, '[{"type":"think","prompt":"Que animais você acha que moram numa floresta protegida?"}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000015002', '20000000-0000-4000-8000-000000000015', 'content', '💨', 'A floresta ajuda todo mundo', 'As árvores produzem oxigênio, guardam água no solo e soltam umidade no ar, o que ajuda a formar chuva. Elas também seguram a terra com as raízes e deixam o lugar mais fresco.
+- Ar mais limpo
+- Mais chuva e rios cheios
+- Menos calor', null, null, '[{"type":"choice","prompt":"Como a floresta ajuda o planeta?","options":[{"id":"ar","icon":"💨","label":"Limpa o ar e ajuda a chover","is_best":true,"feedback":"Isso! As árvores cuidam do ar e da água."},{"id":"lixo","icon":"🗑️","label":"Guarda o lixo das cidades","is_best":false,"feedback":"A floresta não é lugar de lixo: o lixo faz mal aos animais."},{"id":"fogo","icon":"🔥","label":"Faz o tempo ficar mais quente","is_best":false,"feedback":"É o contrário: a floresta deixa o lugar mais fresco."}]}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000015003', '20000000-0000-4000-8000-000000000015', 'content', '🤝', 'Como eu posso ajudar?', 'Mesmo morando longe da floresta, dá para ajudar: economizar papel, não jogar lixo no chão, plantar árvores e contar para a família o que aprendeu. Na natureza, nunca faça fogo e não leve plantas ou animais para casa.', null, null, '[{"type":"tip","text":"Em passeios na natureza, fique sempre perto de um adulto e siga as trilhas marcadas."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000016001', '20000000-0000-4000-8000-000000000016', 'content', '🌱', 'O que é reflorestar?', 'Reflorestar é plantar árvores num lugar onde a floresta foi cortada ou queimada. Aos poucos, as mudas crescem, os pássaros voltam e a floresta começa a se recuperar.
+- Plantar mudas
+- Proteger o terreno
+- Esperar a floresta crescer', null, null, '[{"type":"think","prompt":"Quanto tempo você acha que uma muda leva para virar uma árvore grande?"}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000016002', '20000000-0000-4000-8000-000000000016', 'content', '🌳', 'Mudas nativas e viveiro', 'Árvores nativas são as que já nasciam naquela região, como a castanheira e o ipê. Elas se dão bem com o clima e alimentam os animais do lugar. As mudas começam num viveiro, onde recebem água e sombra até ficarem fortes.', null, null, '[{"type":"choice","prompt":"Qual muda é melhor para reflorestar a Amazônia?","options":[{"id":"nativa","icon":"🌳","label":"Uma árvore nativa, como a castanheira","is_best":true,"feedback":"Isso! Árvores nativas combinam com o lugar e alimentam os animais."},{"id":"plastico","icon":"🪴","label":"Uma planta de plástico","is_best":false,"feedback":"Planta de plástico não cresce nem ajuda a natureza."},{"id":"qualquer","icon":"❓","label":"Qualquer planta de outro país","is_best":false,"feedback":"Plantas de fora podem atrapalhar as da região."}]}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000016003', '20000000-0000-4000-8000-000000000016', 'content', '💧', 'Cuidar das mudas', 'Depois de plantadas, as mudas precisam de água, de proteção contra o fogo e o gado, e de paciência. Uma floresta leva muitos anos para crescer de novo. Por isso cuidar da floresta que já existe é tão importante.', null, null, '[{"type":"tip","text":"Para plantar uma muda, peça ajuda a um adulto para cavar e escolher um lugar seguro."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000017001', '20000000-0000-4000-8000-000000000017', 'content', '🌎', 'A maior floresta tropical do mundo', 'A Amazônia fica no norte do Brasil e em outros países da América do Sul. Ela tem o maior rio do mundo em volume de água, o rio Amazonas, e milhares de espécies de animais e plantas. Fauna é o nome do conjunto de animais; flora é o nome do conjunto de plantas.
+- Fauna: os animais
+- Flora: as plantas
+- Muitos rios e igarapés', null, null, '[{"type":"choice","prompt":"Como se chama o conjunto de animais de um lugar?","options":[{"id":"fauna","icon":"🐆","label":"Fauna","is_best":true,"feedback":"Isso! Fauna são os animais; flora são as plantas."},{"id":"flora","icon":"🌳","label":"Flora","is_best":false,"feedback":"Flora é o conjunto de plantas."},{"id":"clima","icon":"☁️","label":"Clima","is_best":false,"feedback":"Clima é o tempo que costuma fazer num lugar."}]}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000017002', '20000000-0000-4000-8000-000000000017', 'content', '🐆', 'Animais da Amazônia', 'A onça-pintada é o maior felino das Américas e nada muito bem. A arara-vermelha e o tucano, de bico colorido, espalham sementes enquanto comem frutas. A preguiça vive pendurada nas árvores e se move bem devagar. O boto-cor-de-rosa nada nos rios.
+- Onça-pintada
+- Arara e tucano
+- Preguiça
+- Boto-cor-de-rosa', null, null, '[{"type":"think","prompt":"Qual desses animais você mais gostaria de ver de perto, com um adulto e em segurança?"}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000017003', '20000000-0000-4000-8000-000000000017', 'content', '🌳', 'Plantas da Amazônia', 'A samaúma é uma das maiores árvores da floresta e é chamada de "rainha da floresta". A castanheira dá a castanha-do-pará. O açaí é uma palmeira com frutinhas roxas. A vitória-régia tem folhas redondas enormes que boiam na água. A seringueira dá o látex, usado para fazer borracha.', null, null, '[{"type":"tip","text":"Animais silvestres vivem na natureza: nunca pegue, alimente ou leve um animal da floresta para casa."}]'::jsonb, 3);
 
 -- Conteúdos relacionados (recriados)
-delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
+delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000017');
 insert into public.lesson_related (lesson_id, related_lesson_id, order_index) values
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', 1),
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000011', 2),
@@ -2744,7 +2796,13 @@ insert into public.lesson_related (lesson_id, related_lesson_id, order_index) va
   ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000012', 1),
   ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', 2),
   ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000012', 1),
-  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000007', 2);
+  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000007', 2),
+  ('20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000017', 1),
+  ('20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000016', 2),
+  ('20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000015', 1),
+  ('20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000001', 2),
+  ('20000000-0000-4000-8000-000000000017', '20000000-0000-4000-8000-000000000010', 1),
+  ('20000000-0000-4000-8000-000000000017', '20000000-0000-4000-8000-000000000015', 2);
 
 -- >>> 16_quiz_improvements.sql
 -- =====================================================================
@@ -3669,6 +3727,140 @@ insert into public.quiz_options (id, question_id, option_text, is_correct, expla
   ('32000000-0000-4000-8000-014000004002', '31000000-0000-4000-8000-014000000004', 'Jogar no rio', false, 'Jogar coisas no rio polui a água.', 2),
   ('32000000-0000-4000-8000-014000004003', '31000000-0000-4000-8000-014000000004', 'Quebrar de propósito', false, 'Quebrar gera lixo e desperdício.', 3),
   ('32000000-0000-4000-8000-014000004004', '31000000-0000-4000-8000-014000000004', 'Deixar na calçada sem avisar ninguém', false, 'Móveis largados na rua viram lixo e atrapalham quem passa.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Por que preservar a floresta?
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000015', 'Quiz: Por que preservar a floresta?', '4 perguntas sobre reservas florestais e como proteger a floresta.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000015' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000015' and id not in ('31000000-0000-4000-8000-015000000001', '31000000-0000-4000-8000-015000000002', '31000000-0000-4000-8000-015000000003', '31000000-0000-4000-8000-015000000004');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-015000000001', '30000000-0000-4000-8000-000000000015', 'O que é uma reserva florestal?', 'É uma área de floresta protegida, onde não se pode derrubar árvores nem caçar.', '🏞️ Reserva', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-015000000002', '30000000-0000-4000-8000-000000000015', 'Qual destas coisas as árvores fazem pelo planeta?', 'As árvores limpam o ar, guardam água e ajudam a formar chuva.', '💨 Benefícios', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-015000000003', '30000000-0000-4000-8000-000000000015', 'O que destrói a casa dos animais da floresta?', 'Queimadas e desmatamento acabam com o lugar onde os animais vivem e se alimentam.', '🔥 Perigos', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-015000000004', '30000000-0000-4000-8000-000000000015', 'Qual atitude ajuda a preservar a floresta?', 'Não jogar lixo, não fazer fogo e cuidar das árvores são atitudes de quem preserva.', '🤝 Atitudes', 'single_choice', 4, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-015000000001', '31000000-0000-4000-8000-015000000002', '31000000-0000-4000-8000-015000000003', '31000000-0000-4000-8000-015000000004') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-015000001001', '31000000-0000-4000-8000-015000000001', 'Uma floresta protegida, onde animais e plantas vivem em paz', true, 'Isso! A reserva protege a floresta e os bichos.', 1),
+  ('32000000-0000-4000-8000-015000001002', '31000000-0000-4000-8000-015000000001', 'Um lugar para jogar lixo', false, 'Lixo nunca deve ir para a floresta.', 2),
+  ('32000000-0000-4000-8000-015000001003', '31000000-0000-4000-8000-015000000001', 'Uma fazenda de gado', false, 'Na reserva a floresta fica em pé, sem pasto.', 3),
+  ('32000000-0000-4000-8000-015000001004', '31000000-0000-4000-8000-015000000001', 'Um shopping no meio da mata', false, 'Na reserva não se constrói: a floresta é protegida.', 4),
+  ('32000000-0000-4000-8000-015000002001', '31000000-0000-4000-8000-015000000002', 'Limpam o ar e ajudam a chover', true, 'Correto! Árvores cuidam do ar e da água.', 1),
+  ('32000000-0000-4000-8000-015000002002', '31000000-0000-4000-8000-015000000002', 'Deixam o ar mais sujo', false, 'É o contrário: elas deixam o ar mais limpo.', 2),
+  ('32000000-0000-4000-8000-015000002003', '31000000-0000-4000-8000-015000000002', 'Secam os rios', false, 'As árvores ajudam a manter os rios com água.', 3),
+  ('32000000-0000-4000-8000-015000002004', '31000000-0000-4000-8000-015000000002', 'Esquentam o planeta', false, 'A floresta deixa o lugar mais fresco.', 4),
+  ('32000000-0000-4000-8000-015000003001', '31000000-0000-4000-8000-015000000003', 'Queimadas e desmatamento', true, 'Isso! Fogo e derrubada de árvores destroem a floresta.', 1),
+  ('32000000-0000-4000-8000-015000003002', '31000000-0000-4000-8000-015000000003', 'Plantar mudas', false, 'Plantar mudas ajuda a floresta a voltar.', 2),
+  ('32000000-0000-4000-8000-015000003003', '31000000-0000-4000-8000-015000000003', 'Visitar a trilha com cuidado', false, 'Visitar com cuidado e respeito não destrói a floresta.', 3),
+  ('32000000-0000-4000-8000-015000003004', '31000000-0000-4000-8000-015000000003', 'A chuva', false, 'A chuva é importante para a floresta viver.', 4),
+  ('32000000-0000-4000-8000-015000004001', '31000000-0000-4000-8000-015000000004', 'Não jogar lixo e não fazer fogo na mata', true, 'Correto! Pequenas atitudes protegem a floresta.', 1),
+  ('32000000-0000-4000-8000-015000004002', '31000000-0000-4000-8000-015000000004', 'Levar um filhote de animal para casa', false, 'Animais silvestres devem ficar na natureza.', 2),
+  ('32000000-0000-4000-8000-015000004003', '31000000-0000-4000-8000-015000000004', 'Arrancar plantas para enfeitar a casa', false, 'Plantas da floresta devem ficar na floresta.', 3),
+  ('32000000-0000-4000-8000-015000004004', '31000000-0000-4000-8000-015000000004', 'Fazer uma fogueira perto das árvores', false, 'Fogo na mata pode virar um grande incêndio.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Área de reflorestamento
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000016', 'Quiz: Área de reflorestamento', '4 perguntas sobre reflorestar, mudas nativas e o cuidado com as mudas.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000016' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000016' and id not in ('31000000-0000-4000-8000-016000000001', '31000000-0000-4000-8000-016000000002', '31000000-0000-4000-8000-016000000003', '31000000-0000-4000-8000-016000000004');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-016000000001', '30000000-0000-4000-8000-000000000016', 'O que é reflorestar?', 'Reflorestar é plantar árvores onde a floresta foi derrubada ou queimada.', '🌱 Reflorestar', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-016000000002', '30000000-0000-4000-8000-000000000016', 'Por que é melhor plantar árvores nativas?', 'Árvores nativas já nasciam na região: combinam com o clima e alimentam os animais do lugar.', '🌳 Mudas', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-016000000003', '30000000-0000-4000-8000-000000000016', 'Para que serve um viveiro de mudas?', 'No viveiro as mudas crescem protegidas, com água e sombra, até ficarem fortes para irem para a terra.', '🏡 Viveiro', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-016000000004', '30000000-0000-4000-8000-000000000016', 'Uma floresta reflorestada fica grande em quanto tempo?', 'Uma floresta leva muitos anos para crescer. Por isso cuidar da floresta que já existe é tão importante.', '⏳ Tempo', 'single_choice', 4, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-016000000001', '31000000-0000-4000-8000-016000000002', '31000000-0000-4000-8000-016000000003', '31000000-0000-4000-8000-016000000004') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-016000001001', '31000000-0000-4000-8000-016000000001', 'Plantar árvores onde a floresta foi derrubada', true, 'Isso! É ajudar a floresta a voltar.', 1),
+  ('32000000-0000-4000-8000-016000001002', '31000000-0000-4000-8000-016000000001', 'Cortar mais árvores', false, 'Cortar árvores é o contrário de reflorestar.', 2),
+  ('32000000-0000-4000-8000-016000001003', '31000000-0000-4000-8000-016000000001', 'Pintar as árvores de verde', false, 'Reflorestar é plantar árvores de verdade.', 3),
+  ('32000000-0000-4000-8000-016000001004', '31000000-0000-4000-8000-016000000001', 'Construir prédios na mata', false, 'Prédios não trazem a floresta de volta.', 4),
+  ('32000000-0000-4000-8000-016000002001', '31000000-0000-4000-8000-016000000002', 'Porque combinam com o lugar e alimentam os animais de lá', true, 'Correto! Nativas fazem parte daquela floresta.', 1),
+  ('32000000-0000-4000-8000-016000002002', '31000000-0000-4000-8000-016000000002', 'Porque são de plástico', false, 'Árvores nativas são plantas de verdade.', 2),
+  ('32000000-0000-4000-8000-016000002003', '31000000-0000-4000-8000-016000000002', 'Porque não precisam de água nunca', false, 'Toda muda precisa de água para crescer.', 3),
+  ('32000000-0000-4000-8000-016000002004', '31000000-0000-4000-8000-016000000002', 'Porque crescem num dia só', false, 'Árvores levam muitos anos para crescer.', 4),
+  ('32000000-0000-4000-8000-016000003001', '31000000-0000-4000-8000-016000000003', 'Para as mudas crescerem protegidas até irem para a terra', true, 'Isso! O viveiro é o berçário das árvores.', 1),
+  ('32000000-0000-4000-8000-016000003002', '31000000-0000-4000-8000-016000000003', 'Para guardar lixo', false, 'Viveiro é lugar de cuidar de mudas.', 2),
+  ('32000000-0000-4000-8000-016000003003', '31000000-0000-4000-8000-016000000003', 'Para prender animais', false, 'Viveiro de mudas cuida de plantas.', 3),
+  ('32000000-0000-4000-8000-016000003004', '31000000-0000-4000-8000-016000000003', 'Para queimar folhas', false, 'Fogo não combina com mudas.', 4),
+  ('32000000-0000-4000-8000-016000004001', '31000000-0000-4000-8000-016000000004', 'Muitos anos', true, 'Correto! As árvores crescem devagar.', 1),
+  ('32000000-0000-4000-8000-016000004002', '31000000-0000-4000-8000-016000000004', 'Um dia', false, 'Uma árvore não cresce em um dia.', 2),
+  ('32000000-0000-4000-8000-016000004003', '31000000-0000-4000-8000-016000000004', 'Uma semana', false, 'Uma semana é pouco tempo para uma árvore.', 3),
+  ('32000000-0000-4000-8000-016000004004', '31000000-0000-4000-8000-016000000004', 'Uma hora', false, 'Árvores levam anos, não horas.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Fauna e flora da Amazônia
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000017', '20000000-0000-4000-8000-000000000017', 'Quiz: Fauna e flora da Amazônia', '5 perguntas sobre os animais e as plantas da Amazônia.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000017' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000017' and id not in ('31000000-0000-4000-8000-017000000001', '31000000-0000-4000-8000-017000000002', '31000000-0000-4000-8000-017000000003', '31000000-0000-4000-8000-017000000004', '31000000-0000-4000-8000-017000000005');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-017000000001', '30000000-0000-4000-8000-000000000017', 'O que significa "flora"?', 'Flora é o conjunto de plantas de um lugar; fauna é o conjunto de animais.', '🌎 Amazônia', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-017000000002', '30000000-0000-4000-8000-000000000017', 'Qual destes animais vive na Amazônia?', 'A onça-pintada vive na Amazônia e é o maior felino das Américas.', '🐆 Fauna', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-017000000003', '30000000-0000-4000-8000-000000000017', 'Qual animal vive pendurado nas árvores e se move bem devagar?', 'A preguiça passa quase a vida toda nas árvores e se move devagar para gastar pouca energia.', '🦥 Fauna', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-017000000004', '30000000-0000-4000-8000-000000000017', 'Qual árvore é chamada de "rainha da floresta"?', 'A samaúma é uma das maiores árvores da Amazônia e é chamada de rainha da floresta.', '🌳 Flora', 'single_choice', 4, 1, true),
+  ('31000000-0000-4000-8000-017000000005', '30000000-0000-4000-8000-000000000017', 'O que fazer ao ver um animal silvestre na natureza?', 'Animais silvestres devem ficar livres na natureza: observe de longe, com um adulto, sem tocar nem alimentar.', '🛡️ Cuidado', 'single_choice', 5, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-017000000001', '31000000-0000-4000-8000-017000000002', '31000000-0000-4000-8000-017000000003', '31000000-0000-4000-8000-017000000004', '31000000-0000-4000-8000-017000000005') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-017000001001', '31000000-0000-4000-8000-017000000001', 'O conjunto de plantas de um lugar', true, 'Isso! Flora são as plantas.', 1),
+  ('32000000-0000-4000-8000-017000001002', '31000000-0000-4000-8000-017000000001', 'O conjunto de animais', false, 'Os animais formam a fauna.', 2),
+  ('32000000-0000-4000-8000-017000001003', '31000000-0000-4000-8000-017000000001', 'Um tipo de chuva', false, 'Flora não tem a ver com chuva.', 3),
+  ('32000000-0000-4000-8000-017000001004', '31000000-0000-4000-8000-017000000001', 'Um rio da Amazônia', false, 'Flora são as plantas de um lugar.', 4),
+  ('32000000-0000-4000-8000-017000002001', '31000000-0000-4000-8000-017000000002', 'Onça-pintada', true, 'Correto! A onça-pintada é um símbolo da Amazônia.', 1),
+  ('32000000-0000-4000-8000-017000002002', '31000000-0000-4000-8000-017000000002', 'Pinguim', false, 'O pinguim vive em lugares frios.', 2),
+  ('32000000-0000-4000-8000-017000002003', '31000000-0000-4000-8000-017000000002', 'Urso-polar', false, 'O urso-polar vive no gelo do Ártico.', 3),
+  ('32000000-0000-4000-8000-017000002004', '31000000-0000-4000-8000-017000000002', 'Canguru', false, 'O canguru vive na Austrália.', 4),
+  ('32000000-0000-4000-8000-017000003001', '31000000-0000-4000-8000-017000000003', 'A preguiça', true, 'Isso! A preguiça é a campeã da calma.', 1),
+  ('32000000-0000-4000-8000-017000003002', '31000000-0000-4000-8000-017000000003', 'O boto-cor-de-rosa', false, 'O boto vive nos rios.', 2),
+  ('32000000-0000-4000-8000-017000003003', '31000000-0000-4000-8000-017000000003', 'A onça-pintada', false, 'A onça anda no chão e nada muito bem.', 3),
+  ('32000000-0000-4000-8000-017000003004', '31000000-0000-4000-8000-017000000003', 'O tucano', false, 'O tucano voa e tem um bico colorido.', 4),
+  ('32000000-0000-4000-8000-017000004001', '31000000-0000-4000-8000-017000000004', 'A samaúma', true, 'Correto! A samaúma é gigante.', 1),
+  ('32000000-0000-4000-8000-017000004002', '31000000-0000-4000-8000-017000000004', 'O pinheiro-de-natal', false, 'O pinheiro-de-natal não é da Amazônia.', 2),
+  ('32000000-0000-4000-8000-017000004003', '31000000-0000-4000-8000-017000000004', 'A macieira', false, 'A macieira gosta de lugares frios.', 3),
+  ('32000000-0000-4000-8000-017000004004', '31000000-0000-4000-8000-017000000004', 'O cacto', false, 'O cacto vive em lugares secos.', 4),
+  ('32000000-0000-4000-8000-017000005001', '31000000-0000-4000-8000-017000000005', 'Observar de longe, com um adulto, sem tocar', true, 'Isso! Assim o animal e você ficam seguros.', 1),
+  ('32000000-0000-4000-8000-017000005002', '31000000-0000-4000-8000-017000000005', 'Levar para casa como bicho de estimação', false, 'Animais silvestres não são bichos de estimação.', 2),
+  ('32000000-0000-4000-8000-017000005003', '31000000-0000-4000-8000-017000000005', 'Dar comida de gente para ele', false, 'Comida de gente pode fazer mal ao animal.', 3),
+  ('32000000-0000-4000-8000-017000005004', '31000000-0000-4000-8000-017000000005', 'Correr atrás para pegar', false, 'Correr atrás assusta o animal e pode ser perigoso.', 4)
 on conflict (id) do update set
   question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
   explanation = excluded.explanation, order_index = excluded.order_index;

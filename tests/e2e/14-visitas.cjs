@@ -40,8 +40,8 @@ async function run(browser, label, viewport) {
   await profile('Bia', bia);
   await page.goto(BASE + '/mundo?casa=1');
   await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
-  await page.waitForTimeout(800);
-  if ((await page.locator('.place-stage .place-hotspot').count()) < 1) throw new Error('casa vazia');
+  // a casa termina de montar e os objetos por perto ganham botão
+  await page.locator('.place-stage .place-hotspot').first().waitFor({ timeout: 30000 });
   await page.getByRole('button', { name: '✕ Sair da casa' }).click();
   log('casa completa: conta nova já entra numa casa mobiliada');
   await page.goto(BASE + '/mundo');

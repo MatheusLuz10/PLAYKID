@@ -56,8 +56,8 @@ const log = (m) => {
     // Casa completa (migration 29) e visita pelo @usuário (migration 30)
     await page.goto(BASE + '/mundo?casa=1');
     await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
-    await page.waitForTimeout(800);
-    if ((await page.locator('.place-stage .place-hotspot').count()) < 1) throw new Error('casa vazia');
+    // a casa termina de montar e os objetos por perto ganham botão
+    await page.locator('.place-stage .place-hotspot').first().waitFor({ timeout: 30000 });
     await page.getByRole('button', { name: '✕ Sair da casa' }).click();
     await page.goto(BASE + '/mundo/visitar/' + user);
     await see('Este é o seu próprio mundo');

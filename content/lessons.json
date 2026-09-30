@@ -1248,6 +1248,303 @@
           ]
         }
       ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000015",
+      "category": "natureza",
+      "slug": "por-que-preservar-a-floresta",
+      "topic": "Reserva florestal",
+      "title": "Por que preservar a floresta?",
+      "description": "Descubra o que é uma reserva florestal, como a floresta ajuda o planeta e o que cada pessoa pode fazer para protegê-la.",
+      "difficulty": "beginner",
+      "estimated_minutes": 4,
+      "xp_reward": 20,
+      "order_index": 14,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🌳",
+          "text": "Uma reserva florestal é uma área protegida onde a floresta e os animais podem viver em paz."
+        },
+        {
+          "icon": "💨",
+          "text": "As árvores limpam o ar, guardam água, ajudam a chover e deixam o clima mais fresco."
+        },
+        {
+          "icon": "🔥",
+          "text": "Queimadas e desmatamento destroem a casa de muitos animais e plantas."
+        },
+        {
+          "icon": "🤝",
+          "text": "Não jogar lixo, não fazer fogo e cuidar das árvores são jeitos de preservar."
+        }
+      ],
+      "related": [
+        "fauna-e-flora-da-amazonia",
+        "area-de-reflorestamento"
+      ],
+      "sections": [
+        {
+          "icon": "🏞️",
+          "title": "O que é uma reserva florestal?",
+          "content": "Uma reserva florestal é um pedaço de floresta protegido por lei. Ali não se pode derrubar árvores, caçar animais ou fazer fogo. Assim a floresta continua em pé e os bichos têm onde morar.\n- Área protegida\n- Casa de muitos animais e plantas\n- Pode ser visitada com cuidado e respeito",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Que animais você acha que moram numa floresta protegida?"
+            }
+          ]
+        },
+        {
+          "icon": "💨",
+          "title": "A floresta ajuda todo mundo",
+          "content": "As árvores produzem oxigênio, guardam água no solo e soltam umidade no ar, o que ajuda a formar chuva. Elas também seguram a terra com as raízes e deixam o lugar mais fresco.\n- Ar mais limpo\n- Mais chuva e rios cheios\n- Menos calor",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Como a floresta ajuda o planeta?",
+              "options": [
+                {
+                  "id": "ar",
+                  "icon": "💨",
+                  "label": "Limpa o ar e ajuda a chover",
+                  "is_best": true,
+                  "feedback": "Isso! As árvores cuidam do ar e da água."
+                },
+                {
+                  "id": "lixo",
+                  "icon": "🗑️",
+                  "label": "Guarda o lixo das cidades",
+                  "is_best": false,
+                  "feedback": "A floresta não é lugar de lixo: o lixo faz mal aos animais."
+                },
+                {
+                  "id": "fogo",
+                  "icon": "🔥",
+                  "label": "Faz o tempo ficar mais quente",
+                  "is_best": false,
+                  "feedback": "É o contrário: a floresta deixa o lugar mais fresco."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "🤝",
+          "title": "Como eu posso ajudar?",
+          "content": "Mesmo morando longe da floresta, dá para ajudar: economizar papel, não jogar lixo no chão, plantar árvores e contar para a família o que aprendeu. Na natureza, nunca faça fogo e não leve plantas ou animais para casa.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Em passeios na natureza, fique sempre perto de um adulto e siga as trilhas marcadas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000016",
+      "category": "natureza",
+      "slug": "area-de-reflorestamento",
+      "topic": "Reflorestamento",
+      "title": "Área de reflorestamento",
+      "description": "Entenda como uma floresta derrubada pode voltar a crescer com mudas de árvores nativas e muito cuidado.",
+      "difficulty": "beginner",
+      "estimated_minutes": 4,
+      "xp_reward": 20,
+      "order_index": 15,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🌱",
+          "text": "Reflorestar é plantar árvores onde a floresta foi derrubada."
+        },
+        {
+          "icon": "🌳",
+          "text": "O melhor é plantar árvores nativas, que já nasciam naquele lugar."
+        },
+        {
+          "icon": "🏡",
+          "text": "No viveiro, as mudas crescem protegidas até irem para a terra."
+        },
+        {
+          "icon": "⏳",
+          "text": "Uma floresta leva muitos anos para crescer: por isso é tão importante cuidar da que existe."
+        }
+      ],
+      "related": [
+        "por-que-preservar-a-floresta",
+        "por-que-as-arvores-sao-importantes"
+      ],
+      "sections": [
+        {
+          "icon": "🌱",
+          "title": "O que é reflorestar?",
+          "content": "Reflorestar é plantar árvores num lugar onde a floresta foi cortada ou queimada. Aos poucos, as mudas crescem, os pássaros voltam e a floresta começa a se recuperar.\n- Plantar mudas\n- Proteger o terreno\n- Esperar a floresta crescer",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Quanto tempo você acha que uma muda leva para virar uma árvore grande?"
+            }
+          ]
+        },
+        {
+          "icon": "🌳",
+          "title": "Mudas nativas e viveiro",
+          "content": "Árvores nativas são as que já nasciam naquela região, como a castanheira e o ipê. Elas se dão bem com o clima e alimentam os animais do lugar. As mudas começam num viveiro, onde recebem água e sombra até ficarem fortes.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Qual muda é melhor para reflorestar a Amazônia?",
+              "options": [
+                {
+                  "id": "nativa",
+                  "icon": "🌳",
+                  "label": "Uma árvore nativa, como a castanheira",
+                  "is_best": true,
+                  "feedback": "Isso! Árvores nativas combinam com o lugar e alimentam os animais."
+                },
+                {
+                  "id": "plastico",
+                  "icon": "🪴",
+                  "label": "Uma planta de plástico",
+                  "is_best": false,
+                  "feedback": "Planta de plástico não cresce nem ajuda a natureza."
+                },
+                {
+                  "id": "qualquer",
+                  "icon": "❓",
+                  "label": "Qualquer planta de outro país",
+                  "is_best": false,
+                  "feedback": "Plantas de fora podem atrapalhar as da região."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "💧",
+          "title": "Cuidar das mudas",
+          "content": "Depois de plantadas, as mudas precisam de água, de proteção contra o fogo e o gado, e de paciência. Uma floresta leva muitos anos para crescer de novo. Por isso cuidar da floresta que já existe é tão importante.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Para plantar uma muda, peça ajuda a um adulto para cavar e escolher um lugar seguro."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000017",
+      "category": "biodiversidade",
+      "slug": "fauna-e-flora-da-amazonia",
+      "topic": "Amazônia",
+      "title": "Fauna e flora da Amazônia",
+      "description": "Conheça os animais e as plantas da maior floresta tropical do mundo: onça, arara, boto, preguiça, samaúma, castanheira e muito mais.",
+      "difficulty": "beginner",
+      "estimated_minutes": 5,
+      "xp_reward": 20,
+      "order_index": 3,
+      "prerequisite": null,
+      "summary_points": [
+        {
+          "icon": "🌎",
+          "text": "A Amazônia é a maior floresta tropical do mundo e tem muitos rios."
+        },
+        {
+          "icon": "🐆",
+          "text": "Fauna são os animais: onça-pintada, arara, tucano, preguiça, boto-cor-de-rosa."
+        },
+        {
+          "icon": "🌳",
+          "text": "Flora são as plantas: samaúma, castanheira, açaí, vitória-régia, seringueira."
+        },
+        {
+          "icon": "🛡️",
+          "text": "Animais silvestres vivem na natureza: não devem ser presos nem vendidos."
+        }
+      ],
+      "related": [
+        "o-que-e-biodiversidade",
+        "por-que-preservar-a-floresta"
+      ],
+      "sections": [
+        {
+          "icon": "🌎",
+          "title": "A maior floresta tropical do mundo",
+          "content": "A Amazônia fica no norte do Brasil e em outros países da América do Sul. Ela tem o maior rio do mundo em volume de água, o rio Amazonas, e milhares de espécies de animais e plantas. Fauna é o nome do conjunto de animais; flora é o nome do conjunto de plantas.\n- Fauna: os animais\n- Flora: as plantas\n- Muitos rios e igarapés",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "choice",
+              "prompt": "Como se chama o conjunto de animais de um lugar?",
+              "options": [
+                {
+                  "id": "fauna",
+                  "icon": "🐆",
+                  "label": "Fauna",
+                  "is_best": true,
+                  "feedback": "Isso! Fauna são os animais; flora são as plantas."
+                },
+                {
+                  "id": "flora",
+                  "icon": "🌳",
+                  "label": "Flora",
+                  "is_best": false,
+                  "feedback": "Flora é o conjunto de plantas."
+                },
+                {
+                  "id": "clima",
+                  "icon": "☁️",
+                  "label": "Clima",
+                  "is_best": false,
+                  "feedback": "Clima é o tempo que costuma fazer num lugar."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "icon": "🐆",
+          "title": "Animais da Amazônia",
+          "content": "A onça-pintada é o maior felino das Américas e nada muito bem. A arara-vermelha e o tucano, de bico colorido, espalham sementes enquanto comem frutas. A preguiça vive pendurada nas árvores e se move bem devagar. O boto-cor-de-rosa nada nos rios.\n- Onça-pintada\n- Arara e tucano\n- Preguiça\n- Boto-cor-de-rosa",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "think",
+              "prompt": "Qual desses animais você mais gostaria de ver de perto, com um adulto e em segurança?"
+            }
+          ]
+        },
+        {
+          "icon": "🌳",
+          "title": "Plantas da Amazônia",
+          "content": "A samaúma é uma das maiores árvores da floresta e é chamada de \"rainha da floresta\". A castanheira dá a castanha-do-pará. O açaí é uma palmeira com frutinhas roxas. A vitória-régia tem folhas redondas enormes que boiam na água. A seringueira dá o látex, usado para fazer borracha.",
+          "image_url": null,
+          "image_alt": null,
+          "blocks": [
+            {
+              "type": "tip",
+              "text": "Animais silvestres vivem na natureza: nunca pegue, alimente ou leve um animal da floresta para casa."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

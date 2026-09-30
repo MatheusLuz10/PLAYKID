@@ -36,6 +36,9 @@ export const HOME = { x: -8, z: 14, scale: 0.42, radius: 3.2 };
  * o lago, a fonte e o banco à direita — fora da trilha da porta.
  * y = altura acima do chão (bichos que voam); rot em graus.
  */
+/** 🌳 Reserva Florestal da Amazônia: na frente, à direita da trilha principal (do outro lado da casa). */
+export const RESERVE = { x: 17.5, z: 15, w: 17, d: 8 };
+
 export const HOME_YARD_SCALE = 0.55;
 export const HOME_YARD: Record<string, { x: number; z: number; y?: number; rot?: number; r: number }> = {
   my_tree: { x: -12.0, z: 12.6, r: 1.1 },

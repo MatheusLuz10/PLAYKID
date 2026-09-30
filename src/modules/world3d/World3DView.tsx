@@ -21,6 +21,8 @@ interface World3DViewProps {
   onEnterHome: () => void;
   /** Tocou num objeto do quintal da casa (no próprio mundo). */
   onSelectYard?: (code: string) => void;
+  /** Tocou na reserva florestal (ou no nome dela): abre o que conhecer e os quizzes. */
+  onReserve?: () => void;
   /** Nome da casa no mapa (visitando outro jogador: "Casa de Ana"). */
   homeLabel?: string;
   /** Abrir já em tela cheia (voltando da casa pelo "Sair da casa"). */
@@ -42,6 +44,7 @@ export default function World3DView({
   onSelect,
   onEnterHome,
   onSelectYard,
+  onReserve,
   homeLabel = 'Casa',
   startInside = false,
   onFail,
@@ -50,7 +53,12 @@ export default function World3DView({
   const holder = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<WorldScene3D | null>(null);
   const [focus, setFocus] = useState<FocusTarget>('overview');
-  const [pins, setPins] = useState<{ items: ScreenPin[]; areas: ScreenPin[]; home: ScreenPin | null }>({ items: [], areas: [], home: null });
+  const [pins, setPins] = useState<{ items: ScreenPin[]; areas: ScreenPin[]; home: ScreenPin | null; reserve: ScreenPin | null }>({
+    items: [],
+    areas: [],
+    home: null,
+    reserve: null,
+  });
   const [reducedMotion] = useState(prefersReducedMotion);
   // Fora do mundo a cena é só prévia: a página rola. "Entrar no mundo" abre em tela cheia.
   const [inside, setInside] = useState(startInside);
@@ -86,6 +94,8 @@ export default function World3DView({
   homeRef.current = onEnterHome;
   const yardRef = useRef(onSelectYard);
   yardRef.current = onSelectYard;
+  const reserveRef = useRef(onReserve);
+  reserveRef.current = onReserve;
 
   const specsRef = useRef(specs);
   specsRef.current = specs;
@@ -102,9 +112,10 @@ export default function World3DView({
           lowPower: window.innerWidth < 700,
           onSelect: (id) => selectRef.current(id),
           // baixa prioridade: as etiquetas mudam a cada quadro e não podem atrasar a troca de página
-          onPins: (items, areaPins, home) => startTransition(() => setPins({ items, areas: areaPins, home })),
+          onPins: (items, areaPins, home, reserve) => startTransition(() => setPins({ items, areas: areaPins, home, reserve })),
           onHome: () => homeRef.current(),
           onYard: (code) => yardRef.current?.(code),
+          onReserve: () => reserveRef.current?.(),
         });
       } catch {
         onFail();
@@ -172,6 +183,11 @@ export default function World3DView({
           <button type="button" aria-pressed={focus === 'home'} onClick={() => go('home')}>
           🏡 Casa e quintal
         </button>
+        {onReserve && (
+          <button type="button" aria-pressed={focus === 'reserve'} onClick={() => go('reserve')}>
+            🌳 Reserva florestal
+          </button>
+        )}
         <button type="button" className="world3d-toolbar__home" onClick={onEnterHome}>
             🚪 {homeLabel === 'Casa' ? 'Entrar na casa' : `Entrar: ${homeLabel}`}
           </button>
@@ -208,7 +224,19 @@ export default function World3DView({
                     </button>
                   );
                 })}
-            {pins.home?.visible && (
+            {onReserve && pins.reserve?.visible && (
+            <button
+              type="button"
+              tabIndex={-1}
+              className="world3d-area-pin world3d-reserve-pin"
+              style={{ left: pins.reserve.x, top: pins.reserve.y }}
+              onClick={onReserve}
+            >
+              🌳 Reserva florestal
+              <small>explorar</small>
+            </button>
+          )}
+          {pins.home?.visible && (
               <button
                 type="button"
                 tabIndex={-1}
@@ -291,6 +319,26 @@ export default function World3DView({
             </ul>
           </section>
         ))}
+        {onReserve && (
+          <section className="world3d-area" aria-labelledby="world3d-area-reserve">
+            <h3 id="world3d-area-reserve" className="world3d-area__title">
+              <span aria-hidden>🌳</span> Reserva Florestal da Amazônia
+            </h3>
+            <ul className="world3d-list">
+              <li>
+                <button
+                  type="button"
+                  className="world3d-item"
+                  onClick={onReserve}
+                  onFocus={() => focus !== 'reserve' && go('reserve')}
+                  aria-label="Reserva Florestal da Amazônia. Explorar e fazer os quizzes"
+                >
+                  <span aria-hidden>🦜</span> Explorar a reserva e fazer os quizzes
+                </button>
+              </li>
+            </ul>
+          </section>
+        )}
         {onSelectYard && (
           <section className="world3d-area" aria-labelledby="world3d-area-yard">
             <h3 id="world3d-area-yard" className="world3d-area__title">

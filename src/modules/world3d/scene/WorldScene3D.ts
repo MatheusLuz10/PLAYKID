@@ -14,7 +14,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { PLACE_ITEMS } from '../../place/catalog';
 import { buildHouse, HOUSE } from '../../place/scene/house';
 import { buildObject } from '../../place/scene/objects';
-import { AREA_CODES, HOME, HOME_YARD, HOME_YARD_SCALE, ITEM_OFFSETS, OVERVIEW, OVERVIEW_PORTRAIT, slotToWorld, ZONES, zoneView, type AreaCode } from './layout';
+import { buildReserve } from './models/reserve';
+import { AREA_CODES, HOME, HOME_YARD, HOME_YARD_SCALE, ITEM_OFFSETS, RESERVE, OVERVIEW, OVERVIEW_PORTRAIT, slotToWorld, ZONES, zoneView, type AreaCode } from './layout';
 import { animateModel } from './models/animate';
 import { waterClock, waterMaterial } from './models/common';
 import { buildWorldModel, lockedSlot } from './models';
@@ -33,8 +34,8 @@ import {
   type Wind,
 } from './terrain';
 
-/** 'home' = a casa e o quintal dela, na frente do mundo. */
-export type FocusTarget = 'overview' | 'home' | AreaCode;
+/** 'home' = a casa e o quintal dela; 'reserve' = a reserva florestal (ambas na frente do mundo). */
+export type FocusTarget = 'overview' | 'home' | 'reserve' | AreaCode;
 
 export interface WorldItemSpec {
   id: string;
@@ -59,11 +60,13 @@ interface Options {
   reducedMotion: boolean;
   lowPower: boolean;
   onSelect: (id: string) => void;
-  onPins: (items: ScreenPin[], areas: ScreenPin[], home: ScreenPin) => void;
+  onPins: (items: ScreenPin[], areas: ScreenPin[], home: ScreenPin, reserve: ScreenPin) => void;
   /** Tocou na casa. */
   onHome: () => void;
   /** Tocou num objeto do quintal da casa (código do objeto). */
   onYard?: (code: string) => void;
+  /** Tocou na reserva florestal. */
+  onReserve?: () => void;
 }
 
 interface ItemEntry {
@@ -90,6 +93,8 @@ export class WorldScene3D {
   private home: THREE.Group;
   /** Quintal da casa (árvores, bichos, horta, água, banco), no próprio mundo. */
   private yard: THREE.Group;
+  /** Reserva Florestal da Amazônia. */
+  private reserve: THREE.Group;
   private envTarget: THREE.WebGLRenderTarget | null = null;
   /** Os shaders são preparados em segundo plano; só então a cena é desenhada. */
   private ready = false;
@@ -165,6 +170,8 @@ export class WorldScene3D {
     this.scene.add(this.home);
     this.yard = buildYard();
     this.scene.add(this.yard);
+    this.reserve = buildReserve();
+    this.scene.add(this.reserve);
 
     // Câmera
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.3, 700);
@@ -298,7 +305,9 @@ export class WorldScene3D {
           : OVERVIEW
         : target === 'home'
           ? { pos: [HOME.x + 1.5, 10, HOME.z + 13] as [number, number, number], target: [HOME.x + 0.5, 0.6, HOME.z + 1.8] as [number, number, number] }
-          : zoneView(target);
+          : target === 'reserve'
+            ? { pos: [RESERVE.x - 3, 11, RESERVE.z + 16] as [number, number, number], target: [RESERVE.x, 2.2, RESERVE.z - 0.5] as [number, number, number] }
+            : zoneView(target);
     const to = new THREE.Vector3(...view.pos);
     const tTo = new THREE.Vector3(...view.target);
     // tela estreita (celular em pé, tela cheia): afasta a câmera para caber a área inteira
@@ -367,10 +376,11 @@ export class WorldScene3D {
     this.pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
     this.raycaster.setFromCamera(this.pointer, this.camera);
     const groups = [...this.items.values()].map((i) => i.group);
-    const hit = this.raycaster.intersectObjects([...groups, this.home, this.yard], true)[0];
+    const hit = this.raycaster.intersectObjects([...groups, this.home, this.yard, this.reserve], true)[0];
     let node: THREE.Object3D | null = hit?.object ?? null;
-    while (node && !node.userData.itemId && !node.userData.home && !node.userData.placeCode) node = node.parent;
-    if (node?.userData.home) this.opts.onHome();
+    while (node && !node.userData.itemId && !node.userData.home && !node.userData.placeCode && !node.userData.reserve) node = node.parent;
+    if (node?.userData.reserve) this.opts.onReserve?.();
+    else if (node?.userData.home) this.opts.onHome();
     else if (node?.userData.placeCode) this.opts.onYard?.(node.userData.placeCode as string);
     else if (node) this.opts.onSelect(node.userData.itemId as string);
   };
@@ -402,7 +412,15 @@ export class WorldScene3D {
     const top = new THREE.Box3().setFromObject(this.home).max.y;
     const home = this.project(HOME.x, top + 0.9, HOME.z, rect, 'home');
     const homePad = Math.min(80, rect.width / 4);
-    this.opts.onPins(items, areas, { ...home, x: THREE.MathUtils.clamp(home.x, homePad, rect.width - homePad) });
+    const reserve = this.project(RESERVE.x, heightAt(RESERVE.x, RESERVE.z) + 7, RESERVE.z - 1, rect, 'reserve');
+    // as etiquetas ficam sempre dentro da cena (dá para tocar nelas mesmo com a câmera perto)
+    const topPad = 56;
+    this.opts.onPins(
+      items,
+      areas,
+      { ...home, x: THREE.MathUtils.clamp(home.x, homePad, rect.width - homePad), y: Math.max(home.y, topPad) },
+      { ...reserve, x: THREE.MathUtils.clamp(reserve.x, homePad, rect.width - homePad), y: Math.max(reserve.y, topPad) },
+    );
   }
 
   private animate(t: number, dt: number) {
@@ -425,6 +443,7 @@ export class WorldScene3D {
       animateModel(group, t, phase);
     }
     this.yard.children.forEach((g, i) => animateModel(g as THREE.Group, t, 40 + i * 1.3));
+    animateModel(this.reserve, t, 70);
     for (const cloud of this.clouds.children) {
       cloud.position.x += cloud.userData.speed * dt;
       if (cloud.position.x > 130) cloud.position.x = -130;

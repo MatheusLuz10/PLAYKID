@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../components/layout/PageHeader';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { LoadingMessage } from '../components/ui/StateMessage';
+import { ReserveDialog } from '../components/world/ReserveDialog';
 import { WorldItemDialog } from '../components/world/WorldItemDialog';
 import { WorldMap } from '../components/world/WorldMap';
 import { PLACE_ITEMS } from '../modules/place/catalog';
@@ -132,6 +133,9 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: ()
   const enterHome = useCallback(() => onEnterHouse(), [onEnterHouse]);
   // Objeto do quintal (no mundo) tocado: mostra origem, data e o diário, como na casa
   const [yardCode, setYardCode] = useState<string | null>(null);
+  // Reserva florestal tocada no mapa: o que conhecer e os quizzes
+  const [reserveOpen, setReserveOpen] = useState(false);
+  const openReserve = useCallback(() => setReserveOpen(true), []);
 
   // Itens que o jogador ainda não viu surgir: animam agora e fecham o ciclo (EVOLUIR).
   const [newlyRevealed] = useState(() =>
@@ -232,6 +236,7 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: ()
             onSelect={setSelected}
             onEnterHome={enterHome}
             onSelectYard={setYardCode}
+            onReserve={openReserve}
             onFail={fallbackTo2d}
           />
         </Suspense>
@@ -367,6 +372,7 @@ function WorldMapPage({ onEnterHouse, fullscreen, cameBack }: { onEnterHouse: ()
         <WorldItemDialog content={content} item={selected} owned={owned.get(selected.id)} onClose={closeDialog} />
       )}
       {yardCode && <YardItemDialog code={yardCode} onClose={() => setYardCode(null)} />}
+      {reserveOpen && <ReserveDialog onClose={() => setReserveOpen(false)} />}
     </div>
   );
 }

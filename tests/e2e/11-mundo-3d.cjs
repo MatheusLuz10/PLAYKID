@@ -61,7 +61,7 @@ async function run(browser, label, viewport) {
   await bar.getByRole('button', { name: /Visão geral/ }).click();
   await focusIs('overview');
   await page.waitForTimeout(1500);
-  const areaPins = await page.locator('.world3d-area-pin:not(.world3d-home-pin)').count();
+  const areaPins = await page.locator('.world3d-area-pin:not(.world3d-home-pin):not(.world3d-reserve-pin)').count();
   if (areaPins !== 5) throw new Error('nomes das áreas na visão geral: ' + areaPins);
   await snap('01-visao-geral');
   log('visão geral: as 5 áreas numa paisagem, com o nome e o progresso de cada uma');
@@ -124,6 +124,20 @@ async function run(browser, label, viewport) {
   await page.waitForTimeout(1500);
   await snap('03-casa-e-quintal');
   log('"Casa e quintal": a câmera vai até a casa, com árvores, bichos, horta e água em volta dela, no mundo');
+
+  // Reserva Florestal da Amazônia: tocar abre o que conhecer e os quizzes
+  await bar.getByRole('button', { name: '🌳 Reserva florestal', exact: true }).click();
+  await focusIs('reserve');
+  await page.waitForTimeout(1500);
+  await snap('03-reserva-florestal');
+  await page.locator('.world3d-reserve-pin').click();
+  const reserve = page.getByRole('dialog', { name: /Reserva Florestal da Amazônia/ });
+  for (const t of ['Área de reflorestamento', 'Fauna da Amazônia', 'Onça-pintada', 'Flora da Amazônia', 'Samaúma', 'Quizzes da reserva'])
+    await reserve.getByText(t).first().waitFor();
+  if ((await reserve.locator('.reserve__quiz').count()) !== 3) throw new Error('a reserva deveria ter 3 quizzes');
+  await reserve.getByRole('button', { name: 'Fechar' }).click();
+  await reserve.waitFor({ state: 'detached' });
+  log('reserva florestal no mapa: tocar abre fauna, flora, reflorestamento e os 3 quizzes da reserva');
 
   // A casa no mundo: tocar nela entra, andando pelos cômodos
   await bar.getByRole('button', { name: /Visão geral/ }).click();

@@ -556,3 +556,137 @@ insert into public.quiz_options (id, question_id, option_text, is_correct, expla
 on conflict (id) do update set
   question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
   explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Por que preservar a floresta?
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000015', 'Quiz: Por que preservar a floresta?', '4 perguntas sobre reservas florestais e como proteger a floresta.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000015' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000015' and id not in ('31000000-0000-4000-8000-015000000001', '31000000-0000-4000-8000-015000000002', '31000000-0000-4000-8000-015000000003', '31000000-0000-4000-8000-015000000004');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-015000000001', '30000000-0000-4000-8000-000000000015', 'O que é uma reserva florestal?', 'É uma área de floresta protegida, onde não se pode derrubar árvores nem caçar.', '🏞️ Reserva', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-015000000002', '30000000-0000-4000-8000-000000000015', 'Qual destas coisas as árvores fazem pelo planeta?', 'As árvores limpam o ar, guardam água e ajudam a formar chuva.', '💨 Benefícios', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-015000000003', '30000000-0000-4000-8000-000000000015', 'O que destrói a casa dos animais da floresta?', 'Queimadas e desmatamento acabam com o lugar onde os animais vivem e se alimentam.', '🔥 Perigos', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-015000000004', '30000000-0000-4000-8000-000000000015', 'Qual atitude ajuda a preservar a floresta?', 'Não jogar lixo, não fazer fogo e cuidar das árvores são atitudes de quem preserva.', '🤝 Atitudes', 'single_choice', 4, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-015000000001', '31000000-0000-4000-8000-015000000002', '31000000-0000-4000-8000-015000000003', '31000000-0000-4000-8000-015000000004') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-015000001001', '31000000-0000-4000-8000-015000000001', 'Uma floresta protegida, onde animais e plantas vivem em paz', true, 'Isso! A reserva protege a floresta e os bichos.', 1),
+  ('32000000-0000-4000-8000-015000001002', '31000000-0000-4000-8000-015000000001', 'Um lugar para jogar lixo', false, 'Lixo nunca deve ir para a floresta.', 2),
+  ('32000000-0000-4000-8000-015000001003', '31000000-0000-4000-8000-015000000001', 'Uma fazenda de gado', false, 'Na reserva a floresta fica em pé, sem pasto.', 3),
+  ('32000000-0000-4000-8000-015000001004', '31000000-0000-4000-8000-015000000001', 'Um shopping no meio da mata', false, 'Na reserva não se constrói: a floresta é protegida.', 4),
+  ('32000000-0000-4000-8000-015000002001', '31000000-0000-4000-8000-015000000002', 'Limpam o ar e ajudam a chover', true, 'Correto! Árvores cuidam do ar e da água.', 1),
+  ('32000000-0000-4000-8000-015000002002', '31000000-0000-4000-8000-015000000002', 'Deixam o ar mais sujo', false, 'É o contrário: elas deixam o ar mais limpo.', 2),
+  ('32000000-0000-4000-8000-015000002003', '31000000-0000-4000-8000-015000000002', 'Secam os rios', false, 'As árvores ajudam a manter os rios com água.', 3),
+  ('32000000-0000-4000-8000-015000002004', '31000000-0000-4000-8000-015000000002', 'Esquentam o planeta', false, 'A floresta deixa o lugar mais fresco.', 4),
+  ('32000000-0000-4000-8000-015000003001', '31000000-0000-4000-8000-015000000003', 'Queimadas e desmatamento', true, 'Isso! Fogo e derrubada de árvores destroem a floresta.', 1),
+  ('32000000-0000-4000-8000-015000003002', '31000000-0000-4000-8000-015000000003', 'Plantar mudas', false, 'Plantar mudas ajuda a floresta a voltar.', 2),
+  ('32000000-0000-4000-8000-015000003003', '31000000-0000-4000-8000-015000000003', 'Visitar a trilha com cuidado', false, 'Visitar com cuidado e respeito não destrói a floresta.', 3),
+  ('32000000-0000-4000-8000-015000003004', '31000000-0000-4000-8000-015000000003', 'A chuva', false, 'A chuva é importante para a floresta viver.', 4),
+  ('32000000-0000-4000-8000-015000004001', '31000000-0000-4000-8000-015000000004', 'Não jogar lixo e não fazer fogo na mata', true, 'Correto! Pequenas atitudes protegem a floresta.', 1),
+  ('32000000-0000-4000-8000-015000004002', '31000000-0000-4000-8000-015000000004', 'Levar um filhote de animal para casa', false, 'Animais silvestres devem ficar na natureza.', 2),
+  ('32000000-0000-4000-8000-015000004003', '31000000-0000-4000-8000-015000000004', 'Arrancar plantas para enfeitar a casa', false, 'Plantas da floresta devem ficar na floresta.', 3),
+  ('32000000-0000-4000-8000-015000004004', '31000000-0000-4000-8000-015000000004', 'Fazer uma fogueira perto das árvores', false, 'Fogo na mata pode virar um grande incêndio.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Área de reflorestamento
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000016', 'Quiz: Área de reflorestamento', '4 perguntas sobre reflorestar, mudas nativas e o cuidado com as mudas.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000016' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000016' and id not in ('31000000-0000-4000-8000-016000000001', '31000000-0000-4000-8000-016000000002', '31000000-0000-4000-8000-016000000003', '31000000-0000-4000-8000-016000000004');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-016000000001', '30000000-0000-4000-8000-000000000016', 'O que é reflorestar?', 'Reflorestar é plantar árvores onde a floresta foi derrubada ou queimada.', '🌱 Reflorestar', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-016000000002', '30000000-0000-4000-8000-000000000016', 'Por que é melhor plantar árvores nativas?', 'Árvores nativas já nasciam na região: combinam com o clima e alimentam os animais do lugar.', '🌳 Mudas', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-016000000003', '30000000-0000-4000-8000-000000000016', 'Para que serve um viveiro de mudas?', 'No viveiro as mudas crescem protegidas, com água e sombra, até ficarem fortes para irem para a terra.', '🏡 Viveiro', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-016000000004', '30000000-0000-4000-8000-000000000016', 'Uma floresta reflorestada fica grande em quanto tempo?', 'Uma floresta leva muitos anos para crescer. Por isso cuidar da floresta que já existe é tão importante.', '⏳ Tempo', 'single_choice', 4, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-016000000001', '31000000-0000-4000-8000-016000000002', '31000000-0000-4000-8000-016000000003', '31000000-0000-4000-8000-016000000004') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-016000001001', '31000000-0000-4000-8000-016000000001', 'Plantar árvores onde a floresta foi derrubada', true, 'Isso! É ajudar a floresta a voltar.', 1),
+  ('32000000-0000-4000-8000-016000001002', '31000000-0000-4000-8000-016000000001', 'Cortar mais árvores', false, 'Cortar árvores é o contrário de reflorestar.', 2),
+  ('32000000-0000-4000-8000-016000001003', '31000000-0000-4000-8000-016000000001', 'Pintar as árvores de verde', false, 'Reflorestar é plantar árvores de verdade.', 3),
+  ('32000000-0000-4000-8000-016000001004', '31000000-0000-4000-8000-016000000001', 'Construir prédios na mata', false, 'Prédios não trazem a floresta de volta.', 4),
+  ('32000000-0000-4000-8000-016000002001', '31000000-0000-4000-8000-016000000002', 'Porque combinam com o lugar e alimentam os animais de lá', true, 'Correto! Nativas fazem parte daquela floresta.', 1),
+  ('32000000-0000-4000-8000-016000002002', '31000000-0000-4000-8000-016000000002', 'Porque são de plástico', false, 'Árvores nativas são plantas de verdade.', 2),
+  ('32000000-0000-4000-8000-016000002003', '31000000-0000-4000-8000-016000000002', 'Porque não precisam de água nunca', false, 'Toda muda precisa de água para crescer.', 3),
+  ('32000000-0000-4000-8000-016000002004', '31000000-0000-4000-8000-016000000002', 'Porque crescem num dia só', false, 'Árvores levam muitos anos para crescer.', 4),
+  ('32000000-0000-4000-8000-016000003001', '31000000-0000-4000-8000-016000000003', 'Para as mudas crescerem protegidas até irem para a terra', true, 'Isso! O viveiro é o berçário das árvores.', 1),
+  ('32000000-0000-4000-8000-016000003002', '31000000-0000-4000-8000-016000000003', 'Para guardar lixo', false, 'Viveiro é lugar de cuidar de mudas.', 2),
+  ('32000000-0000-4000-8000-016000003003', '31000000-0000-4000-8000-016000000003', 'Para prender animais', false, 'Viveiro de mudas cuida de plantas.', 3),
+  ('32000000-0000-4000-8000-016000003004', '31000000-0000-4000-8000-016000000003', 'Para queimar folhas', false, 'Fogo não combina com mudas.', 4),
+  ('32000000-0000-4000-8000-016000004001', '31000000-0000-4000-8000-016000000004', 'Muitos anos', true, 'Correto! As árvores crescem devagar.', 1),
+  ('32000000-0000-4000-8000-016000004002', '31000000-0000-4000-8000-016000000004', 'Um dia', false, 'Uma árvore não cresce em um dia.', 2),
+  ('32000000-0000-4000-8000-016000004003', '31000000-0000-4000-8000-016000000004', 'Uma semana', false, 'Uma semana é pouco tempo para uma árvore.', 3),
+  ('32000000-0000-4000-8000-016000004004', '31000000-0000-4000-8000-016000000004', 'Uma hora', false, 'Árvores levam anos, não horas.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;
+
+-- Quiz: Fauna e flora da Amazônia
+insert into public.quizzes (id, lesson_id, title, description, passing_score, xp_reward, improvement_xp_reward, attempts_allowed, active)
+values ('30000000-0000-4000-8000-000000000017', '20000000-0000-4000-8000-000000000017', 'Quiz: Fauna e flora da Amazônia', '5 perguntas sobre os animais e as plantas da Amazônia.', 70, 30, 0, null, true)
+on conflict (id) do update set
+  lesson_id = excluded.lesson_id, title = excluded.title, description = excluded.description,
+  passing_score = excluded.passing_score, xp_reward = excluded.xp_reward,
+  improvement_xp_reward = excluded.improvement_xp_reward, attempts_allowed = excluded.attempts_allowed, active = true;
+
+-- evita conflitos de ordem ao reordenar; perguntas fora do JSON ficam inativas (histórico preservado)
+update public.quiz_questions set order_index = -order_index - 1000 where quiz_id = '30000000-0000-4000-8000-000000000017' and order_index >= 0;
+update public.quiz_questions set active = false where quiz_id = '30000000-0000-4000-8000-000000000017' and id not in ('31000000-0000-4000-8000-017000000001', '31000000-0000-4000-8000-017000000002', '31000000-0000-4000-8000-017000000003', '31000000-0000-4000-8000-017000000004', '31000000-0000-4000-8000-017000000005');
+insert into public.quiz_questions (id, quiz_id, question, explanation, topic, question_type, order_index, points, active) values
+  ('31000000-0000-4000-8000-017000000001', '30000000-0000-4000-8000-000000000017', 'O que significa "flora"?', 'Flora é o conjunto de plantas de um lugar; fauna é o conjunto de animais.', '🌎 Amazônia', 'single_choice', 1, 1, true),
+  ('31000000-0000-4000-8000-017000000002', '30000000-0000-4000-8000-000000000017', 'Qual destes animais vive na Amazônia?', 'A onça-pintada vive na Amazônia e é o maior felino das Américas.', '🐆 Fauna', 'single_choice', 2, 1, true),
+  ('31000000-0000-4000-8000-017000000003', '30000000-0000-4000-8000-000000000017', 'Qual animal vive pendurado nas árvores e se move bem devagar?', 'A preguiça passa quase a vida toda nas árvores e se move devagar para gastar pouca energia.', '🦥 Fauna', 'single_choice', 3, 1, true),
+  ('31000000-0000-4000-8000-017000000004', '30000000-0000-4000-8000-000000000017', 'Qual árvore é chamada de "rainha da floresta"?', 'A samaúma é uma das maiores árvores da Amazônia e é chamada de rainha da floresta.', '🌳 Flora', 'single_choice', 4, 1, true),
+  ('31000000-0000-4000-8000-017000000005', '30000000-0000-4000-8000-000000000017', 'O que fazer ao ver um animal silvestre na natureza?', 'Animais silvestres devem ficar livres na natureza: observe de longe, com um adulto, sem tocar nem alimentar.', '🛡️ Cuidado', 'single_choice', 5, 1, true)
+on conflict (id) do update set
+  quiz_id = excluded.quiz_id, question = excluded.question, explanation = excluded.explanation, topic = excluded.topic,
+  question_type = excluded.question_type, order_index = excluded.order_index, points = excluded.points, active = true;
+
+update public.quiz_options set is_correct = false, order_index = -order_index - 1000
+where question_id in ('31000000-0000-4000-8000-017000000001', '31000000-0000-4000-8000-017000000002', '31000000-0000-4000-8000-017000000003', '31000000-0000-4000-8000-017000000004', '31000000-0000-4000-8000-017000000005') and order_index >= 0;
+insert into public.quiz_options (id, question_id, option_text, is_correct, explanation, order_index) values
+  ('32000000-0000-4000-8000-017000001001', '31000000-0000-4000-8000-017000000001', 'O conjunto de plantas de um lugar', true, 'Isso! Flora são as plantas.', 1),
+  ('32000000-0000-4000-8000-017000001002', '31000000-0000-4000-8000-017000000001', 'O conjunto de animais', false, 'Os animais formam a fauna.', 2),
+  ('32000000-0000-4000-8000-017000001003', '31000000-0000-4000-8000-017000000001', 'Um tipo de chuva', false, 'Flora não tem a ver com chuva.', 3),
+  ('32000000-0000-4000-8000-017000001004', '31000000-0000-4000-8000-017000000001', 'Um rio da Amazônia', false, 'Flora são as plantas de um lugar.', 4),
+  ('32000000-0000-4000-8000-017000002001', '31000000-0000-4000-8000-017000000002', 'Onça-pintada', true, 'Correto! A onça-pintada é um símbolo da Amazônia.', 1),
+  ('32000000-0000-4000-8000-017000002002', '31000000-0000-4000-8000-017000000002', 'Pinguim', false, 'O pinguim vive em lugares frios.', 2),
+  ('32000000-0000-4000-8000-017000002003', '31000000-0000-4000-8000-017000000002', 'Urso-polar', false, 'O urso-polar vive no gelo do Ártico.', 3),
+  ('32000000-0000-4000-8000-017000002004', '31000000-0000-4000-8000-017000000002', 'Canguru', false, 'O canguru vive na Austrália.', 4),
+  ('32000000-0000-4000-8000-017000003001', '31000000-0000-4000-8000-017000000003', 'A preguiça', true, 'Isso! A preguiça é a campeã da calma.', 1),
+  ('32000000-0000-4000-8000-017000003002', '31000000-0000-4000-8000-017000000003', 'O boto-cor-de-rosa', false, 'O boto vive nos rios.', 2),
+  ('32000000-0000-4000-8000-017000003003', '31000000-0000-4000-8000-017000000003', 'A onça-pintada', false, 'A onça anda no chão e nada muito bem.', 3),
+  ('32000000-0000-4000-8000-017000003004', '31000000-0000-4000-8000-017000000003', 'O tucano', false, 'O tucano voa e tem um bico colorido.', 4),
+  ('32000000-0000-4000-8000-017000004001', '31000000-0000-4000-8000-017000000004', 'A samaúma', true, 'Correto! A samaúma é gigante.', 1),
+  ('32000000-0000-4000-8000-017000004002', '31000000-0000-4000-8000-017000000004', 'O pinheiro-de-natal', false, 'O pinheiro-de-natal não é da Amazônia.', 2),
+  ('32000000-0000-4000-8000-017000004003', '31000000-0000-4000-8000-017000000004', 'A macieira', false, 'A macieira gosta de lugares frios.', 3),
+  ('32000000-0000-4000-8000-017000004004', '31000000-0000-4000-8000-017000000004', 'O cacto', false, 'O cacto vive em lugares secos.', 4),
+  ('32000000-0000-4000-8000-017000005001', '31000000-0000-4000-8000-017000000005', 'Observar de longe, com um adulto, sem tocar', true, 'Isso! Assim o animal e você ficam seguros.', 1),
+  ('32000000-0000-4000-8000-017000005002', '31000000-0000-4000-8000-017000000005', 'Levar para casa como bicho de estimação', false, 'Animais silvestres não são bichos de estimação.', 2),
+  ('32000000-0000-4000-8000-017000005003', '31000000-0000-4000-8000-017000000005', 'Dar comida de gente para ele', false, 'Comida de gente pode fazer mal ao animal.', 3),
+  ('32000000-0000-4000-8000-017000005004', '31000000-0000-4000-8000-017000000005', 'Correr atrás para pegar', false, 'Correr atrás assusta o animal e pode ser perigoso.', 4)
+on conflict (id) do update set
+  question_id = excluded.question_id, option_text = excluded.option_text, is_correct = excluded.is_correct,
+  explanation = excluded.explanation, order_index = excluded.order_index;

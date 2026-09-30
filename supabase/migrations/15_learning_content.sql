@@ -103,6 +103,27 @@ on conflict (id) do update set
   description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
   xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
   active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000015', '10000000-0000-4000-8000-000000000001', 'Reserva florestal', 'Por que preservar a floresta?', 'por-que-preservar-a-floresta', 'Descubra o que é uma reserva florestal, como a floresta ajuda o planeta e o que cada pessoa pode fazer para protegê-la.', 'beginner', 4, 20, 14, '[{"icon":"🌳","text":"Uma reserva florestal é uma área protegida onde a floresta e os animais podem viver em paz."},{"icon":"💨","text":"As árvores limpam o ar, guardam água, ajudam a chover e deixam o clima mais fresco."},{"icon":"🔥","text":"Queimadas e desmatamento destroem a casa de muitos animais e plantas."},{"icon":"🤝","text":"Não jogar lixo, não fazer fogo e cuidar das árvores são jeitos de preservar."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000016', '10000000-0000-4000-8000-000000000001', 'Reflorestamento', 'Área de reflorestamento', 'area-de-reflorestamento', 'Entenda como uma floresta derrubada pode voltar a crescer com mudas de árvores nativas e muito cuidado.', 'beginner', 4, 20, 15, '[{"icon":"🌱","text":"Reflorestar é plantar árvores onde a floresta foi derrubada."},{"icon":"🌳","text":"O melhor é plantar árvores nativas, que já nasciam naquele lugar."},{"icon":"🏡","text":"No viveiro, as mudas crescem protegidas até irem para a terra."},{"icon":"⏳","text":"Uma floresta leva muitos anos para crescer: por isso é tão importante cuidar da que existe."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
+insert into public.lessons (id, category_id, topic, title, slug, description, difficulty, estimated_minutes, xp_reward, order_index, summary_points, active)
+values ('20000000-0000-4000-8000-000000000017', '10000000-0000-4000-8000-000000000005', 'Amazônia', 'Fauna e flora da Amazônia', 'fauna-e-flora-da-amazonia', 'Conheça os animais e as plantas da maior floresta tropical do mundo: onça, arara, boto, preguiça, samaúma, castanheira e muito mais.', 'beginner', 5, 20, 3, '[{"icon":"🌎","text":"A Amazônia é a maior floresta tropical do mundo e tem muitos rios."},{"icon":"🐆","text":"Fauna são os animais: onça-pintada, arara, tucano, preguiça, boto-cor-de-rosa."},{"icon":"🌳","text":"Flora são as plantas: samaúma, castanheira, açaí, vitória-régia, seringueira."},{"icon":"🛡️","text":"Animais silvestres vivem na natureza: não devem ser presos nem vendidos."}]'::jsonb, true)
+on conflict (id) do update set
+  category_id = excluded.category_id, topic = excluded.topic, title = excluded.title, slug = excluded.slug,
+  description = excluded.description, difficulty = excluded.difficulty, estimated_minutes = excluded.estimated_minutes,
+  xp_reward = excluded.xp_reward, order_index = excluded.order_index, summary_points = excluded.summary_points,
+  active = excluded.active;
 
 -- Pré-requisitos (depois que todas as aulas existem)
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000001';
@@ -119,9 +140,12 @@ update public.lessons set prerequisite_lesson_id = null where id = '20000000-000
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000012';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000013';
 update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000014';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000015';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000016';
+update public.lessons set prerequisite_lesson_id = null where id = '20000000-0000-4000-8000-000000000017';
 
 -- Seções (recriadas)
-delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
+delete from public.lesson_sections where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000017');
 insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
   ('21000000-0000-4000-8000-000000001001', '20000000-0000-4000-8000-000000000001', 'content', '🌳', 'Muito mais do que paisagem', 'Uma árvore é muito mais do que um elemento da paisagem.
 Árvores são plantas com tronco lenhoso que podem viver por muitos anos. Pela fotossíntese, elas usam a luz do sol para absorver gás carbônico (CO₂) do ar e liberar oxigênio.
@@ -277,9 +301,37 @@ insert into public.lesson_sections (id, lesson_id, section_type, icon, title, co
 - Metal: frio e resistente
 - Tecido: macio, como no sofá', null, null, '[{"type":"think","prompt":"Qual é o móvel de madeira mais perto de você agora?"}]'::jsonb, 2),
   ('21000000-0000-4000-8000-000000014003', '20000000-0000-4000-8000-000000000014', 'content', '🧽', 'Cuidar para durar', 'Quando cuidamos dos móveis, eles duram muitos anos e menos árvores precisam ser cortadas para fazer móveis novos. Não pular em cima da cama, não riscar a mesa e limpar a poeira são jeitos de cuidar. Um móvel velho pode ser consertado, pintado ou doado para outra família.', null, null, '[{"type":"tip","text":"Nunca suba em móveis nem tente mover um móvel pesado sozinho: peça ajuda a um adulto."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000015001', '20000000-0000-4000-8000-000000000015', 'content', '🏞️', 'O que é uma reserva florestal?', 'Uma reserva florestal é um pedaço de floresta protegido por lei. Ali não se pode derrubar árvores, caçar animais ou fazer fogo. Assim a floresta continua em pé e os bichos têm onde morar.
+- Área protegida
+- Casa de muitos animais e plantas
+- Pode ser visitada com cuidado e respeito', null, null, '[{"type":"think","prompt":"Que animais você acha que moram numa floresta protegida?"}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000015002', '20000000-0000-4000-8000-000000000015', 'content', '💨', 'A floresta ajuda todo mundo', 'As árvores produzem oxigênio, guardam água no solo e soltam umidade no ar, o que ajuda a formar chuva. Elas também seguram a terra com as raízes e deixam o lugar mais fresco.
+- Ar mais limpo
+- Mais chuva e rios cheios
+- Menos calor', null, null, '[{"type":"choice","prompt":"Como a floresta ajuda o planeta?","options":[{"id":"ar","icon":"💨","label":"Limpa o ar e ajuda a chover","is_best":true,"feedback":"Isso! As árvores cuidam do ar e da água."},{"id":"lixo","icon":"🗑️","label":"Guarda o lixo das cidades","is_best":false,"feedback":"A floresta não é lugar de lixo: o lixo faz mal aos animais."},{"id":"fogo","icon":"🔥","label":"Faz o tempo ficar mais quente","is_best":false,"feedback":"É o contrário: a floresta deixa o lugar mais fresco."}]}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000015003', '20000000-0000-4000-8000-000000000015', 'content', '🤝', 'Como eu posso ajudar?', 'Mesmo morando longe da floresta, dá para ajudar: economizar papel, não jogar lixo no chão, plantar árvores e contar para a família o que aprendeu. Na natureza, nunca faça fogo e não leve plantas ou animais para casa.', null, null, '[{"type":"tip","text":"Em passeios na natureza, fique sempre perto de um adulto e siga as trilhas marcadas."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000016001', '20000000-0000-4000-8000-000000000016', 'content', '🌱', 'O que é reflorestar?', 'Reflorestar é plantar árvores num lugar onde a floresta foi cortada ou queimada. Aos poucos, as mudas crescem, os pássaros voltam e a floresta começa a se recuperar.
+- Plantar mudas
+- Proteger o terreno
+- Esperar a floresta crescer', null, null, '[{"type":"think","prompt":"Quanto tempo você acha que uma muda leva para virar uma árvore grande?"}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000016002', '20000000-0000-4000-8000-000000000016', 'content', '🌳', 'Mudas nativas e viveiro', 'Árvores nativas são as que já nasciam naquela região, como a castanheira e o ipê. Elas se dão bem com o clima e alimentam os animais do lugar. As mudas começam num viveiro, onde recebem água e sombra até ficarem fortes.', null, null, '[{"type":"choice","prompt":"Qual muda é melhor para reflorestar a Amazônia?","options":[{"id":"nativa","icon":"🌳","label":"Uma árvore nativa, como a castanheira","is_best":true,"feedback":"Isso! Árvores nativas combinam com o lugar e alimentam os animais."},{"id":"plastico","icon":"🪴","label":"Uma planta de plástico","is_best":false,"feedback":"Planta de plástico não cresce nem ajuda a natureza."},{"id":"qualquer","icon":"❓","label":"Qualquer planta de outro país","is_best":false,"feedback":"Plantas de fora podem atrapalhar as da região."}]}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000016003', '20000000-0000-4000-8000-000000000016', 'content', '💧', 'Cuidar das mudas', 'Depois de plantadas, as mudas precisam de água, de proteção contra o fogo e o gado, e de paciência. Uma floresta leva muitos anos para crescer de novo. Por isso cuidar da floresta que já existe é tão importante.', null, null, '[{"type":"tip","text":"Para plantar uma muda, peça ajuda a um adulto para cavar e escolher um lugar seguro."}]'::jsonb, 3);
+insert into public.lesson_sections (id, lesson_id, section_type, icon, title, content, image_url, image_alt, blocks, order_index) values
+  ('21000000-0000-4000-8000-000000017001', '20000000-0000-4000-8000-000000000017', 'content', '🌎', 'A maior floresta tropical do mundo', 'A Amazônia fica no norte do Brasil e em outros países da América do Sul. Ela tem o maior rio do mundo em volume de água, o rio Amazonas, e milhares de espécies de animais e plantas. Fauna é o nome do conjunto de animais; flora é o nome do conjunto de plantas.
+- Fauna: os animais
+- Flora: as plantas
+- Muitos rios e igarapés', null, null, '[{"type":"choice","prompt":"Como se chama o conjunto de animais de um lugar?","options":[{"id":"fauna","icon":"🐆","label":"Fauna","is_best":true,"feedback":"Isso! Fauna são os animais; flora são as plantas."},{"id":"flora","icon":"🌳","label":"Flora","is_best":false,"feedback":"Flora é o conjunto de plantas."},{"id":"clima","icon":"☁️","label":"Clima","is_best":false,"feedback":"Clima é o tempo que costuma fazer num lugar."}]}]'::jsonb, 1),
+  ('21000000-0000-4000-8000-000000017002', '20000000-0000-4000-8000-000000000017', 'content', '🐆', 'Animais da Amazônia', 'A onça-pintada é o maior felino das Américas e nada muito bem. A arara-vermelha e o tucano, de bico colorido, espalham sementes enquanto comem frutas. A preguiça vive pendurada nas árvores e se move bem devagar. O boto-cor-de-rosa nada nos rios.
+- Onça-pintada
+- Arara e tucano
+- Preguiça
+- Boto-cor-de-rosa', null, null, '[{"type":"think","prompt":"Qual desses animais você mais gostaria de ver de perto, com um adulto e em segurança?"}]'::jsonb, 2),
+  ('21000000-0000-4000-8000-000000017003', '20000000-0000-4000-8000-000000000017', 'content', '🌳', 'Plantas da Amazônia', 'A samaúma é uma das maiores árvores da floresta e é chamada de "rainha da floresta". A castanheira dá a castanha-do-pará. O açaí é uma palmeira com frutinhas roxas. A vitória-régia tem folhas redondas enormes que boiam na água. A seringueira dá o látex, usado para fazer borracha.', null, null, '[{"type":"tip","text":"Animais silvestres vivem na natureza: nunca pegue, alimente ou leve um animal da floresta para casa."}]'::jsonb, 3);
 
 -- Conteúdos relacionados (recriados)
-delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014');
+delete from public.lesson_related where lesson_id in ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000009', '20000000-0000-4000-8000-000000000010', '20000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000012', '20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000017');
 insert into public.lesson_related (lesson_id, related_lesson_id, order_index) values
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', 1),
   ('20000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000011', 2),
@@ -321,4 +373,10 @@ insert into public.lesson_related (lesson_id, related_lesson_id, order_index) va
   ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000012', 1),
   ('20000000-0000-4000-8000-000000000013', '20000000-0000-4000-8000-000000000003', 2),
   ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000012', 1),
-  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000007', 2);
+  ('20000000-0000-4000-8000-000000000014', '20000000-0000-4000-8000-000000000007', 2),
+  ('20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000017', 1),
+  ('20000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000016', 2),
+  ('20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000015', 1),
+  ('20000000-0000-4000-8000-000000000016', '20000000-0000-4000-8000-000000000001', 2),
+  ('20000000-0000-4000-8000-000000000017', '20000000-0000-4000-8000-000000000010', 1),
+  ('20000000-0000-4000-8000-000000000017', '20000000-0000-4000-8000-000000000015', 2);

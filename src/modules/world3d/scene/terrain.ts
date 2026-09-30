@@ -4,7 +4,7 @@
  * nuvens. Tudo gerado por código (nenhum arquivo externo).
  */
 import * as THREE from 'three';
-import { HOME, HOME_YARD, WORLD_BOUNDS, ZONES } from './layout';
+import { HOME, HOME_YARD, RESERVE, WORLD_BOUNDS, ZONES } from './layout';
 
 // ---------- ruído simples (determinístico) ----------
 
@@ -145,6 +145,12 @@ const PATHS: [number, number][][] = [
     [-16, -1],
     [-21, -2],
   ],
+  // trilha principal → portal da reserva florestal
+  [
+    [3.3, HOME.z + 3.2],
+    [6.8, HOME.z + 4.0],
+    [RESERVE.x - 7.2, RESERVE.z + 3.9],
+  ],
   // porta da casa → trilha principal
   [
     [HOME.x - 1.05, HOME.z + 2.3],
@@ -218,6 +224,9 @@ export function staticAvoidance(): Circle[] {
   }
   out.push({ x: HOME.x, z: HOME.z, r: HOME.radius });
   for (const spot of Object.values(HOME_YARD)) if (spot.r > 0) out.push({ x: spot.x, z: spot.z, r: spot.r });
+  // reserva: sem grama alta no meio da floresta e do canteiro de mudas
+  for (let x = -RESERVE.w / 2 + 1.5; x <= RESERVE.w / 2 - 1.5; x += 2.6)
+    for (let z = -RESERVE.d / 2 + 1; z <= RESERVE.d / 2 - 0.5; z += 2.2) out.push({ x: RESERVE.x + x, z: RESERVE.z + z, r: 1.6 });
   return out;
 }
 

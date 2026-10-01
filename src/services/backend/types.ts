@@ -201,6 +201,14 @@ export interface VisitDTO {
   place: { itemIds: string[] };
 }
 
+/** Jogador cadastrado que pode ser visitado (só o que é seguro mostrar). */
+export interface VisitablePlayerDTO {
+  username: string;
+  displayName: string | null;
+  avatar: string;
+  level: number;
+}
+
 /**
  * Contrato único entre as telas e a fonte de dados.
  * - SupabaseBackend: dados reais (Postgres + Auth + Storage).
@@ -249,6 +257,8 @@ export interface GameBackend {
   revealPlaceItems(): Promise<void>;
   /** Visita o mundo e a casa de outro jogador pelo @usuário (só leitura). */
   visitPlayer(username: string): Promise<VisitDTO>;
+  /** Jogadores cadastrados para visitar (sem o próprio), com busca opcional por nome ou @usuário. */
+  listVisitablePlayers(search?: string): Promise<VisitablePlayerDTO[]>;
 
   /** Exclui a conta do jogador e tudo o que é dele (fotos, progresso, XP, mundo). */
   deleteAccount(): Promise<void>;

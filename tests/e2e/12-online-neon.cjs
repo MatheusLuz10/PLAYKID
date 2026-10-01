@@ -59,6 +59,8 @@ const log = (m) => {
     // a casa termina de montar e os objetos por perto ganham botão
     await page.locator('.place-stage .place-hotspot').first().waitFor({ timeout: 30000 });
     await page.getByRole('button', { name: '✕ Sair da casa' }).click();
+    await page.goto(BASE + '/mundo');
+    await page.getByRole('list', { name: 'Jogadores cadastrados' }).or(page.getByText('Ainda não há outros jogadores cadastrados.')).first().waitFor({ timeout: 30000 });
     await page.goto(BASE + '/mundo/visitar/' + user);
     await see('Este é o seu próprio mundo');
     await page.getByRole('heading', { name: '🌎 Mundo de Teste Online' }).waitFor();

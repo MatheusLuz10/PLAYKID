@@ -9,7 +9,7 @@ import { WorldMap } from '../components/world/WorldMap';
 import { PLACE_ITEMS } from '../modules/place/catalog';
 import { PlaceItemDialog } from '../modules/place/PlaceItemDialog';
 import type { OwnedPlaceItem } from '../modules/place/placeLogic';
-import { backend } from '../services';
+import { backend, type VisitablePlayerDTO } from '../services';
 import { hasWebGL } from '../modules/place/scene/webgl';
 import { serverNow } from '../logic/challenges';
 import {
@@ -77,45 +77,103 @@ function YardItemDialog({ code, onClose }: { code: string; onClose: () => void }
   return <PlaceItemDialog def={def} owned={owned} content={content} onClose={onClose} />;
 }
 
-/** 👀 Visitar o mundo e a casa de um amigo: só pelo @usuário (não existe lista pública). */
+/** 👀 Visitar o mundo e a casa de outro jogador: lista dos cadastrados (com busca) ou pelo @usuário. */
 function VisitFriendCard() {
   const { player } = useGame();
   const navigate = useNavigate();
   const [name, setName] = useState('');
+  const [players, setPlayers] = useState<VisitablePlayerDTO[] | null>(null);
+  const [failed, setFailed] = useState(false);
   const mine = player.profile.username;
+  // busca no servidor um instante depois de parar de digitar
+  useEffect(() => {
+    let alive = true;
+    const timer = window.setTimeout(() => {
+      backend
+        .listVisitablePlayers(name)
+        .then((list) => alive && (setPlayers(list), setFailed(false)))
+        .catch(() => alive && setFailed(true));
+    }, 250);
+    return () => {
+      alive = false;
+      window.clearTimeout(timer);
+    };
+  }, [name]);
+  const visit = (username: string, house = false) =>
+    navigate(`/mundo/visitar/${encodeURIComponent(username)}${house ? '?casa=1' : ''}`);
   const go = (e: FormEvent) => {
     e.preventDefault();
     const clean = name.trim().replace(/^@/, '').toLowerCase();
-    if (clean) navigate(`/mundo/visitar/${encodeURIComponent(clean)}`);
+    if (clean) visit(clean);
   };
   return (
     <section className="card visit-card" aria-labelledby="visit-title">
       <h2 className="section-title" id="visit-title">
-        👀 Visitar um amigo
+        👀 Visitar outros jogadores
       </h2>
-      <p className="small muted">Digite o @usuário de um amigo para conhecer o mundo e a casa dele. Visita é só para olhar.</p>
-      <form className="visit-card__form" onSubmit={go}>
+      <p className="small muted">Escolha um jogador para conhecer o mundo e a casa dele. Visita é só para olhar.</p>
+      <form className="visit-card__form" onSubmit={go} role="search">
         <label className="sr-only" htmlFor="visit-username">
-          @usuário do amigo
+          Buscar jogador por nome ou @usuário
         </label>
         <input
           id="visit-username"
           className="input"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="@usuario_do_amigo"
+          placeholder="Buscar por nome ou @usuário"
           autoComplete="off"
           autoCapitalize="none"
           spellCheck={false}
-          maxLength={25}
+          maxLength={40}
         />
         <button type="submit" className="btn btn--primary" disabled={!name.trim()}>
           Visitar
         </button>
       </form>
+      {failed ? (
+        <p className="small muted" role="status">
+          Não foi possível carregar os jogadores agora.
+        </p>
+      ) : players === null ? (
+        <p className="small muted" role="status">
+          Carregando jogadores…
+        </p>
+      ) : players.length === 0 ? (
+        <p className="small muted" role="status">
+          {name.trim() ? 'Nenhum jogador encontrado com essa busca.' : 'Ainda não há outros jogadores cadastrados.'}
+        </p>
+      ) : (
+        <ul className="visit-list" aria-label="Jogadores cadastrados">
+          {players.map((p) => {
+            const who = p.displayName ?? `@${p.username}`;
+            return (
+              <li key={p.username} className="visit-list__row">
+                <span className="visit-list__avatar" aria-hidden>
+                  {p.avatar}
+                </span>
+                <span className="visit-list__who">
+                  <strong className="block">{who}</strong>
+                  <span className="small muted">
+                    @{p.username} · Nível {p.level}
+                  </span>
+                </span>
+                <span className="visit-list__actions">
+                  <button type="button" className="btn btn--ghost btn--sm" onClick={() => visit(p.username)} aria-label={`Visitar o mundo de ${who}`}>
+                    🌎 Mundo
+                  </button>
+                  <button type="button" className="btn btn--primary btn--sm" onClick={() => visit(p.username, true)} aria-label={`Visitar a casa de ${who}`}>
+                    🏡 Casa
+                  </button>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
       {mine && (
         <p className="small">
-          Seu @usuário para os amigos visitarem você: <strong>@{mine}</strong>
+          Seu @usuário: <strong>@{mine}</strong>
         </p>
       )}
     </section>

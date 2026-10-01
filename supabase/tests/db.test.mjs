@@ -1180,5 +1180,16 @@ await expectError('anon', `select public.visit_player('wal_eco')`, 'permission d
 ok((await as(A, `select id from public.user_world_items u where u.world_id in (select id from public.worlds where user_id = '${W}')`)).length === 0,
    'visitar não abre acesso direto aos dados do outro (RLS continua valendo)');
 
+console.log('\n# Visitas · lista de jogadores cadastrados');
+const listA = (await one(A, `select public.list_visitable_players() l`)).l;
+ok(listA.some((p) => p.username === 'wal_eco' && p.display_name === 'Wal') && !listA.some((p) => p.username === 'ana_eco'),
+   `lista mostra os jogadores cadastrados (${listA.length}), sem o próprio jogador`);
+ok(listA.every((p) => Object.keys(p).sort().join() === 'avatar,display_name,level,username'), 'lista traz só nome, @usuário, avatar e nível');
+ok(!/email|avatar_url|total_xp|x\.com/.test(JSON.stringify(listA)), 'lista não expõe e-mail, foto de perfil nem XP');
+const foundW = (await one(A, `select public.list_visitable_players('@WAL') l`)).l;
+ok(foundW.length === 1 && foundW[0].username === 'wal_eco', 'busca por @usuário ou nome (sem diferenciar maiúsculas)');
+ok((await one(A, `select public.list_visitable_players('ninguem_aqui') l`)).l.length === 0, 'busca sem resultado devolve lista vazia');
+await expectError('anon', `select public.list_visitable_players()`, 'permission denied|not_authenticated', 'sem login não vê a lista');
+
 console.log(`\n${passed} passaram, ${failed} falharam`);
 process.exit(failed ? 1 : 0);

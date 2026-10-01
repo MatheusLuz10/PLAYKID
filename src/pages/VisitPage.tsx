@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../components/layout/PageHeader';
 import { LoadingMessage, StateMessage } from '../components/ui/StateMessage';
 import type { PlayerState } from '../models';
@@ -23,7 +23,9 @@ export function VisitPage() {
   const { content, player } = useGame();
   const [visit, setVisit] = useState<VisitDTO | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [inHouse, setInHouse] = useState(false);
+  // ?casa=1: veio do botão "🏡 Casa" da lista, abre direto dentro da casa
+  const [params] = useSearchParams();
+  const [inHouse, setInHouse] = useState(params.get('casa') === '1');
   const [picked, setPicked] = useState<string | null>(null);
   const [use3d, setUse3d] = useState(hasWebGL);
   const fallback = useCallback(() => setUse3d(false), []);
@@ -32,7 +34,6 @@ export function VisitPage() {
     let alive = true;
     setVisit(null);
     setError(null);
-    setInHouse(false);
     backend
       .visitPlayer(username)
       .then((v) => alive && setVisit(v))

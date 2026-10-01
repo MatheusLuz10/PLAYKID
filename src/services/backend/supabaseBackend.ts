@@ -37,6 +37,7 @@ import type {
   EvidenceInput,
   GameBackend,
   PlaceStateDTO,
+  VisitablePlayerDTO,
   VisitDTO,
 } from './types';
 
@@ -412,6 +413,11 @@ export class SupabaseBackend implements GameBackend {
 
   async revealPlaceItems() {
     await this.rpc('reveal_place_items');
+  }
+
+  async listVisitablePlayers(search?: string): Promise<VisitablePlayerDTO[]> {
+    const rows = (await this.rpc('list_visitable_players', { p_search: search?.trim() || null })) ?? [];
+    return rows.map((p: any) => ({ username: p.username, displayName: p.display_name ?? null, avatar: p.avatar ?? '🦊', level: p.level ?? 1 }));
   }
 
   async visitPlayer(username: string): Promise<VisitDTO> {

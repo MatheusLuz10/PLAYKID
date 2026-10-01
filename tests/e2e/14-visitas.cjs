@@ -45,8 +45,8 @@ async function run(browser, label, viewport) {
   await page.getByRole('button', { name: '✕ Sair da casa' }).click();
   log('casa completa: conta nova já entra numa casa mobiliada');
   await page.goto(BASE + '/mundo');
-  await see(`Seu @usuário para os amigos visitarem você: @${bia}`);
-  log('Meu Mundo mostra o próprio @usuário para os amigos visitarem');
+  await see(`Seu @usuário: @${bia}`);
+  log('Meu Mundo mostra o próprio @usuário');
 
   // Caio: outra conta no mesmo aparelho
   await page.goto(BASE + '/perfil');
@@ -55,17 +55,36 @@ async function run(browser, label, viewport) {
   await criarConta(page, caio);
   await profile('Caio', caio);
 
-  // @usuário que não existe
+  // Lista de jogadores cadastrados: a Bia aparece (o próprio Caio, não)
   await page.goto(BASE + '/mundo');
-  await page.getByLabel('@usuário do amigo').fill('@ninguem_aqui');
+  const players = page.getByRole('list', { name: 'Jogadores cadastrados' });
+  await players.locator('.visit-list__row', { hasText: '@' + bia }).waitFor({ timeout: 20000 });
+  if (await players.locator('.visit-list__row', { hasText: '@' + caio }).count()) throw new Error('o próprio jogador aparece na lista');
+  await page.getByLabel('Buscar jogador por nome ou @usuário').fill('ninguem_aqui');
+  await see('Nenhum jogador encontrado com essa busca.');
+  await page.getByLabel('Buscar jogador por nome ou @usuário').fill('BIA');
+  await players.locator('.visit-list__row', { hasText: 'Bia' }).waitFor();
+  log('lista dos jogadores cadastrados (sem o próprio), com busca por nome ou @usuário');
+
+  // @usuário que não existe (digitado e "Visitar")
+  await page.getByLabel('Buscar jogador por nome ou @usuário').fill('@ninguem_aqui');
   await page.getByRole('button', { name: 'Visitar', exact: true }).click();
   await see('Não encontramos ninguém com esse @usuário');
   log('@usuário inexistente: mensagem clara, sem quebrar');
 
-  // Visita a Bia (com @ e maiúsculas)
+  // "🏡 Casa" na lista: abre direto dentro da casa da Bia
   await page.goto(BASE + '/mundo');
-  await page.getByLabel('@usuário do amigo').fill('@' + bia.toUpperCase());
-  await page.getByRole('button', { name: 'Visitar', exact: true }).click();
+  await page.getByRole('button', { name: 'Visitar a casa de Bia' }).click();
+  await page.waitForURL(`**/mundo/visitar/${bia}?casa=1`);
+  await page.getByRole('heading', { name: '🏡 Casa de Bia' }).waitFor();
+  await page.locator('.place-room', { hasText: 'Sala' }).waitFor({ timeout: 30000 });
+  await page.getByRole('button', { name: '✕ Sair da casa' }).click();
+  await page.getByRole('heading', { name: '🌎 Mundo de Bia' }).waitFor();
+  log('"🏡 Casa" na lista entra direto na casa da Bia; "Sair da casa" mostra o mundo dela');
+
+  // "🌎 Mundo" na lista
+  await page.goto(BASE + '/mundo');
+  await page.getByRole('button', { name: 'Visitar o mundo de Bia' }).click();
   await page.waitForURL(`**/mundo/visitar/${bia}`);
   await page.getByRole('heading', { name: '🌎 Mundo de Bia' }).waitFor();
   await see('Você está visitando');
@@ -93,7 +112,7 @@ async function run(browser, label, viewport) {
   await page.getByRole('link', { name: '← Voltar para o meu mundo' }).click();
   await page.waitForURL('**/mundo');
   // o mundo 3D volta a carregar: no computador de teste isso pode passar de 15 s
-  await page.getByText('Seu @usuário para os amigos visitarem você: @' + caio).waitFor({ timeout: 45000 });
+  await page.getByText('Seu @usuário: @' + caio).waitFor({ timeout: 45000 });
   log('"Voltar para o meu mundo" leva de volta ao Meu Mundo do Caio');
 
   console.log(`  [${label}] erros no console: ${JSON.stringify(errors)}`);

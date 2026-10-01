@@ -52,6 +52,7 @@ import type {
   PlaceStateDTO,
   ProfileInput,
   QuizAttemptResult,
+  VisitablePlayerDTO,
   VisitDTO,
 } from './types';
 
@@ -514,6 +515,18 @@ export class LocalBackend implements GameBackend {
         state: 'visible',
       });
     }
+  }
+
+  /** Outras contas deste aparelho com @usuário (mesmas regras de public.list_visitable_players). */
+  async listVisitablePlayers(search?: string): Promise<VisitablePlayerDTO[]> {
+    const term = (search ?? '').trim().replace(/^@/, '').toLowerCase();
+    const me = currentDemoPlayerId();
+    return listDemoPlayers()
+      .filter((p) => p.username && p.id !== me)
+      .filter((p) => !term || p.username!.toLowerCase().includes(term) || (p.displayName ?? '').toLowerCase().includes(term))
+      .map((p) => ({ username: p.username!, displayName: p.displayName, avatar: p.avatar, level: p.level }))
+      .sort((a, b) => (a.displayName ?? a.username).localeCompare(b.displayName ?? b.username))
+      .slice(0, 50);
   }
 
   /** Visita outra conta deste aparelho pelo @usuário (mesmas regras de public.visit_player). */

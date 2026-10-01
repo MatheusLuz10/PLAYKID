@@ -14,7 +14,7 @@ O banco é testado à parte por `npm run test:db`.
 | `12-online-neon.cjs` | site publicado com Neon: conta, perfil, aula, quiz, desafio, foto no Object Storage, sair/entrar, excluir conta |
 | `11-mundo-3d.cjs` | mundo em 3D: prévia que não prende a página (roda e dedo), entrar/sair em tela cheia, 5 áreas, marcadores, detalhes, câmera, teclado, "Casa e quintal", entrar na casa pelo mapa e andar pelos cômodos, e o mapa 2D sem WebGL |
 | `13-detetive-dos-moveis.cjs` | desafio infantil sobre os móveis da casa: aula, quiz, 5 etapas sem foto, conclusão e a cadeirinha que aparece na sala |
-| `14-visitas.cjs` | casa completa para conta nova; visitar o mundo e a casa de outro jogador pelo @usuário (só olhar), @usuário inexistente, voltar para o próprio mundo |
+| `14-visitas.cjs` | casa completa para conta nova; lista dos jogadores cadastrados (sem o próprio) com busca; "🏡 Casa" entra direto na casa e "🌎 Mundo" abre o mundo de outro jogador (só olhar); @usuário inexistente; voltar para o próprio mundo |
 | `15-reserva-florestal.cjs` | Reserva Florestal da Amazônia no Meu Mundo: fauna, flora e reflorestamento; aula e quiz de preservação feitos a partir da reserva; ✅ no quiz aprovado |
 | `10-jogadores.cjs` | login de cada usuário (demonstração): criar conta, senha errada, sair/entrar, evolução separada, pausa após 5 tentativas, conta de demonstração, excluir só uma conta |
 | `09-meu-lugar.cjs` | casa por dentro (sem lugar separado): entrar pelo Meu Mundo em tela cheia, andar pelos cômodos (joystick, teclado, arrastar), "Sair da casa" volta ao mapa; casa completa; quintal no mundo com origem e diário; versão sem WebGL |

@@ -67,5 +67,38 @@ for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.sql')).sort())
 }
 
 await run('99_accounts.sql', fs.readFileSync(path.join(root, 'supabase/neon/99_accounts.sql'), 'utf8'));
+await client.query(`notify pgrst, 'reload schema'`);
 await client.end();
+
+// A Data API do Neon guarda tabelas e funções em memória: funções novas só aparecem depois de
+// recarregar (PATCH vazio na configuração da Data API). Com NEON_API_KEY no ambiente, recarrega sozinho.
+const neonCfg = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(root, '.neon'), 'utf8'));
+  } catch {
+    return {};
+  }
+})();
+const projectId = neonCfg.projectId ?? neonCfg.project_id;
+const api = (p, init = {}) =>
+  fetch(`https://console.neon.tech/api/v2${p}`, {
+    ...init,
+    headers: { authorization: `Bearer ${process.env.NEON_API_KEY}`, 'content-type': 'application/json' },
+  });
+let branchId = neonCfg.branchId ?? neonCfg.branch_id;
+if (process.env.NEON_API_KEY && projectId && !branchId && neonCfg.branch) {
+  // .neon guarda o nome do branch: descobre o id
+  const list = await (await api(`/projects/${projectId}/branches`)).json().catch(() => ({}));
+  branchId = list.branches?.find((b) => b.name === neonCfg.branch)?.id;
+}
+if (process.env.NEON_API_KEY && projectId && branchId) {
+  const res = await fetch(`https://console.neon.tech/api/v2/projects/${projectId}/branches/${branchId}/data-api/neondb`, {
+    method: 'PATCH',
+    headers: { authorization: `Bearer ${process.env.NEON_API_KEY}`, 'content-type': 'application/json' },
+    body: '{}',
+  });
+  console.log(res.ok ? '  ✓ Data API recarregada' : `  ! Data API não recarregou (${res.status}): use o botão "Refresh schema cache" no console do Neon`);
+} else {
+  console.log('  ! Se criou função ou tabela nova: Neon Console → Data API → "Refresh schema cache" (ou rode com NEON_API_KEY).');
+}
 console.log('Banco do ECO QUEST pronto no Neon.');
